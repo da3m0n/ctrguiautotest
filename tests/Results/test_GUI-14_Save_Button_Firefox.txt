@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "D:\projects\ctrguiautotests\Firefox\Working\test_GUI-14_Save_Button_Firefox.py", line 6, in <module>
+    import guiLib
+ImportError: No module named guiLib
+Traceback (most recent call last):
+  File "D:\projects\ctrguiautotests\Firefox\Working\test_GUI-14_Save_Button_Firefox.py", line 6, in <module>
+    import guiLib
+ImportError: No module named guiLib
+Traceback (most recent call last):
+  File "D:\projects\ctrguiautotests\Firefox\Working\test_GUI-14_Save_Button_Firefox.py", line 6, in <module>
+    import guiLib
+ImportError: No module named guiLib
+===== 2014-03-07 15:03:24  =====
+Getting address: http://10.16.15.112
+Window Resized
+Login unsuccessful
+Logout unsuccessful. This may cause errors with max number of sessions
+Traceback (most recent call last):
+  File "D:\projects\ctrguiautotests\Firefox\Working\\test_GUI-14_Save_Button_Firefox.py", line 24, in <module>
+    savebutton = driver.find_element(By.ID, "top_menu_save")
+  File "c:\python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 681, in find_element
+    {'using': by, 'value': value})['value']
+  File "c:\python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 162, in execute
+    response = self.command_executor.execute(driver_command, params)
+  File "c:\python27\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 349, in execute
+    return self._request(command_info[0], url, body=data)
+  File "c:\python27\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 379, in _request
+    self._conn.request(method, parsed_url.path, body, headers)
+  File "c:\python27\lib\httplib.py", line 973, in request
+    self._send_request(method, url, body, headers)
+  File "c:\python27\lib\httplib.py", line 1001, in _send_request
+    self.putrequest(method, url, **skips)
+  File "c:\python27\lib\httplib.py", line 871, in putrequest
+    raise CannotSendRequest()
+httplib.CannotSendRequest

@@ -1,0 +1,28 @@
+{
+  "name": "rowan",
+  "version": "0.0.0",
+  "description": "ctr auto tests",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "c:\\\\Users\\\\rnaude\\\\Dropbox\\\\projects\\\\ctrguiautotests.git"
+  },
+  "author": "rowan naude",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-contrib-connect": "~0.7.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-webdriver": "~0.3.2",
+    "grunt-mocha": "~0.4.10"
+  },
+  "peerDependencies": {
+    "grunt-cli": "~0.1.13"
+  }
+}

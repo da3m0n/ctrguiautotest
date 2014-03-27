@@ -11,12 +11,12 @@ usr = "root"
 pw = "admin123"
 
 # Create a new instance of the IE driver
-driver = webdriver.Firefox()
+driver = guiLib.createDriver(sys.argv[2])
 
 guiLib.getAddress(driver)
 guiLib.windowInit(driver)
 
-guiLib.login(driver,usr, pw)
+guiLib.login(driver, usr, pw)
 
 try:
     status = driver.find_element(By.ID, "top_menu_activites").text

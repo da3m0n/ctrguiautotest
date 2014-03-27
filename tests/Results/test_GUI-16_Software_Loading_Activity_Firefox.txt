@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "D:\projects\ctrguiautotests\Firefox\Working\test_GUI-16_Software_Loading_Activity_Firefox.py", line 6, in <module>
+    import guiLib
+ImportError: No module named guiLib
+Traceback (most recent call last):
+  File "D:\projects\ctrguiautotests\Firefox\Working\test_GUI-16_Software_Loading_Activity_Firefox.py", line 6, in <module>
+    import guiLib
+ImportError: No module named guiLib
+Traceback (most recent call last):
+  File "D:\projects\ctrguiautotests\Firefox\Working\test_GUI-16_Software_Loading_Activity_Firefox.py", line 6, in <module>
+    import guiLib
+ImportError: No module named guiLib
+===== 2014-03-07 15:03:53  =====
+Getting address: http://10.16.15.112
+Window Resized

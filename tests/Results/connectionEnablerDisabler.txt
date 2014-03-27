@@ -1,0 +1,32 @@
+Executing (\\PC784\root\cimv2:Win32_NetworkAdapter.DeviceID="7")->enable()
+Method execution successful.
+Out Parameters:
+instance of __PARAMETERS
+{
+	ReturnValue = 0;
+};
+
+Executing (\\PC784\root\cimv2:Win32_NetworkAdapter.DeviceID="7")->enable()
+Method execution successful.
+Out Parameters:
+instance of __PARAMETERS
+{
+	ReturnValue = 0;
+};
+
+Executing (\\PC784\root\cimv2:Win32_NetworkAdapter.DeviceID="7")->enable()
+Method execution successful.
+Out Parameters:
+instance of __PARAMETERS
+{
+	ReturnValue = 0;
+};
+
+Executing (\\PC784\root\cimv2:Win32_NetworkAdapter.DeviceID="7")->enable()
+Method execution successful.
+Out Parameters:
+instance of __PARAMETERS
+{
+	ReturnValue = 0;
+};
+
