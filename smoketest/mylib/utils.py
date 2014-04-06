@@ -8,8 +8,8 @@ from selenium import webdriver
 
 
 class Utils(object):
-    def __init__(self, loggedIn):
-        self.loggedIn = loggedIn
+    # def __init__(self, driver):
+    #     self.driver = self.__createDriver(driver)
 
     def createDriver(self, driverName):
         if driverName == "chrome":
@@ -20,6 +20,10 @@ class Utils(object):
             return webdriver.Ie()
         else:
             raise Exception("Unknown driver " + driverName)
+
+    def startBrowser(self, driver):
+        self.getAddress(driver)
+        self.windowInit(driver)
 
     def loginToRadio(self, driver, loggedIn):
         if loggedIn:

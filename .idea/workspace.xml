@@ -2,16 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a50c7bb4-1a17-4808-be51-ce0ea139aa73" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smoketest/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smoketest/mylib/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/makeHTML.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smoketest/powerOverEthernet.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smoketest/runAll.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smoketest/mylib/utils.py" />
-      <change type="DELETED" beforePath="D:\projects\ctrguiautotests\smoketest\poe.py" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smoketest/mylib/IsolatedLoginHandler.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smoketest/mylib/LoginHandler.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smoketest/dateTime.py" afterPath="$PROJECT_DIR$/smoketest/dateTime.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/guiLib.py" afterPath="$PROJECT_DIR$/Lib/site-packages/guiLib.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/rnaude.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/rnaude.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smoketest/powerOverEthernet.py" afterPath="$PROJECT_DIR$/smoketest/powerOverEthernet.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smoketest/runAll.py" afterPath="$PROJECT_DIR$/smoketest/runAll.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smoketest/mylib/utils.py" afterPath="$PROJECT_DIR$/smoketest/mylib/utils.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GUI - autotests.iws" />
@@ -24,14 +21,14 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/GUI - autotests$dateTime.coverage" NAME="dateTime Coverage Results" MODIFIED="1396577777939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/smoketest" />
+    <SUITE FILE_PATH="coverage/GUI - autotests$dateTime.coverage" NAME="dateTime Coverage Results" MODIFIED="1396827148410" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/smoketest" />
     <SUITE FILE_PATH="coverage/GUI - autotests$test_GUI_3_Invalid_Username_Firefox.coverage" NAME="test_GUI-3_Invalid_Username_Firefox Coverage Results" MODIFIED="1394416275056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Firefox" />
     <SUITE FILE_PATH="coverage/GUI - autotests$test_GUI_2_Invalid_Password_Firefox.coverage" NAME="test_GUI-2_Invalid_Password_Firefox Coverage Results" MODIFIED="1393983085911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Firefox/Working" />
     <SUITE FILE_PATH="coverage/GUI - autotests$test_GUI_32_Device_Info_Display_Firefox.coverage" NAME="test_GUI-32_Device_Info_Display_Firefox Coverage Results" MODIFIED="1393987078675" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Firefox/Working" />
     <SUITE FILE_PATH="coverage/GUI - autotests$Unittests_in_D__projects_GUI___autotests.coverage" NAME="Unittests in D:\projects\GUI - autotests Coverage Results" MODIFIED="1393818856744" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/GUI - autotests$test.coverage" NAME="test Coverage Results" MODIFIED="1396496420427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/smoketest" />
     <SUITE FILE_PATH="coverage/GUI - autotests$sysInfo.coverage" NAME="sysInfo Coverage Results" MODIFIED="1395192194617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/smoketest" />
-    <SUITE FILE_PATH="coverage/GUI - autotests$runAll.coverage" NAME="runAll Coverage Results" MODIFIED="1396571700534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/smoketest" />
+    <SUITE FILE_PATH="coverage/GUI - autotests$runAll.coverage" NAME="runAll Coverage Results" MODIFIED="1396828024170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/smoketest" />
     <SUITE FILE_PATH="coverage/GUI - autotests$test_GUI_13_Help_Button_Firefox__1_.coverage" NAME="test_GUI-13_Help_Button_Firefox (1) Coverage Results" MODIFIED="1394507395323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Firefox" />
     <SUITE FILE_PATH="coverage/GUI - autotests$test_GUI_32_Device_Info_Display_Firefox__1_.coverage" NAME="test_GUI-32_Device_Info_Display_Firefox (1) Coverage Results" MODIFIED="1394416891446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Firefox" />
     <SUITE FILE_PATH="coverage/GUI - autotests$test_GUI_18_Connection_Status_Changes_Firefox.coverage" NAME="test_GUI-18_Connection_Status_Changes_Firefox Coverage Results" MODIFIED="1394577928697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Firefox/Working" />
@@ -64,19 +61,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="backupPower.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smoketest/backupPower.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="90" selection-start="520" selection-end="610" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="731">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="powerOverEthernet.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smoketest/powerOverEthernet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="1175" selection-end="1175" vertical-scroll-proportion="0.0" vertical-offset="55" max-vertical-offset="1037">
+            <state line="47" column="26" selection-start="1611" selection-end="1611" vertical-scroll-proportion="0.0" vertical-offset="446" max-vertical-offset="1139">
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
@@ -84,10 +72,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dateTime.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="dateTime.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smoketest/dateTime.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="17" selection-start="571" selection-end="571" vertical-scroll-proportion="0.6256" vertical-offset="17" max-vertical-offset="969">
+            <state line="37" column="35" selection-start="1147" selection-end="1147" vertical-scroll-proportion="0.0" vertical-offset="361" max-vertical-offset="1054">
               <folding>
                 <element signature="e#0#57#0" expanded="true" />
               </folding>
@@ -98,19 +86,50 @@
       <file leaf-file-name="runAll.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smoketest/runAll.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="143" selection-end="143" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="289">
+            <state line="43" column="24" selection-start="1041" selection-end="1041" vertical-scroll-proportion="0.0" vertical-offset="276" max-vertical-offset="935">
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IsolatedLoginHandler.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smoketest/mylib/IsolatedLoginHandler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="0" selection-start="384" selection-end="384" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="LoginHandler.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smoketest/mylib/LoginHandler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="23" column="20" selection-start="661" selection-end="661" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/smoketest/mylib/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2295">
+            <state line="69" column="33" selection-start="2464" selection-end="2464" vertical-scroll-proportion="0.4144" vertical-offset="914" max-vertical-offset="2363">
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="guiLib.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Lib/site-packages/guiLib.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2516">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -121,17 +140,6 @@
             <state line="9" column="28" selection-start="262" selection-end="262" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RSS.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smoketest/RSS.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="91" column="9" selection-start="3832" selection-end="3832" vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="11135">
-              <folding>
-                <element signature="e#3611#3663#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -180,14 +188,16 @@
         <option value="$PROJECT_DIR$/makeHTML.py" />
         <option value="$PROJECT_DIR$/smoketest/test.py" />
         <option value="$PROJECT_DIR$/smoketest/poe.py" />
-        <option value="$PROJECT_DIR$/Lib/site-packages/guiLib.py" />
-        <option value="$PROJECT_DIR$/smoketest/runAll.py" />
         <option value="$PROJECT_DIR$/smoketest/mylib/guiLib2.py" />
         <option value="$PROJECT_DIR$/Lib/site-packages/Utils.py" />
         <option value="$PROJECT_DIR$/smoketest/__init__.py" />
+        <option value="$PROJECT_DIR$/smoketest/mylib/utils.py" />
+        <option value="$PROJECT_DIR$/Lib/site-packages/guiLib.py" />
+        <option value="$PROJECT_DIR$/smoketest/mylib/IsolatedLoginHandler.py" />
         <option value="$PROJECT_DIR$/smoketest/powerOverEthernet.py" />
         <option value="$PROJECT_DIR$/smoketest/dateTime.py" />
-        <option value="$PROJECT_DIR$/smoketest/mylib/utils.py" />
+        <option value="$PROJECT_DIR$/smoketest/mylib/LoginHandler.py" />
+        <option value="$PROJECT_DIR$/smoketest/runAll.py" />
       </list>
     </option>
   </component>
@@ -502,7 +512,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../ctrautoguiJS" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
+    <property name="options.lastSelected" value="editor.preferences.smartKeys" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -529,7 +539,7 @@
       <recent name="D:\projects\ctrguiautotests\workingTests" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.dateTime">
+  <component name="RunManager" selected="Python.runAll">
     <configuration default="false" name="test_GUI-32_Device_Info_Display_Firefox" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -1245,30 +1255,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="21" />
+      <option name="time" value="22" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Lib/encodings/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="40" selection-start="4651" selection-end="4651" vertical-scroll-proportion="0.0" vertical-offset="1926" max-vertical-offset="2771" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Firefox - need updating/Save_Button_IE.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="842" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/Lib/site-packages/selenium/webdriver/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="556" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/Lib/site-packages/selenium/webdriver/firefox/webdriver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="8" selection-start="1229" selection-end="1229" vertical-scroll-proportion="0.3327338" vertical-offset="291" max-vertical-offset="1377" />
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/site-packages/selenium/webdriver/remote/webdriver.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="54" column="0" selection-start="2399" selection-end="2399" vertical-scroll-proportion="0.9373849" vertical-offset="256" max-vertical-offset="14450" />
@@ -1518,15 +1508,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/site-packages/guiLib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="0" selection-start="824" selection-end="3682" vertical-scroll-proportion="0.3472" vertical-offset="1687" max-vertical-offset="2601">
-          <folding>
-            <element signature="e#111#131#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/smoketest/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="625">
@@ -1534,36 +1515,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/smoketest/runAll.py">
+    <entry file="file://$PROJECT_DIR$/Lib/site-packages/guiLib.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="143" selection-end="143" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="289">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2516">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="767" column="69" selection-start="25535" selection-end="25535" vertical-scroll-proportion="0.5952" vertical-offset="12667" max-vertical-offset="27642">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1533" column="0" selection-start="60527" selection-end="60527" vertical-scroll-proportion="0.8096" vertical-offset="24450" max-vertical-offset="25075">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smoketest/mylib/IsolatedLoginHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="0" selection-start="384" selection-end="384" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/smoketest/powerOverEthernet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1175" selection-end="1175" vertical-scroll-proportion="0.0" vertical-offset="55" max-vertical-offset="1037">
+        <state line="47" column="26" selection-start="1611" selection-end="1611" vertical-scroll-proportion="0.0" vertical-offset="446" max-vertical-offset="1139">
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/smoketest/mylib/utils.py">
+    <entry file="file://$PROJECT_DIR$/smoketest/dateTime.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2295">
+        <state line="37" column="35" selection-start="1147" selection-end="1147" vertical-scroll-proportion="0.0" vertical-offset="361" max-vertical-offset="1054">
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#0#57#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/smoketest/dateTime.py">
+    <entry file="file://$PROJECT_DIR$/smoketest/runAll.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="17" selection-start="571" selection-end="571" vertical-scroll-proportion="0.6256" vertical-offset="17" max-vertical-offset="969">
+        <state line="43" column="24" selection-start="1041" selection-end="1041" vertical-scroll-proportion="0.0" vertical-offset="276" max-vertical-offset="935">
           <folding>
-            <element signature="e#0#57#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smoketest/mylib/LoginHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="20" selection-start="661" selection-end="661" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smoketest/mylib/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="33" selection-start="2464" selection-end="2464" vertical-scroll-proportion="0.4144" vertical-offset="914" max-vertical-offset="2363">
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>

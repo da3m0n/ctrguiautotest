@@ -6,27 +6,33 @@ from selenium.webdriver.support import expected_conditions as EC
 import guiLib
 
 import sys, time, os
+from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
+from smoketest.mylib.utils import Utils
 
 
 def main():
-    poe = PowerOverEthernet(True)
-    poe.runPoe()
+    poe = PowerOverEthernet(IsolatedLoginHandler())
+    poe.run_poe()
 
 
 class PowerOverEthernet(object):
-    def __init__(self, loggedIn):
-        self.loggedIn = loggedIn
+    def __init__(self, login_manager):
+        self.login_manager = login_manager
 
-    def runPoe(self):
-        driver = guiLib.createDriver(sys.argv[2])
+    def run_poe(self, driver):
+        print('calling power over ethernet')
+        # driver = guiLib.createDriver(sys.argv[2])
 
-        guiLib.loginToRadio(driver, self.loggedIn)
+        self.login_manager.login(driver)
+        self.login_manager.logout(driver)
 
-        # driver.switch_to_default_content()
-        guiLib.click_element(driver, 'menu_node_7_tree')
-        guiLib.click_element(driver, 'menu_node_12')
+        # guiLib.loginToRadio(driver)
 
-        print('are we logged in already', self.loggedIn)
+        gui_lib = Utils()
+
+        driver.switch_to_default_content()
+        gui_lib.click_element(driver, 'menu_node_7_tree')
+        gui_lib.click_element(driver, 'menu_node_12')
 
         try:
             driver.switch_to_frame("frame_content")
@@ -34,19 +40,19 @@ class PowerOverEthernet(object):
             table = driver.find_element_by_id("PoEConfigWidget1_TW_table")
 
             headers = table.find_elements_by_tag_name('th')
-            setHeaders = ['Interface', 'Power Mode', 'Max Milliwatts', 'Status', 'Class']
+            set_headers = ['Interface', 'Power Mode', 'Max Milliwatts', 'Status', 'Class']
 
             count = 0
             for head in headers:
-                assert head.text == setHeaders[count], ('Expected ', setHeaders[count], ' but got ', head.text)
+                assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
                 count += 1
 
             # driver.execute_script("document.getElementById('PoEConfigWidget1_TW_17_description').innerHTML=\"\";")
 
             interface = table.find_element_by_id("PoEConfigWidget1_TW_17_description").text
 
-            interfaceLen = len(interface)
-            assert interfaceLen > 0, ("Expected interface length to be > 0 but was ", interfaceLen)
+            interface_len = len(interface)
+            assert interface_len > 0, ("Expected interface length to be > 0 but was ", interface_len)
             time.sleep(2)
         except TimeoutException:
             print("element not found")
