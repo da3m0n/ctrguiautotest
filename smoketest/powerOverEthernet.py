@@ -20,7 +20,7 @@ def main():
     poe = PowerOverEthernet(IsolatedLoginHandler())
     utils = Utils()
     poe.run_poe(utils.createDriver(sys.argv[2]))
-    print("Inside PowerOverEthernet().main()")
+
 
 class PowerOverEthernet(object):
     def __init__(self, login_manager):
