@@ -1,0 +1,5 @@
+======== Power Over Ethernet
+________ FAILURES
+Expected interface length to be > 0 but was 0
+======== End Power Over Ethernet
+

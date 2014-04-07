@@ -12,4 +12,5 @@ class IsolatedLoginHandler(object):
 
     def logout(self, driver):
         print('isolated logout')
+        driver.switch_to_default_content()
         self.utils.logout(driver)

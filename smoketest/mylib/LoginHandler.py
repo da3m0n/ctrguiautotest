@@ -14,11 +14,11 @@ class LoginHandler(object):
 
     def start(self, driver):
         print('start(), logging in for all tests')
-        # gui_lib = Utils()
-        # driver = gui_lib.createDriver(sys.argv[2])
         self.utils.startBrowser(driver)
         self.utils.login(driver, 'root', 'admin123')
 
+
     def end(self, driver):
         print('end all tests, log out and close browser')
+        driver.switch_to_default_content()
         self.utils.logout(driver)

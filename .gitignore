@@ -1,0 +1,19 @@
+# Include your project-specific ignores in this file
+# Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
+.settings
+
+.idea
+
+.metadata
+
+bin
+
+log
+
+doc
+
+node_modules
+
+Lib
+
+*.pyc

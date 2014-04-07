@@ -67,8 +67,7 @@ class Utils(object):
     def logout(self, driver):
         try:
             #find the logout button
-            logout = driver.find_element(By.ID, "top_menu_logout")
-            logout.click()
+            self.click_element(driver, "top_menu_logout")
             print "Successfully logged out"
             driver.quit()
         except:

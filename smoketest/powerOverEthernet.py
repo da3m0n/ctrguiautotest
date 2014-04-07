@@ -8,31 +8,37 @@ import guiLib
 import sys, time, os
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 from smoketest.mylib.utils import Utils
-
+import logging
+import pytest
 
 def main():
-    poe = PowerOverEthernet(IsolatedLoginHandler())
-    poe.run_poe()
+    if os.path.isfile('errors.log'):
+        os.remove('errors.log')
+    else:
+        print('No existing error.log file.')
 
+    poe = PowerOverEthernet(IsolatedLoginHandler())
+    utils = Utils()
+    poe.run_poe(utils.createDriver(sys.argv[2]))
+    print("Inside PowerOverEthernet().main()")
 
 class PowerOverEthernet(object):
     def __init__(self, login_manager):
         self.login_manager = login_manager
 
     def run_poe(self, driver):
-        print('calling power over ethernet')
-        # driver = guiLib.createDriver(sys.argv[2])
 
         self.login_manager.login(driver)
-        self.login_manager.logout(driver)
-
-        # guiLib.loginToRadio(driver)
 
         gui_lib = Utils()
 
         driver.switch_to_default_content()
         gui_lib.click_element(driver, 'menu_node_7_tree')
         gui_lib.click_element(driver, 'menu_node_12')
+
+        errors = open('errors.log', 'a')
+        errors.write('======== Power Over Ethernet\n')
+        errors.write('________ FAILURES\n')
 
         try:
             driver.switch_to_frame("frame_content")
@@ -47,13 +53,21 @@ class PowerOverEthernet(object):
                 assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
                 count += 1
 
-            # driver.execute_script("document.getElementById('PoEConfigWidget1_TW_17_description').innerHTML=\"\";")
+            driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
 
-            interface = table.find_element_by_id("PoEConfigWidget1_TW_17_description").text
+            interface = table.find_element_by_id("PoEConfigWidget1_TW_19_description").text
 
             interface_len = len(interface)
-            assert interface_len > 0, ("Expected interface length to be > 0 but was ", interface_len)
+            if interface_len == 0:
+                # failure = "Expected interface length to be > 0 but was " + str(interface_len)
+                # print('failed: ', failure)
+                errors.write("Expected interface length to be > 0 but was " + str(interface_len) + "\n")
+
             time.sleep(2)
+            errors.write('======== End Power Over Ethernet\n\n')
+
+            errors.close()
+            self.login_manager.logout(driver)
         except TimeoutException:
             print("element not found")
 
