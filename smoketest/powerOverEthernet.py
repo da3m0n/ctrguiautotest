@@ -11,15 +11,11 @@ from smoketest.mylib.utils import Utils
 import logging
 import pytest
 
-def main():
-    if os.path.isfile('errors.log'):
-        os.remove('errors.log')
-    else:
-        print('No existing error.log file.')
 
+def main():
+    Utils.delete_existing_logfile()
     poe = PowerOverEthernet(IsolatedLoginHandler())
-    utils = Utils()
-    poe.run_poe(utils.createDriver(sys.argv[2]))
+    poe.run_poe(Utils.createDriver(sys.argv[2]))
 
 
 class PowerOverEthernet(object):
@@ -38,9 +34,9 @@ class PowerOverEthernet(object):
 
         errors = open('errors.log', 'a')
         errors.write('======== Power Over Ethernet\n')
-        errors.write('________ FAILURES\n')
 
         try:
+            failure_count = 0
             driver.switch_to_frame("frame_content")
             WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, "PoEConfigWidget1_TW_table")))
             table = driver.find_element_by_id("PoEConfigWidget1_TW_table")
@@ -50,21 +46,29 @@ class PowerOverEthernet(object):
 
             count = 0
             for head in headers:
-                assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
+                # assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
+                if head.text != set_headers[count]:
+                    errors.write('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"\n')
+                    failure_count += 1
                 count += 1
 
-            driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
+            # driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
 
             interface = table.find_element_by_id("PoEConfigWidget1_TW_19_description").text
 
             interface_len = len(interface)
+            # assert interface_len > 0, ("Expected interface length to be > 0 but was ", interface_len)
             if interface_len == 0:
                 # failure = "Expected interface length to be > 0 but was " + str(interface_len)
                 # print('failed: ', failure)
-                errors.write("Expected interface length to be > 0 but was " + str(interface_len) + "\n")
+                errors.write("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
+                failure_count += 1
 
             time.sleep(2)
-            errors.write('======== End Power Over Ethernet\n\n')
+            if failure_count > 0:
+                errors.write('======== ' + str(failure_count) + ' failures. End Power Over Ethernet\n\n')
+            else:
+                errors.write('======== Test Passed')
 
             errors.close()
             self.login_manager.logout(driver)

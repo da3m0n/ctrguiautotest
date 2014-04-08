@@ -8,10 +8,11 @@ from selenium import webdriver
 
 
 class Utils(object):
-    # def __init__(self, driver):
-    #     self.driver = self.__createDriver(driver)
+    # def __init__(self):
+        # resultFile =
 
-    def createDriver(self, driverName):
+    @staticmethod
+    def createDriver(driverName):
         if driverName == "chrome":
             return webdriver.Chrome("C:\ChromeDriver\chromedriver.exe")
         elif driverName == "firefox":
@@ -29,8 +30,8 @@ class Utils(object):
         if loggedIn:
             usr = "root"
             pw = "admin123"
-            timetup = time.localtime()
-            iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
+            local_time = time.localtime()
+            iso = time.strftime('%Y-%m-%d %H:%M:%S ', local_time)
             print "=====", iso, "====="
 
             self.getAddress(driver)
@@ -61,7 +62,6 @@ class Utils(object):
             time.sleep(5)
         except:
             print "Login unsuccessful"
-
 
     #logout, as too many sessions are not allowed
     def logout(self, driver):
@@ -126,7 +126,14 @@ class Utils(object):
         driver.execute_script("document.getElementById('SystemInformationWidget1_TW_0_1_renderer').innerHTML=\"\";")
         return None
 
-    def click_element(self, driver, element):
+    @staticmethod
+    def click_element(driver, element):
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
         driver.find_element(By.ID, element).click()
 
+    @staticmethod
+    def delete_existing_logfile():
+        if os.path.isfile('errors.log'):
+            os.remove('errors.log')
+        else:
+            print('No existing error.log file.')

@@ -11,8 +11,7 @@ from smoketest.mylib.utils import Utils
 
 def main():
     date_time = DateTime(IsolatedLoginHandler())
-    utils = Utils()
-    date_time.run_date_time(utils.createDriver(sys.argv[2]))
+    date_time.run_date_time(Utils.createDriver(sys.argv[2]))
     print("Inside dateTime().main()")
 
 
