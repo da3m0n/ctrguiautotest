@@ -11,7 +11,7 @@ from smoketest.mylib.utils import Utils
 
 def main():
     date_time = DateTime(IsolatedLoginHandler())
-    date_time.run_date_time(Utils.createDriver(sys.argv[2]))
+    date_time.run_date_time(Utils.create_driver(sys.argv[2]))
     print("Inside dateTime().main()")
 
 
@@ -25,6 +25,8 @@ class DateTime(object):
         self.login_manager.login(driver)
 
         driver.switch_to_default_content()
+        test = driver.find_element_by_id("menu_node_7_tree")
+        print('The type of the returned element is: ', test)
         driver.find_element_by_id("menu_node_7_tree").click()
         gui_lib.click_element(driver, "menu_node_9")
         driver.switch_to_frame("frame_content")

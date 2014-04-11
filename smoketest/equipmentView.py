@@ -96,10 +96,10 @@ prodDescription = driver.find_element(By.ID, "top_menu_product_description").tex
 
 
 # Software Management
-guiLib.click_element(driver, 'menu_node_7_tree')
-guiLib.click_element(driver, 'menu_node_14_tree')
-guiLib.click_element(driver, 'menu_node_14')
-guiLib.click_element(driver, 'menu_node_16')
+guiLib.find_element(driver, 'menu_node_7_tree')
+guiLib.find_element(driver, 'menu_node_14_tree')
+guiLib.find_element(driver, 'menu_node_14')
+guiLib.find_element(driver, 'menu_node_16')
 driver.switch_to_frame('frame_content')
 
 downloadBtn = driver.find_element_by_id('SoftwareLoadingStatusWidget1_version').size > 0

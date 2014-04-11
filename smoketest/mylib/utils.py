@@ -1,7 +1,7 @@
 import sys, os, time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait  # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
 from selenium import webdriver
@@ -9,10 +9,10 @@ from selenium import webdriver
 
 class Utils(object):
     # def __init__(self):
-        # resultFile =
+    # resultFile =
 
     @staticmethod
-    def createDriver(driverName):
+    def create_driver(driverName):
         if driverName == "chrome":
             return webdriver.Chrome("C:\ChromeDriver\chromedriver.exe")
         elif driverName == "firefox":
@@ -132,8 +132,29 @@ class Utils(object):
         driver.find_element(By.ID, element).click()
 
     @staticmethod
-    def delete_existing_logfile():
-        if os.path.isfile('errors.log'):
-            os.remove('errors.log')
+    def delete_existing_logfile(logFile):
+        if os.path.isfile(logFile):
+            os.remove(logFile)
         else:
-            print('No existing error.log file.')
+            print('No existing ', logFile, ' file.')
+
+    RETRIES = 3
+    TIMEOUT_SECONDS = 10
+
+    def find_element_by_id(self, driver, id):
+
+        tries = 0
+        element = None
+
+        while tries < self.RETRIES:
+            try:
+                element = WebDriverWait(self, self.TIMEOUT_SECONDS).until(
+                    lambda l: driver.find_element_by_id(id))
+                # element = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
+            except TimeoutException:
+                tries += 1
+                # self.switch_to_window(self.window_handles[0])
+                continue
+            else:
+                return element
+        raise NoSuchElementException('Element with id=%s was not found.' % id)

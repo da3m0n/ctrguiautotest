@@ -12,11 +12,11 @@ def main():
 
 class RunAll():
     def __init__(self):
-        self.driver = Utils.createDriver(sys.argv[2])
+        self.driver = Utils.create_driver(sys.argv[2])
 
     def run_all(self):
         print('running all tests')
-        Utils.delete_existing_logfile()
+        Utils.delete_existing_logfile('errors.log')
 
         login_handler = LoginHandler()
         login_handler.start(self.driver)
