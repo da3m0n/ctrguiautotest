@@ -4,12 +4,14 @@ from selenium.webdriver.support import expected_conditions as EC
 # import guiLib
 import sys
 # from smoketest.mylib import IsolatedLoginHandler
+from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 
 from smoketest.mylib.utils import Utils
 
 
 def main():
+    Utils.delete_existing_logfile('testLog.log')
     date_time = DateTime(IsolatedLoginHandler())
     date_time.run_date_time(Utils.create_driver(sys.argv[2]))
     print("Inside dateTime().main()")
@@ -18,11 +20,16 @@ def main():
 class DateTime(object):
     def __init__(self, login_manager):
         self.login_manager = login_manager
+        self.test_log = TestLog(self.__class__.__name__)
 
     def run_date_time(self, driver):
         gui_lib = Utils()
 
         self.login_manager.login(driver)
+
+        self.test_log.start()
+
+        failure_count = 0
 
         driver.switch_to_default_content()
         test = driver.find_element_by_id("menu_node_7_tree")
@@ -36,17 +43,14 @@ class DateTime(object):
             EC.presence_of_element_located((By.CLASS_NAME, "TableWidget_verticalTableHeading")))
 
         headers = table.find_elements_by_class_name('TableWidget_verticalTableHeading')
-        set_headers = ['', 'Clock Source', 'Date', 'Time', 'Timezone']
+        set_headers = ['Clock Source', 'Date', 'Time', 'Timezone']
 
-        errors = open('errors.log', 'a')
-        errors.write('======== Date / Time\n')
-        errors.write('________ FAILURES\n')
         count = 0
         for head in headers:
             # assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
             if head.text != set_headers[count]:
-                errors.write('we have a problem\n')
-                break
+                self.test_log.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
+                failure_count += 1
             count += 1
 
             # time = table.find_element_by_class_name('renderer_datetime_input')
@@ -54,9 +58,9 @@ class DateTime(object):
             #
             # timeZone = table.find_element_by_id('DateTimeWidget1_TW_3_1')
             # print(timeZone)
-        errors.write('======== End Date / Time\n\n')
-        errors.close()
+        self.test_log.end_log(failure_count)
         self.login_manager.logout(driver)
+        self.test_log.close()
 
 if __name__ == "__main__":
     main()

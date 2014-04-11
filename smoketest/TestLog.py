@@ -9,6 +9,7 @@ class TestLog(object):
     def __init__(self, name):
         """Class to log errors"""
         # Utils.delete_existing_logfile('testLog.log')
+        print('Creating testLog...')
         self.per_test_errors = 0
         self.num_tests_run += 1
         self.log = open('testLog.log', 'a')
@@ -26,13 +27,14 @@ class TestLog(object):
     def end_log(self, error_count):
         self.per_test_errors = error_count
 
-        if error_count > 0:
-            self.log.write('- ' + error_count + ' failures.\n')
+        if error_count == 0:
+            self.log.write('========= Tests Passed. End ' + self.name + '\n')
+        else:
+            self.log.write('- ' + str(error_count) + ' failures.\n')
             self.log.write('========= End ' + self.name + ' tests.\n')
             self.overall_errors += 1
-        else:
-            self.log.write('========= Tests Passed. End ' + self.name + '\n')
 
     def close(self):
-        self.log.write('All Tests Finished. ' + str(self.num_tests_run) + ' Tests run. ' + str(self.overall_errors) + ' Tests failed.')
+        self.log.write('All Tests Finished. ' + str(self.num_tests_run) + ' Tests run. ' + str(self.overall_errors) + ' Tests failed.\n')
+        self.log.write('\n')
         self.log.close()

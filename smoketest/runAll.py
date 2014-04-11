@@ -16,7 +16,7 @@ class RunAll():
 
     def run_all(self):
         print('running all tests')
-        Utils.delete_existing_logfile('errors.log')
+        Utils.delete_existing_logfile('testLog.log')
 
         login_handler = LoginHandler()
         login_handler.start(self.driver)

@@ -24,6 +24,8 @@ def main():
 class PowerOverEthernet(object):
     def __init__(self, login_manager):
         self.login_manager = login_manager
+        self.test_log = TestLog(self.__class__.__name__)
+
 
     def run_poe(self, driver):
 
@@ -35,8 +37,7 @@ class PowerOverEthernet(object):
         gui_lib.click_element(driver, 'menu_node_7_tree')
         gui_lib.click_element(driver, 'menu_node_12')
 
-        test_log = TestLog(self.__class__.__name__)
-        test_log.start()
+        self.test_log.start()
 
         # gui_lib.find_element_by_id(driver, "PoEConfigWidget1_TW_table1")
 
@@ -53,7 +54,7 @@ class PowerOverEthernet(object):
             count = 0
             for head in headers:
                 if head.text != set_headers[count]:
-                    test_log.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
+                    self.test_log.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
                     failure_count += 1
                 count += 1
 
@@ -64,20 +65,20 @@ class PowerOverEthernet(object):
 
             interface_len = len(interface)
             if interface_len == 0:
-                test_log.log_it("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
+                self.test_log.log_it("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
                 failure_count += 1
 
             time.sleep(2)
 
-            test_log.end_log(str(failure_count))
+            self.test_log.end_log(str(failure_count))
 
             self.login_manager.logout(driver)
         except Exception as ex:
             print 'Error'
             # errors.write(str(e))
-            test_log.log_it('no element found...' + str(ex.__str__()))
+            self.test_log.log_it('no element found...' + str(ex.__str__()))
 
-        test_log.close()
+        self.test_log.close()
 
 
 if __name__ == "__main__":
