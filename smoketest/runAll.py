@@ -17,13 +17,14 @@ class RunAll():
 
     def run_all(self):
         print('running all tests')
-        Utils.delete_existing_logfile('testLog.log')
+        Utils.delete_existing_logfile()
 
         login_handler = LoginHandler()
         login_handler.start(self.driver)
 
-        poe = PowerOverEthernet(login_handler)
         testLog = TestLog()
+
+        poe = PowerOverEthernet(login_handler)
         poe.run_poe(self.driver, testLog)
 
         date_time = DateTime(login_handler)

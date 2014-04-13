@@ -10,7 +10,7 @@ from smoketest.mylib.utils import Utils
 
 
 def main():
-    Utils.delete_existing_logfile('testLog.log')
+    Utils.delete_existing_logfile()
     date_time = DateTime(IsolatedLoginHandler())
     testLog = TestLog()
     date_time.run_date_time(Utils.create_driver(sys.argv[2]), testLog)

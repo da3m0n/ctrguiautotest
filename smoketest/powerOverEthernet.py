@@ -16,7 +16,7 @@ import timeit
 
 
 def main():
-    Utils.delete_existing_logfile('testLog.log')
+    Utils.delete_existing_logfile()
     poe = PowerOverEthernet(IsolatedLoginHandler())
     testLog = TestLog()
     poe.run_poe(Utils.create_driver(sys.argv[2]), testLog)
@@ -58,7 +58,7 @@ class PowerOverEthernet(object):
                 count += 1
 
             # insert error to test. Uncomment when needed
-            # driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
+            driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
 
             interface = table.find_element_by_id("PoEConfigWidget1_TW_19_description").text
 
@@ -69,7 +69,7 @@ class PowerOverEthernet(object):
 
             time.sleep(2)
 
-            testLog.end_log(str(failure_count))
+            testLog.end_log(failure_count)
 
             self.login_manager.logout(driver)
         except Exception as ex:

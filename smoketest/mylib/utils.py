@@ -132,7 +132,8 @@ class Utils(object):
         driver.find_element(By.ID, element).click()
 
     @staticmethod
-    def delete_existing_logfile(logFile):
+    def delete_existing_logfile():
+        logFile = 'logs/testLog.log'
         if os.path.isfile(logFile):
             print('Deleting existing log file.')
             os.remove(logFile)
