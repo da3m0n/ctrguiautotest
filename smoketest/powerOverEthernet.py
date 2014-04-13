@@ -18,17 +18,16 @@ import timeit
 def main():
     Utils.delete_existing_logfile('testLog.log')
     poe = PowerOverEthernet(IsolatedLoginHandler())
-    poe.run_poe(Utils.create_driver(sys.argv[2]))
+    testLog = TestLog()
+    poe.run_poe(Utils.create_driver(sys.argv[2]), testLog)
 
 
 class PowerOverEthernet(object):
     def __init__(self, login_manager):
         self.login_manager = login_manager
-        self.test_log = TestLog(self.__class__.__name__)
+        # self.test_log = TestLog(self.__class__.__name__)
 
-
-    def run_poe(self, driver):
-
+    def run_poe(self, driver, testLog):
         self.login_manager.login(driver)
 
         gui_lib = Utils()
@@ -37,7 +36,7 @@ class PowerOverEthernet(object):
         gui_lib.click_element(driver, 'menu_node_7_tree')
         gui_lib.click_element(driver, 'menu_node_12')
 
-        self.test_log.start()
+        testLog.start('PowerOverEthernet')
 
         # gui_lib.find_element_by_id(driver, "PoEConfigWidget1_TW_table1")
 
@@ -54,7 +53,7 @@ class PowerOverEthernet(object):
             count = 0
             for head in headers:
                 if head.text != set_headers[count]:
-                    self.test_log.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
+                    testLog.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
                     failure_count += 1
                 count += 1
 
@@ -65,20 +64,20 @@ class PowerOverEthernet(object):
 
             interface_len = len(interface)
             if interface_len == 0:
-                self.test_log.log_it("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
+                testLog.log_it("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
                 failure_count += 1
 
             time.sleep(2)
 
-            self.test_log.end_log(str(failure_count))
+            testLog.end_log(str(failure_count))
 
             self.login_manager.logout(driver)
         except Exception as ex:
             print 'Error'
             # errors.write(str(e))
-            self.test_log.log_it('no element found...' + str(ex.__str__()))
+            testLog.log_it('no element found...' + str(ex.__str__()))
 
-        self.test_log.close()
+        testLog.close()
 
 
 if __name__ == "__main__":

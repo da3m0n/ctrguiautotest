@@ -6,28 +6,30 @@ import sys
 # from smoketest.mylib import IsolatedLoginHandler
 from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
-
 from smoketest.mylib.utils import Utils
 
 
 def main():
     Utils.delete_existing_logfile('testLog.log')
     date_time = DateTime(IsolatedLoginHandler())
-    date_time.run_date_time(Utils.create_driver(sys.argv[2]))
+    testLog = TestLog()
+    date_time.run_date_time(Utils.create_driver(sys.argv[2]), testLog)
     print("Inside dateTime().main()")
 
 
 class DateTime(object):
     def __init__(self, login_manager):
         self.login_manager = login_manager
-        self.test_log = TestLog(self.__class__.__name__)
 
-    def run_date_time(self, driver):
+        # self.test_log = TestLog(self.__class__.__name__)
+
+    def run_date_time(self, driver, testLog):
+
         gui_lib = Utils()
 
         self.login_manager.login(driver)
 
-        self.test_log.start()
+        testLog.start('DateTime')
 
         failure_count = 0
 
@@ -58,9 +60,10 @@ class DateTime(object):
             #
             # timeZone = table.find_element_by_id('DateTimeWidget1_TW_3_1')
             # print(timeZone)
-        self.test_log.end_log(failure_count)
+        testLog.end_log(failure_count)
         self.login_manager.logout(driver)
-        self.test_log.close()
+        testLog.close()
+
 
 if __name__ == "__main__":
     main()

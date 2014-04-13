@@ -1,6 +1,7 @@
 import sys
 from powerOverEthernet import PowerOverEthernet
 from dateTime import DateTime
+from smoketest.TestLog import TestLog
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
 
@@ -22,10 +23,11 @@ class RunAll():
         login_handler.start(self.driver)
 
         poe = PowerOverEthernet(login_handler)
-        poe.run_poe(self.driver)
+        testLog = TestLog()
+        poe.run_poe(self.driver, testLog)
 
         date_time = DateTime(login_handler)
-        date_time.run_date_time(self.driver)
+        date_time.run_date_time(self.driver, testLog)
 
         login_handler.end(self.driver)
 
