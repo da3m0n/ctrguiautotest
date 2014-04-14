@@ -48,7 +48,7 @@ class PowerOverEthernet(object):
             table = driver.find_element_by_id(table_element)
 
             headers = table.find_elements_by_tag_name('th')
-            set_headers = ['', 'Interface', 'Power Mode', 'Max Milliwatts', 'Status', 'Class']
+            set_headers = ['Interface', 'Power Mode', 'Max Milliwatts', 'Status', 'Class']
 
             count = 0
             for head in headers:
