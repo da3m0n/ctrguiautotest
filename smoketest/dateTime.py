@@ -45,13 +45,14 @@ class DateTime(object):
             EC.presence_of_element_located((By.CLASS_NAME, "TableWidget_verticalTableHeading")))
 
         headers = table.find_elements_by_class_name('TableWidget_verticalTableHeading')
-        set_headers = ['Clock Source', 'Date', 'Time', 'Timezone']
+        set_headers = ['', 'Clock Source', 'Date', 'Time', 'Timezone']
 
         count = 0
         for head in headers:
             # assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
             if head.text != set_headers[count]:
-                self.test_log.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
+                res = {'expected': set_headers[count], 'detected': head.text}
+                testLog.log_it(res)
                 failure_count += 1
             count += 1
 

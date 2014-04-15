@@ -16,22 +16,22 @@ class TestLog(object):
         print('Creating testLog...')
         self.root = ET.Element("smoketests")
         self.per_test_errors = 0
+        self.doc = None
 
     def start(self, name):
         # root = ET.Element("root")
-        doc = ET.SubElement(self.root, "testName", testName=name)
+        self.doc = ET.SubElement(self.root, "testName", testName=name)
         timetup = time.localtime()
         iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
         # ET.SubElement(self.root, 'startTime', str(iso))
 
-        field1 = ET.SubElement(doc, "field1")
+        field1 = ET.SubElement(self.doc, "field1")
         field1.set("name", "blah")
         field1.text = "some value1"
 
         # field2 = ET.SubElement(doc, "field2")
         # field2.set("name", "asdfasd")
         # field2.text = "some vlaue2"
-
 
         self.name = name
         self.log = open('logs/testLog.log', 'a')
@@ -40,13 +40,16 @@ class TestLog(object):
         self.num_tests_run += 1
 
     def log_it(self, data):
-        self.log.write('   - ' + data + '\n')
-        self.subElement(data)
-        # ET.SubElement(self.root, data)
+        # self.log.write('   - ' + data + '\n')
+        field2 = ET.SubElement(self.doc, 'field2')
 
-    @classmethod
-    def subElement(self, data):
-        ET.SubElement()
+        for k, v in data.iteritems():
+            print k, v
+            field2.set(k, v)
+
+        # field2.set('name', 'asdfs')
+        # field2.name = 'some value'
+        # ET.SubElement(self.root, data)
 
     def end_log(self, error_count):
         self.per_test_errors = error_count

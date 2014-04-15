@@ -40,42 +40,41 @@ class PowerOverEthernet(object):
 
         # gui_lib.find_element_by_id(driver, "PoEConfigWidget1_TW_table1")
 
-        try:
-            failure_count = 0
-            driver.switch_to_frame("frame_content")
-            table_element = "PoEConfigWidget1_TW_table"
-            WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, table_element)))
-            table = driver.find_element_by_id(table_element)
+        failure_count = 0
+        driver.switch_to_frame("frame_content")
+        table_element = "PoEConfigWidget1_TW_table"
+        WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, table_element)))
+        table = driver.find_element_by_id(table_element)
 
-            headers = table.find_elements_by_tag_name('th')
-            set_headers = ['Interface', 'Power Mode', 'Max Milliwatts', 'Status', 'Class']
+        headers = table.find_elements_by_tag_name('th')
+        set_headers = ['Interface', 'Power Mode', 'Max Milliwatts', 'Status', 'Class']
 
-            count = 0
-            for head in headers:
-                if head.text != set_headers[count]:
-                    testLog.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
-                    failure_count += 1
-                count += 1
-
-            # insert error to test. Uncomment when needed
-            driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
-
-            interface = table.find_element_by_id("PoEConfigWidget1_TW_19_description").text
-
-            interface_len = len(interface)
-            if interface_len == 0:
-                testLog.log_it("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
+        count = 0
+        for head in headers:
+            if head.text != set_headers[count]:
+                testLog.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
+                res = {'expected': set_headers[count], 'detected': head.text}
+                testLog.log_it(res)
                 failure_count += 1
+            count += 1
 
-            time.sleep(2)
+        # insert error to test. Uncomment when needed
+        driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
 
-            testLog.end_log(failure_count)
+        interface = table.find_element_by_id("PoEConfigWidget1_TW_19_description").text
 
-            self.login_manager.logout(driver)
-        except Exception as ex:
-            print 'Error'
-            # errors.write(str(e))
-            testLog.log_it('no element found...' + str(ex.__str__()))
+        interface_len = len(interface)
+        if interface_len == 0:
+            res = {'expected': '> 0', 'detected': str(interface_len)}
+            testLog.log_it(res)
+            # testLog.log_it("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
+            failure_count += 1
+
+        time.sleep(2)
+
+        testLog.end_log(failure_count)
+
+        self.login_manager.logout(driver)
 
         testLog.close()
 

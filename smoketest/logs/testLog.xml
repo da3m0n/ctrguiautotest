@@ -1,8 +1,6 @@
 <smoketests>
     <testName testName="PowerOverEthernet">
         <field1 name="blah">some value1</field1>
-    </testName>
-    <testName testName="DateTime">
-        <field1 name="blah">some value1</field1>
+        <field2 detected="0" expected="&gt; 0"/>
     </testName>
 </smoketests>
