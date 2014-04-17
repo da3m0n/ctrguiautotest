@@ -25,9 +25,9 @@ class TestLog(object):
         iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
         # ET.SubElement(self.root, 'startTime', str(iso))
 
-        field1 = ET.SubElement(self.doc, "field1")
-        field1.set("name", "blah")
-        field1.text = "some value1"
+        field1 = ET.SubElement(self.doc, "startTime")
+        field1.set("name", iso)
+
 
         # field2 = ET.SubElement(doc, "field2")
         # field2.set("name", "asdfasd")
@@ -41,15 +41,23 @@ class TestLog(object):
 
     def log_it(self, data):
         # self.log.write('   - ' + data + '\n')
-        field2 = ET.SubElement(self.doc, 'field2')
+        el = ET.SubElement(self.doc, 'error')
+
+        # for value in data.values():
+        #     print value
+        #     el.set('msg', value)
 
         for k, v in data.iteritems():
             print k, v
-            field2.set(k, v)
+            el.set(k, v)
 
         # field2.set('name', 'asdfs')
         # field2.name = 'some value'
         # ET.SubElement(self.root, data)
+
+    def log_it2(self, count, msg=None):
+        el = ET.SubElement(self.doc, 'error')
+        el.set('msg', msg)
 
     def end_log(self, error_count):
         self.per_test_errors = error_count
@@ -68,7 +76,6 @@ class TestLog(object):
         self.log.close()
         tree = ET.ElementTree(self.root)
         tree.write('logs/testLog.xml')
-
 
     def open_tag(self, testName):
         self.log_it('<testName>' + testName)

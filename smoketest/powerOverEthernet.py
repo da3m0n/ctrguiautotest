@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import guiLib
 
 import sys, time, os
+from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 from smoketest.mylib.utils import Utils
@@ -31,6 +32,7 @@ class PowerOverEthernet(object):
         self.login_manager.login(driver)
 
         gui_lib = Utils()
+        testHelper = TestHelper(testLog)
 
         driver.switch_to_default_content()
         gui_lib.click_element(driver, 'menu_node_7_tree')
@@ -47,28 +49,16 @@ class PowerOverEthernet(object):
         table = driver.find_element_by_id(table_element)
 
         headers = table.find_elements_by_tag_name('th')
-        set_headers = ['Interface', 'Power Mode', 'Max Milliwatts', 'Status', 'Class']
 
-        count = 0
-        for head in headers:
-            if head.text != set_headers[count]:
-                testLog.log_it('Expected \"' + set_headers[count] + '\" but got \"' + head.text + '\"')
-                res = {'expected': set_headers[count], 'detected': head.text}
-                testLog.log_it(res)
-                failure_count += 1
-            count += 1
+        testHelper.assertTrue(len(headers) > 0, 'Expected Headers, got None')
 
         # insert error to test. Uncomment when needed
-        driver.execute_script("document.getElementById('PoEConfigWidget1_TW_19_description').innerHTML=\"\";")
+        driver.execute_script("document.getElementById('PoEConfigWidget1_TW_13_description').innerHTML=\"\";")
 
-        interface = table.find_element_by_id("PoEConfigWidget1_TW_19_description").text
+        interface = table.find_element_by_id("PoEConfigWidget1_TW_13_description").text
 
         interface_len = len(interface)
-        if interface_len == 0:
-            res = {'expected': '> 0', 'detected': str(interface_len)}
-            testLog.log_it(res)
-            # testLog.log_it("Expected Interface Length to be > 0 but was " + str(interface_len) + "\n")
-            failure_count += 1
+        testHelper.assertTrue(len(interface), 'Expected Interface length > 0')
 
         time.sleep(2)
 
@@ -77,7 +67,6 @@ class PowerOverEthernet(object):
         self.login_manager.logout(driver)
 
         testLog.close()
-
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,11 @@
 <smoketests>
     <testName testName="PowerOverEthernet">
-        <field1 name="blah">some value1</field1>
-        <field2 detected="0" expected="&gt; 0"/>
+        <startTime name="2014-04-17 14:56:42 "/>
+        <error msg="Expected Interface length &gt; 0"/>
+    </testName>
+    <testName testName="DateTime">
+        <startTime name="2014-04-17 14:56:45 "/>
+        <error msg="Expected Calendar length &gt; 0"/>
+        <error msg="Expected TimeZone length &gt; 0"/>
     </testName>
 </smoketests>
