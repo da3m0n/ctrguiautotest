@@ -25,8 +25,8 @@ class TestLog(object):
         iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
         # ET.SubElement(self.root, 'startTime', str(iso))
 
-        field1 = ET.SubElement(self.doc, "startTime")
-        field1.set("name", iso)
+        field1 = ET.SubElement(self.doc, "time")
+        field1.set("starttime", iso)
 
 
         # field2 = ET.SubElement(doc, "field2")
@@ -34,7 +34,7 @@ class TestLog(object):
         # field2.text = "some vlaue2"
 
         self.name = name
-        self.log = open('logs/output/testLog.log', 'a')
+        self.log = open('output/testLog.log', 'a')
         self.log.write('========= Running ' + name + ' Tests\n')
         self.log.write('Started tests at ' + iso + '\n')
         self.num_tests_run += 1

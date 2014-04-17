@@ -133,7 +133,7 @@ class Utils(object):
 
     @staticmethod
     def delete_existing_logfile():
-        logFile = 'logs/testLog.log'
+        logFile = 'output/testLog.log'
         if os.path.isfile(logFile):
             print('Deleting existing log file.')
             os.remove(logFile)

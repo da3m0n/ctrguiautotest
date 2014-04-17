@@ -13,13 +13,12 @@
                     <xsl:for-each select="smoketests/testName">
                         <tr>
                             <td>
-                                <xsl:value-of select="@testName"/>
+                                <xsl:value-of select="@name"/>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <xsl:value-of select="startTime/@name"/>
-                            </td>
+                            <td>1</td>
+                            <td>2</td>
                         </tr>
                     </xsl:for-each>
 
