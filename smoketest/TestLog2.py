@@ -18,7 +18,7 @@ class TestLog(object):
         self.name = name
         timetup = time.localtime()
         iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
-        self.log = open('logs/testLog.log', 'a')
+        self.log = open('logs/output/testLog.log', 'a')
         self.log.write('========= Running ' + name + ' Tests\n')
         self.log.write('Started tests at ' + iso + '\n')
         self.num_tests_run += 1

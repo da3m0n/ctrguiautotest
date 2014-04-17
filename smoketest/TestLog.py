@@ -34,7 +34,7 @@ class TestLog(object):
         # field2.text = "some vlaue2"
 
         self.name = name
-        self.log = open('logs/testLog.log', 'a')
+        self.log = open('logs/output/testLog.log', 'a')
         self.log.write('========= Running ' + name + ' Tests\n')
         self.log.write('Started tests at ' + iso + '\n')
         self.num_tests_run += 1

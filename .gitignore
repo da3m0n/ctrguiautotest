@@ -18,4 +18,4 @@ Lib
 
 *.pyc
 
-smoketest/logs/*
+smoketest/output
