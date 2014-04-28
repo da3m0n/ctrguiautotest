@@ -1,6 +1,6 @@
 #resultsContainer {
     width: 1000px;
-    border: 1px solid #ff0000;
+    /*border: 1px solid #ff0000;*/
     margin: auto auto;
 }
 
@@ -9,94 +9,6 @@
     text-align: left;
     font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
     border: 1px solid #006dcc;
-}
-
-.testName {
-    width: 100px;
-    border: 1px solid #008000;
-    height: 20px;
-    background-color: yellow;
-    float: left;
-}
-
-.container4 {
-    clear: left;
-    float: left;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    /*background-color: #b2f0f9;*/
-    border-right: 1px solid #000000
-}
-
-.container3 {
-    clear: left;
-    float: left;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    right: 25%;
-    /*background: #89ffa2;*/
-    border-right: 1px solid #000000
-}
-
-.container2 {
-    clear: left;
-    float: left;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    right: 25%;
-    /*background: #ffa7a7;*/
-    border-right: 1px solid #000000
-}
-
-.container1 {
-    float: left;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    right: 25%;
-    /*background: #fff689;*/
-    padding-top: 15px;
-    border-right: 1px solid #000000
-}
-
-.col1 {
-    float: left;
-    width: 21%;
-    height: 100% !important;
-
-    position: relative;
-    left: 77%;
-    overflow: hidden;
-}
-
-.col2 {
-    float: left;
-    width: 21%;
-    height: 100% !important;
-    position: relative;
-    left: 81%;
-    overflow: hidden;
-}
-
-.col3 {
-    float: left;
-    width: 21%;
-    height: 100% !important;
-    position: relative;
-    left: 85%;
-    overflow: hidden;
-}
-
-.col4 {
-    float: left;
-    width: 21%;
-    height: 100% !important;
-    position: relative;
-    left: 89%;
-    overflow: hidden;
 }
 
 #footer {
@@ -120,6 +32,50 @@
     padding-left: 10px;
 }
 
+#resultsTable table {
+    /*border: 1px solid #ff0000;*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+    border-collapse: collapse;
+}
+
+#resultsTable tr {
+    border: 1px;
+    padding: 5px;
+}
+
 #resultsTable td {
-    height: 25px;
+    margin: 0;
+    padding: 0;
+}
+#resultsTable ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#resultsTable li {
+    padding: 5px;
+    border-top: 1px solid #000000;
+}
+
+.testScreenName {
+    padding: 5px 0 0 5px !important;
+    vertical-align: top;
+}
+
+.testName {
+    width: 100%;
+    /*border: 1px solid #000000;*/
+    /*height: 20px;*/
+    /*background-color: yellow;*/
+    /*float: left;*/
+}
+
+.pass {
+    /*background-color: #008000;*/
+}
+
+.fail {
+    /*background-color: #ff0000;*/
 }

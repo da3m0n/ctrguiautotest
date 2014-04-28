@@ -10,7 +10,7 @@ class TestHelper(object):
             # res = {'errorCount': str(self.errorCount), 'msg': msg}
             self.log.log_it2(self.errorCount, msg, testName)
         else:
-            msg = ''
+            msg = '-'
             self.log.log_it2(self.errorCount, msg, testName)
 
     def assertNotEqual(self, val1, val2, msg=None):

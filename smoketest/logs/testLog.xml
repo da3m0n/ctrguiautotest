@@ -1,13 +1,1 @@
-<smoketests>
-    <testScreen testScreen="PowerOverEthernet">
-        <time starttime="2014-04-28 16:18:46 "/>
-        <error msg="Expected Headers, got None" testName="Testing Headers"/>
-        <error msg="Expected Interface length &gt; 0" testName="Testing Interfaces"/>
-    </testScreen>
-    <testScreen testScreen="DateTime">
-        <time starttime="2014-04-28 16:18:52 "/>
-        <error msg="" testName="Testing Headers"/>
-        <error msg="" testName="Testing Calendar length"/>
-        <error msg="Expected TimeZone length &gt; 0" testName="Testing Timezone"/>
-    </testScreen>
-</smoketests>
+<smoketests><testScreen testScreen="PowerOverEthernet"><time starttime="2014-04-29 10:50:38 " /><error msg="Expected Headers, got None" testName="Testing Headers" /><error msg="Expected Interface length &gt; 0" testName="Testing Interfaces" /></testScreen><testScreen testScreen="DateTime"><time starttime="2014-04-29 10:50:42 " /><error msg="-" testName="Testing Headers" /><error msg="-" testName="Testing Calendar length" /><error msg="Expected TimeZone length &gt; 0" testName="Testing Timezone" /></testScreen></smoketests>
