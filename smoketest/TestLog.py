@@ -20,7 +20,7 @@ class TestLog(object):
 
     def start(self, name):
         # root = ET.Element("root")
-        self.doc = ET.SubElement(self.root, "testName", testName=name)
+        self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
         timetup = time.localtime()
         iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
         # ET.SubElement(self.root, 'startTime', str(iso))
@@ -55,9 +55,10 @@ class TestLog(object):
         # field2.name = 'some value'
         # ET.SubElement(self.root, data)
 
-    def log_it2(self, count, msg=None):
+    def log_it2(self, count, msg=None, testName=None):
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
+        el.set('testName', testName)
 
     def end_log(self, error_count):
         self.per_test_errors = error_count

@@ -50,8 +50,7 @@ class DateTime(unittest.TestCase):
         set_headers = ['Clock Source', 'Date', 'Time', 'Timezone']
 
         count = 0
-
-        testHelper.assertTrue(len(headers) > 0, 'Expected Headers, got None')
+        testHelper.assertTrue(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
 
         # for head in headers:
         #     # assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
@@ -65,13 +64,13 @@ class DateTime(unittest.TestCase):
         #         # failure_count += 1
         #     count += 1
 
-        driver.execute_script("document.getElementById('DateTimeWidget1_TW_1_1').innerHTML=\"\";")
+        # driver.execute_script("document.getElementById('DateTimeWidget1_TW_1_1').innerHTML=\"\";")
         mycalendar = table.find_element_by_id('DateTimeWidget1_TW_1_1')
-        testHelper.assertTrue(len(mycalendar.text) > 0, 'Expected Calendar length > 0')
+        testHelper.assertTrue(len(mycalendar.text) <= 0, 'Expected Calendar length > 0', 'Testing Calendar length')
 
         driver.execute_script("document.getElementById('DateTimeWidget1_TW_3_1').innerHTML=\"\";")
         timeZone = table.find_element_by_id('DateTimeWidget1_TW_3_1')
-        testHelper.assertTrue(len(timeZone.text), 'Expected TimeZone length > 0')
+        testHelper.assertTrue(len(timeZone.text) <= 0, 'Expected TimeZone length > 0', 'Testing Timezone')
 
         # testLog.end_log2()
         testLog.end_log(failure_count)

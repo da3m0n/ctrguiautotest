@@ -50,7 +50,7 @@ class PowerOverEthernet(object):
 
         headers = table.find_elements_by_tag_name('th')
 
-        testHelper.assertTrue(len(headers) > 0, 'Expected Headers, got None')
+        testHelper.assertTrue(len(headers) > 0, 'Expected Headers, got None', 'Testing Headers')
 
         # insert error to test. Uncomment when needed
         driver.execute_script("document.getElementById('PoEConfigWidget1_TW_13_description').innerHTML=\"\";")
@@ -58,14 +58,12 @@ class PowerOverEthernet(object):
         interface = table.find_element_by_id("PoEConfigWidget1_TW_13_description").text
 
         interface_len = len(interface)
-        testHelper.assertTrue(len(interface), 'Expected Interface length > 0')
+        testHelper.assertTrue(len(interface) <= 0, 'Expected Interface length > 0', 'Testing Interfaces')
 
         time.sleep(2)
 
         testLog.end_log(failure_count)
-
         self.login_manager.logout(driver)
-
         testLog.close()
 
 if __name__ == "__main__":
