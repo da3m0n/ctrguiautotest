@@ -4,6 +4,7 @@ from dateTime import DateTime
 from smoketest.TestLog import TestLog
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
+from smoketest.sysInfo2 import SystemInformation
 
 
 def main():
@@ -23,6 +24,9 @@ class RunAll():
         login_handler.start(self.driver)
 
         testLog = TestLog()
+
+        sysInfo = SystemInformation(login_handler)
+        sysInfo.run_system_information(self.driver, testLog)
 
         poe = PowerOverEthernet(login_handler)
         poe.run_poe(self.driver, testLog)

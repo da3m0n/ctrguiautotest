@@ -1,3 +1,7 @@
+body {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+}
+
 #resultsContainer {
     width: 1000px;
     /*border: 1px solid #ff0000;*/
@@ -33,10 +37,11 @@
 }
 
 #resultsTable table {
-    /*border: 1px solid #ff0000;*/
-    /*padding: 0;*/
-    /*margin: 0;*/
     border-collapse: collapse;
+}
+
+#resultsTable th {
+    margin: 20px;
 }
 
 #resultsTable tr {
@@ -73,9 +78,9 @@
 }
 
 .pass {
-    /*background-color: #008000;*/
+    background-color: rgba(0, 245, 7, 0.4);
 }
 
 .fail {
-    /*background-color: #ff0000;*/
+    background-color: rgba(255, 2, 2, 0.83);
 }

@@ -5,6 +5,8 @@
 
     <script>
         function loadXMLDoc(filename) {
+//            var xhttp;
+
             if (window.ActiveXObject) {
                 xhttp = new ActiveXObject("Msxml2.XMLHTTP");
             }
@@ -21,18 +23,18 @@
         }
 
         function displayResult() {
-            xml = loadXMLDoc("testLog.xml");
-            xsl = loadXMLDoc("testLog.xsl");
+            var xml = loadXMLDoc("testLog.xml");
+            var xsl = loadXMLDoc("testLog.xsl");
             // code for IE
-            if (window.ActiveXObject || xhttp.responseType == "msxml-document") {
-                ex = xml.transformNode(xsl);
+            if (window.ActiveXObject || xhttp.responseType === "msxml-document") {
+                var ex = xml.transformNode(xsl);
                 document.getElementById("resultsContainer").innerHTML = ex;
             }
             // code for Chrome, Firefox, Opera, etc.
             else if (document.implementation && document.implementation.createDocument) {
-                xsltProcessor = new XSLTProcessor();
+                var xsltProcessor = new XSLTProcessor();
                 xsltProcessor.importStylesheet(xsl);
-                resultDocument = xsltProcessor.transformToFragment(xml, document);
+                var resultDocument = xsltProcessor.transformToFragment(xml, document);
                 document.getElementById("resultsContainer").appendChild(resultDocument);
             }
         }

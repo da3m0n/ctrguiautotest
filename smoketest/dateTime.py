@@ -1,14 +1,12 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-# import guiLib
 import sys
-# from smoketest.mylib import IsolatedLoginHandler
 from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 from smoketest.mylib.utils import Utils
-import unittest
+
 
 def main():
     Utils.delete_existing_logfile()
@@ -18,10 +16,9 @@ def main():
     print("Inside dateTime().main()")
 
 
-class DateTime(unittest.TestCase):
+class DateTime():
     def __init__(self, login_manager):
         self.login_manager = login_manager
-
         # self.test_log = TestLog(self.__class__.__name__)
 
     def run_date_time(self, driver, testLog):
@@ -47,9 +44,7 @@ class DateTime(unittest.TestCase):
             EC.presence_of_element_located((By.CLASS_NAME, "TableWidget_verticalTableHeading")))
 
         headers = table.find_elements_by_class_name('TableWidget_verticalTableHeading')
-        set_headers = ['Clock Source', 'Date', 'Time', 'Timezone']
 
-        count = 0
         testHelper.assertTrue(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
 
         # for head in headers:
