@@ -12,8 +12,8 @@ from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 def main():
     Utils.delete_existing_logfile()
     system_info = SystemInformation(IsolatedLoginHandler())
-    testLog = TestLog()
-    system_info.run_system_information(Utils.create_driver(sys.argv[2]), testLog)
+    test_log = TestLog('System Information')
+    system_info.run_system_information(Utils.create_driver(sys.argv[2]), test_log)
     print("Inside system_info().main()")
 
 
@@ -21,7 +21,7 @@ class SystemInformation():
     def __init__(self, login_manager):
         self.login_manager = login_manager
 
-    def run_system_information(self, driver, testLog):
+    def run_system_information(self, driver, test_log):
         gui_lib = Utils()
 
         self.login_manager.login(driver)
@@ -32,8 +32,8 @@ class SystemInformation():
         iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
         print "=====", iso, "====="
 
-        testLog.start('System Information')
-        testHelper = TestHelper(testLog)
+        test_log.start('System Information')
+        test_helper = TestHelper(test_log)
 
         driver.switch_to_default_content()
 
@@ -44,7 +44,7 @@ class SystemInformation():
         WebDriverWait(table, 10).until(EC.presence_of_element_located((By.ID, "SystemInformationWidget1_TW_0")))
 
         headers = table.find_elements_by_tag_name('th')
-        testHelper.assertTrue(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
+        test_helper.assertTrue(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
 
         # hwVersion = table.find_element_by_id('SystemInformationWidget1_TW_0_1')
         # driver.execute_script("document.getElementById('SystemInformationWidget1_TW_0_1_renderer').innerHTML=\"\";")
@@ -53,9 +53,9 @@ class SystemInformation():
 
         # assert hwVersionLen > 0, ('Expected length of Hardware Version to be greater than zero but was ', hwVersionLen)
 
-        swVersion = table.find_element_by_id('SystemInformationWidget1_TW_1_1')
+        sw_version = table.find_element_by_id('SystemInformationWidget1_TW_1_1')
         # driver.execute_script("document.getElementById('SystemInformationWidget1_TW_1_1').innerHTML=\"\";")
-        testHelper.assertTrue(len(swVersion.text) == 0, 'Expected SW Version to be > 0',
+        test_helper.assertTrue(len(sw_version.text) == 0, 'Expected SW Version to be > 0',
                               'Testing SW Version Length')
         # assert swVersionLen > 0, ('Expected length of Software Version to be greater than zero but was ', swVersionLen)
 
@@ -65,7 +65,7 @@ class SystemInformation():
 
         time.sleep(2)
         self.login_manager.logout(driver)
-        testLog.close()
+        test_log.close()
 
 
 if __name__ == "__main__":

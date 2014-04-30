@@ -19,8 +19,8 @@ import timeit
 def main():
     Utils.delete_existing_logfile()
     poe = PowerOverEthernet(IsolatedLoginHandler())
-    testLog = TestLog()
-    poe.run_poe(Utils.create_driver(sys.argv[2]), testLog)
+    test_log = TestLog('Power Over Ethernet')
+    poe.run_poe(Utils.create_driver(sys.argv[2]), test_log)
 
 
 class PowerOverEthernet(object):
@@ -28,17 +28,17 @@ class PowerOverEthernet(object):
         self.login_manager = login_manager
         # self.test_log = TestLog(self.__class__.__name__)
 
-    def run_poe(self, driver, testLog):
+    def run_poe(self, driver, test_log):
         self.login_manager.login(driver)
 
         gui_lib = Utils()
-        testHelper = TestHelper(testLog)
+        test_helper = TestHelper(test_log)
 
         driver.switch_to_default_content()
         gui_lib.click_element(driver, 'menu_node_7_tree')
         gui_lib.click_element(driver, 'menu_node_12')
 
-        testLog.start('PowerOverEthernet')
+        test_log.start('Power Over Ethernet')
 
         # gui_lib.find_element_by_id(driver, "PoEConfigWidget1_TW_table1")
 
@@ -50,7 +50,7 @@ class PowerOverEthernet(object):
 
         headers = table.find_elements_by_tag_name('th')
 
-        testHelper.assertTrue(len(headers) > 0, 'Expected Headers, got None', 'Testing Headers')
+        test_helper.assertTrue(len(headers) > 0, 'Expected Headers, got None', 'Testing Headers')
 
         # insert error to test. Uncomment when needed
         driver.execute_script("document.getElementById('PoEConfigWidget1_TW_13_description').innerHTML=\"\";")
@@ -58,12 +58,12 @@ class PowerOverEthernet(object):
         interface = table.find_element_by_id("PoEConfigWidget1_TW_13_description").text
 
         interface_len = len(interface)
-        testHelper.assertTrue(len(interface) <= 0, 'Expected Interface length > 0', 'Testing Interfaces')
+        test_helper.assertTrue(len(interface) <= 0, 'Expected Interface length > 0', 'Testing Interfaces')
 
         time.sleep(2)
 
         self.login_manager.logout(driver)
-        testLog.close()
+        test_log.close()
 
 if __name__ == "__main__":
     main()

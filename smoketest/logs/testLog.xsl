@@ -9,7 +9,12 @@
 
 
         <div id="resultsTable">
-            <div id="heading">CTR Smoke Tests</div>
+            <div id="heading">
+                CTR Smoke Tests
+                <div id="lastUpdated">
+                    Last Updated: <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
+                </div>
+            </div>
             <table border="1">
                 <tr>
                     <th>Test Screen</th>
@@ -19,10 +24,10 @@
                 </tr>
                 <xsl:for-each select="smoketests/testScreen">
                     <tr>
-                        <td width="15%" class="testScreenName">
+                        <td width="20%" class="testScreenName">
                             <xsl:value-of select="@testScreen"/>
                         </td>
-                        <td width="25%">
+                        <td width="35%">
                             <ul>
                                 <xsl:for-each select="error">
                                     <xsl:choose>
@@ -55,7 +60,7 @@
                                 </xsl:for-each>
                             </ul>
                         </td>
-                        <td width="25%">
+                        <td width="40%">
                             <ul>
                                 <xsl:for-each select="error">
                                     <xsl:choose>

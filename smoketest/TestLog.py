@@ -8,24 +8,28 @@ class TestLog(object):
     num_tests_run = 0
     name = ''
 
-    def __init__(self):
+    def __init__(self, name):
         """Class to log errors"""
-        # Utils.delete_existing_logfile('testLog.log')
         self.log = None
+        self.doc = None
         print('Creating testLog...')
         self.root = ET.Element("smoketests")
         self.per_test_errors = 0
-        self.doc = None
+        self.time = time.localtime()
+        self.all_tests_start = time.strftime('%Y-%m-%d %H:%M:%S ', self.time)
+
+        el = ET.SubElement(self.root, 'allTestsStart')
+        el.set('allTestsStart', self.all_tests_start)
 
     def start(self, name):
         # root = ET.Element("root")
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
-        timetup = time.localtime()
-        iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
+
+        test_start = time.strftime('%Y-%m-%d %H:%M:%S ', self.time)
         # ET.SubElement(self.root, 'startTime', str(iso))
 
-        field1 = ET.SubElement(self.doc, "time")
-        field1.set("starttime", iso)
+        el = ET.SubElement(self.doc, "testStart")
+        el.set("teststart", test_start)
 
         # field2 = ET.SubElement(doc, "field2")
         # field2.set("name", "asdfasd")
@@ -37,10 +41,10 @@ class TestLog(object):
         el = ET.SubElement(self.doc, 'startTime')
         el.set('blah', data)
 
-    def log_it2(self, count, msg=None, testName=None):
+    def log_it2(self, count, msg=None, test_name=None):
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
-        el.set('testName', testName)
+        el.set('testName', test_name)
 
     def close(self):
         tree = ET.ElementTree(self.root)

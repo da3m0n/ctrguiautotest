@@ -35,6 +35,8 @@ body {
     height: 50px;
     padding: 20px 0 0 0;
     font-size: 20px;
+    color: #000822;
+    /*border: 1px solid #808080;*/
 }
 
 #resultsTable {
@@ -102,4 +104,8 @@ body {
     background-color: #db163d;
     /*background-color: rgba(255, 2, 2, 0.83);*/
 
+}
+
+#lastUpdated {
+    font-size: 12px;
 }
