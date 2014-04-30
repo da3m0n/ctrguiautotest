@@ -68,7 +68,6 @@ class DateTime():
         testHelper.assertTrue(len(timeZone.text) <= 0, 'Expected TimeZone length > 0', 'Testing Timezone')
 
         # testLog.end_log2()
-        testLog.end_log(failure_count)
         self.login_manager.logout(driver)
         testLog.close()
 

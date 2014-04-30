@@ -62,7 +62,6 @@ class PowerOverEthernet(object):
 
         time.sleep(2)
 
-        testLog.end_log(failure_count)
         self.login_manager.logout(driver)
         testLog.close()
 
