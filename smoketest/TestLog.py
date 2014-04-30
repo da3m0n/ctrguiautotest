@@ -39,21 +39,25 @@ class TestLog(object):
         self.log.write('Started tests at ' + iso + '\n')
         self.num_tests_run += 1
 
-    def log_it(self, data):
-        # self.log.write('   - ' + data + '\n')
-        el = ET.SubElement(self.doc, 'error')
+    # def log_it(self, data):
+    #     # self.log.write('   - ' + data + '\n')
+    #     el = ET.SubElement(self.doc, 'error')
+    #
+    #     # for value in data.values():
+    #     #     print value
+    #     #     el.set('msg', value)
+    #
+    #     for k, v in data.iteritems():
+    #         print k, v
+    #         el.set(k, v)
+    #
+    #     # field2.set('name', 'asdfs')
+    #     # field2.name = 'some value'
+    #     # ET.SubElement(self.root, data)
 
-        # for value in data.values():
-        #     print value
-        #     el.set('msg', value)
-
-        for k, v in data.iteritems():
-            print k, v
-            el.set(k, v)
-
-        # field2.set('name', 'asdfs')
-        # field2.name = 'some value'
-        # ET.SubElement(self.root, data)
+    def log_it(self, data=None):
+        el = ET.SubElement(self.doc, 'startTime')
+        el.set('blah', data)
 
     def log_it2(self, count, msg=None, testName=None):
         el = ET.SubElement(self.doc, 'error')
@@ -77,12 +81,3 @@ class TestLog(object):
         self.log.close()
         tree = ET.ElementTree(self.root)
         tree.write('logs/testLog.xml')
-
-    def open_tag(self, testName):
-        self.log_it('<testName>' + testName)
-
-    def add_tag(self, data):
-        self.log_it()
-
-    def close_tag(self):
-        self.log_it('</testName>')

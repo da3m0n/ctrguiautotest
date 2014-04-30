@@ -1,5 +1,6 @@
 body {
     font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+    background-color: #DCDCDC;
 }
 
 #resultsContainer {
@@ -29,6 +30,16 @@ body {
     height: 50px;
 }
 
+#heading {
+    background-color: #DCDCDC;
+    height: 50px;
+    padding: 20px 0 0 0;
+    font-size: 20px;
+}
+
+#resultsTable {
+    background-color: #ffffff;
+}
 #resultsTable th{
     width: 250px;
     height: 35px;
@@ -47,6 +58,7 @@ body {
 #resultsTable tr {
     border: 1px;
     padding: 5px;
+    font-size: 12px;
 }
 
 #resultsTable td {
@@ -77,10 +89,17 @@ body {
     /*float: left;*/
 }
 
+.result {
+    text-align: center;
+}
+
 .pass {
-    background-color: rgba(0, 245, 7, 0.4);
+    /*background-color: rgba(0, 245, 7, 0.4);*/
+    background-color: #9ccc33;
 }
 
 .fail {
-    background-color: rgba(255, 2, 2, 0.83);
+    background-color: #db163d;
+    /*background-color: rgba(255, 2, 2, 0.83);*/
+
 }

@@ -140,6 +140,14 @@ class Utils(object):
         else:
             print('No existing ', logFile, ' file.')
 
+    @staticmethod
+    def find_element(driver, element):
+        try:
+            WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
+            return driver.find_element(By.ID, element)
+        except NoSuchElementException:
+            return 'not found'
+
     RETRIES = 3
     TIMEOUT_SECONDS = 10
 
