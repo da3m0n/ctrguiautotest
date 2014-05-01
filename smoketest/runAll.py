@@ -2,6 +2,7 @@ import sys
 from powerOverEthernet import PowerOverEthernet
 from dateTime import DateTime
 from smoketest.TestLog import TestLog
+from smoketest.equipmentView2 import EquipmentView
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
 from smoketest.sysAbout import SystemAbout
@@ -27,6 +28,9 @@ class RunAll():
 
         test_log = TestLog('All Tests')
         # testLog.log_it('test')
+
+        equipment_view = EquipmentView(login_handler)
+        equipment_view.run_equipment_view(self.driver, test_log)
 
         sys_info = SystemInformation(login_handler)
         sys_info.run_system_information(self.driver, test_log)
