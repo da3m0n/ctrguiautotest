@@ -44,7 +44,7 @@ class SystemInformation():
         WebDriverWait(table, 10).until(EC.presence_of_element_located((By.ID, "SystemInformationWidget1_TW_0")))
 
         headers = table.find_elements_by_tag_name('th')
-        test_helper.assertTrue(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
+        test_helper.assert_true(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
 
         # hwVersion = table.find_element_by_id('SystemInformationWidget1_TW_0_1')
         # driver.execute_script("document.getElementById('SystemInformationWidget1_TW_0_1_renderer').innerHTML=\"\";")
@@ -55,7 +55,7 @@ class SystemInformation():
 
         sw_version = table.find_element_by_id('SystemInformationWidget1_TW_1_1')
         # driver.execute_script("document.getElementById('SystemInformationWidget1_TW_1_1').innerHTML=\"\";")
-        test_helper.assertTrue(len(sw_version.text) == 0, 'Expected SW Version to be > 0',
+        test_helper.assert_true(len(sw_version.text) == 0, 'Expected SW Version to be > 0',
                               'Testing SW Version Length')
         # assert swVersionLen > 0, ('Expected length of Software Version to be greater than zero but was ', swVersionLen)
 

@@ -56,7 +56,7 @@ class SystemAbout(object):
 
         licenses = gui_lib.find_element(driver, 'licenses')  #driver.find_element_by_id('licenses')
         # driver.execute_script("document.getElementById('licenses').innerHTML=\"\";")
-        test_helper.assertTrue(len(licenses.text) == 0, 'Expected SW Version to be > 0',
+        test_helper.assert_true(len(licenses.text) == 0, 'Expected SW Version to be > 0',
                                'Checking Licenses text not empty')
 
         time.sleep(2)

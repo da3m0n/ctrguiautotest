@@ -1,9 +1,7 @@
+import sys
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import guiLib
-import sys, time, os
-from selenium.common.exceptions import NoSuchElementException
+
 from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
@@ -34,7 +32,7 @@ class EquipmentView(object):
 
         # driver.execute_script("document.getElementById('ChassisViewWidget1_container').innerHTML=\"\";")
         chassis = driver.find_element_by_id('ChassisViewWidget1_container')
-        test_helper.assertTrue(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
+        test_helper.assert_true(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
                                'Ensure Chassis displayed')
 
         # # click on Sensors

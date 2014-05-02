@@ -45,7 +45,7 @@ class DateTime():
 
         headers = table.find_elements_by_class_name('TableWidget_verticalTableHeading')
 
-        test_helper.assertTrue(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
+        test_helper.assert_true(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
 
         # for head in headers:
         #     # assert head.text == set_headers[count], ('Expected ', set_headers[count], ' but got ', head.text)
@@ -61,11 +61,11 @@ class DateTime():
 
         # driver.execute_script("document.getElementById('DateTimeWidget1_TW_1_1').innerHTML=\"\";")
         mycalendar = table.find_element_by_id('DateTimeWidget1_TW_1_1')
-        test_helper.assertTrue(len(mycalendar.text) <= 0, 'Expected Calendar length > 0', 'Testing Calendar length')
+        test_helper.assert_true(len(mycalendar.text) <= 0, 'Expected Calendar length > 0', 'Testing Calendar length')
 
         driver.execute_script("document.getElementById('DateTimeWidget1_TW_3_1').innerHTML=\"\";")
         time_zone = table.find_element_by_id('DateTimeWidget1_TW_3_1')
-        test_helper.assertTrue(len(time_zone.text) <= 0, 'Expected TimeZone length > 0', 'Testing Timezone')
+        test_helper.assert_true(len(time_zone.text) <= 0, 'Expected TimeZone length > 0', 'Testing Timezone')
 
         # testLog.end_log2()
         self.login_manager.logout(driver)
