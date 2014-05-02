@@ -1,13 +1,14 @@
 import sys
-from powerOverEthernet import PowerOverEthernet
-from dateTime import DateTime
+
+from smoketest.systemconfiguration.dateTime import DateTime
 from smoketest.TestLog import TestLog
-from smoketest.equipmentView2 import EquipmentView
-from smoketest.manufactureDetails import ManufactureDetails
+from smoketest.systemconfiguration.equipmentView2 import EquipmentView
+from smoketest.systemconfiguration.manufactureDetails import ManufactureDetails
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
-from smoketest.sysAbout import SystemAbout
-from smoketest.sysInfo2 import SystemInformation
+from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
+from smoketest.systemconfiguration.sysAbout import SystemAbout
+from smoketest.systemconfiguration.sysInfo2 import SystemInformation
 
 
 def main():

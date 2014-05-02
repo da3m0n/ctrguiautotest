@@ -17,7 +17,7 @@ def main():
     print("Inside system_info().main()")
 
 
-class SystemInformation():
+class SystemInformation(object):
     def __init__(self, login_manager):
         self.login_manager = login_manager
 
