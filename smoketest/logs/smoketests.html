@@ -4,43 +4,63 @@
     <link rel="stylesheet" href="../css/smoketests.css"/>
 
     <script>
-        function loadXMLDoc(filename) {
-//            var xhttp;
+        var loadLogs = (function () {
 
-            if (window.ActiveXObject) {
-                xhttp = new ActiveXObject("Msxml2.XMLHTTP");
-            }
-            else {
-                xhttp = new XMLHttpRequest();
-            }
-            xhttp.open("GET", filename, false);
-            try {
-                xhttp.responseType = "msxml-document"
-            } catch (err) {
-            } // Helping IE11
-            xhttp.send("");
-            return xhttp.responseXML;
-        }
+            function loadXMLDoc(filename) {
+                var xhttp;
 
-        function displayResult() {
-            var xml = loadXMLDoc("testLog.xml");
-            var xsl = loadXMLDoc("testLog.xsl");
-            // code for IE
-            if (window.ActiveXObject || xhttp.responseType === "msxml-document") {
-                var ex = xml.transformNode(xsl);
-                document.getElementById("resultsContainer").innerHTML = ex;
+                if (window.ActiveXObject) {
+                    xhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                }
+                else {
+                    xhttp = new XMLHttpRequest();
+                }
+                xhttp.open("GET", filename, false);
+                try {
+                    xhttp.responseType = "msxml-document"
+                } catch (err) {
+                } // Helping IE11
+                xhttp.send("");
+//                return xhttp.responseXML;
+
+                return {
+                    response: xhttp.responseXML,
+                    responseType: xhttp.responseType
+                }
             }
-            // code for Chrome, Firefox, Opera, etc.
-            else if (document.implementation && document.implementation.createDocument) {
-                var xsltProcessor = new XSLTProcessor();
-                xsltProcessor.importStylesheet(xsl);
-                var resultDocument = xsltProcessor.transformToFragment(xml, document);
-                document.getElementById("resultsContainer").appendChild(resultDocument);
+
+
+            function displayResult() {
+                var xml = loadXMLDoc("testLog.xml");
+                var xsl = loadXMLDoc("testLog.xsl");
+                // code for IE
+                if (window.ActiveXObject || xml.responseType === "msxml-document") {
+                    var ex = xml.response.transformNode(xsl.response);
+                    document.getElementById("resultsContainer").innerHTML = ex;
+                }
+                // code for Chrome, Firefox, Opera, etc.
+                else if (document.implementation && document.implementation.createDocument) {
+                    var xsltProcessor = new XSLTProcessor();
+                    xsltProcessor.importStylesheet(xsl.response);
+                    var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
+                    document.getElementById("resultsContainer").appendChild(resultDocument);
+                }
+
             }
-        }
+
+            return {
+                init: function () {
+                    displayResult();
+                }
+            };
+        })();
+
     </script>
 </head>
-<body onload="displayResult()">
+<body>
 <div id="resultsContainer"></div>
+<script>
+    window.onload = loadLogs.init();
+</script>
 </body>
 </html>
