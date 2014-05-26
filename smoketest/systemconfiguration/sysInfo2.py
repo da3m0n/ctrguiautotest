@@ -1,8 +1,10 @@
+import sys
+import time
+
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-import guiLib
-import sys, time, os
+
 from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.utils import Utils

@@ -1,10 +1,9 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
+import sys
+import time
 
-import guiLib
-import sys, time, os
+from selenium.webdriver.common.by import By
+
+from smoketest.utils import guiLib
 
 usr = "root"
 pw = "admin123"

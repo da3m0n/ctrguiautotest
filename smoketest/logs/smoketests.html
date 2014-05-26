@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="../css/smoketests.css"/>
 
     <script>
-        var loadLogs = (function () {
+        var logs = (function () {
 
             function loadXMLDoc(filename) {
                 var xhttp;
@@ -26,7 +26,7 @@
                 return {
                     response: xhttp.responseXML,
                     responseType: xhttp.responseType
-                }
+                };
             }
 
 
@@ -35,8 +35,7 @@
                 var xsl = loadXMLDoc("testLog.xsl");
                 // code for IE
                 if (window.ActiveXObject || xml.responseType === "msxml-document") {
-                    var ex = xml.response.transformNode(xsl.response);
-                    document.getElementById("resultsContainer").innerHTML = ex;
+                    document.getElementById("resultsContainer").innerHTML = xml.response.transformNode(xsl.response);
                 }
                 // code for Chrome, Firefox, Opera, etc.
                 else if (document.implementation && document.implementation.createDocument) {
@@ -49,9 +48,7 @@
             }
 
             return {
-                init: function () {
-                    displayResult();
-                }
+                displayResult: displayResult
             };
         })();
 
@@ -60,7 +57,7 @@
 <body>
 <div id="resultsContainer"></div>
 <script>
-    window.onload = loadLogs.init();
+    window.onload = logs.displayResult();
 </script>
 </body>
 </html>

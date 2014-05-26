@@ -1,11 +1,13 @@
+import sys
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
-from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
-import guiLib, cliLib
-import sys, time, os
+
+import cliLib
+from smoketest.utils import guiLib
 import telnetlib
+
 
 usr = "user!)"
 pw = "admin123"

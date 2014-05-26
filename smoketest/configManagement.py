@@ -1,8 +1,12 @@
+import sys
+import time
+
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-import guiLib
-import sys, time, os
+
+from smoketest.utils import guiLib
+
 
 usr = "root"
 pw = "admin123"
