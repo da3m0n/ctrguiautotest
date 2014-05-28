@@ -1,14 +1,14 @@
 import time
 from smoketest.mylib.utils import Utils
 import xml.etree.ElementTree as ET
-
+import os
 
 class TestLog(object):
     overall_errors = 0
     num_tests_run = 0
     name = ''
 
-    def __init__(self, name):
+    def __init__(self, name, dir):
         """Class to log errors"""
         self.log = None
         self.doc = None
@@ -17,7 +17,7 @@ class TestLog(object):
         self.per_test_errors = 0
         self.time = time.localtime()
         self.all_tests_start = time.strftime('%Y-%m-%d %H:%M:%S ', self.time)
-
+        self.dir = dir
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
 
@@ -48,4 +48,5 @@ class TestLog(object):
 
     def close(self):
         tree = ET.ElementTree(self.root)
-        tree.write('logs/testLog.xml')
+        path = os.path.abspath(self.dir + '\logs\\testLog.xml')
+        tree.write(path)
