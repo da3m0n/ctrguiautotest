@@ -189,21 +189,21 @@ class Utils(object):
     #         print "Couldn't open URL %s: %s" % (BUILD_LOCATION, str(msg))
 
     @classmethod
-    def get_latest_sw_pack_version(cls):
+    def get_latest_sw_pack_version(cls, stripped=True):
         BUILD_LOCATION = 'http://10.16.0.150:8080/job/CSR1000Release/lastSuccessfulBuild/artifact/BUILD.CSR1000V3/'
+
         try:
             soup = BeautifulSoup(urllib2.urlopen(BUILD_LOCATION).read())
 
             for row in soup('table', {'class': 'fileList'}):
                 tds = row('td')[3].contents[0].string
                 # print tds.lstrip('ctr8540-').rstrip('.swpack')
-                return tds.lstrip('ctr8540-').rstrip('.swpack')
+                if stripped:
+                    return tds.lstrip('ctr8540-').rstrip('.swpack')
+                else:
+                    return BUILD_LOCATION + tds
 
-            # cont = soup.find('table', {'class': 'fileList'})
-            # tr = cont.contents
-            # latest = tr[1].contents[1].text
-            # print('latest: ', latest)
-            # return latest.lstrip('ctr8540-').rstrip('.swpack')
+
         except IOError, msg:
             print "Couldn't open URL %s: %s" % (BUILD_LOCATION, str(msg))
 
@@ -215,8 +215,19 @@ class Utils(object):
 
         for item in sw_details:
             if item.startswith('Active'):
-                # print(item.strip('Active Version:'))
-                return item.strip('Active Version:')
+                active_version = item.strip('Active Version:')
+                return active_version.lstrip('\'').rstrip('\'')
+
+    @classmethod
+    def upload_latest(cls):
+        telnet = TelnetClient('root', 'admin123', '10.16.15.113', debug=True)
+        telnet.send('c t')
+        telnet.send('swload')
+        command = 'load-uri ' + cls.get_latest_sw_pack_version(False)
+        telnet.send(command.encode('ascii', 'ignore'))
+        telnet.send('load activate')
+        telnet.close()
+        print(cls.get_latest_sw_pack_version(False))
 
 
 

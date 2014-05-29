@@ -37,17 +37,29 @@ def reformat_for_compare(swpack):
         return swpack
 
 
-def determine_latest_swpack(packA, packB):
-    print 'packA: %s, packB: %s' % (packA, packB)
+def determine_latest_swpack(active_sw_pack, latest_sw_pack):
+    print 'packA: %s, packB: %s' % (active_sw_pack, latest_sw_pack)
 
-    a = packA.split('.')
-    b = packB.encode('ascii', 'ignore')
-    b1 = b.split('.')
+    active = active_sw_pack.split('.')
+    decoded_latest = latest_sw_pack.encode('ascii', 'ignore')
+    latest = decoded_latest.split('.')
 
-    for i in range(0, len(a)):
-        print 'A: %s, B: %s' % (type(a[i]), type(b1[i]))
-        print 'A: %s, B: %s' % (a[i], b1[i])
-        print(compare(int(a[i]), int(b1[i])))
+    for i in range(0, len(active)):
+        if compare2(int(active[i]), int(latest[i])) == 'same':
+            continue
+        elif compare2(int(active[i]), int(latest[i])) == 'active':
+            return 'active'
+        else:
+            return 'latest'
+
+
+def compare2(active, latest):
+    if active < latest:
+        return 'latest'
+    elif active > latest:
+        return 'active'
+    else:
+        return 'same'
 
 
 def compare(a, b):
@@ -67,14 +79,19 @@ class RunAll():
 
     @staticmethod
     def run_all():
-        # active_sw_version = Utils.get_active_sw_version()
-        active_sw_version = '2.102.0.12.1912'
+        active_sw_version = Utils.get_active_sw_version()
         latest_swpack = Utils.get_latest_sw_pack_version()
 
-        # print "Active version: %s Latest Version: %s" % (
-        #     reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
+        # dummies for tests
+        # active_sw_version = 'master.12.1915'
+        # latest_swpack = 'master.12.1913'
 
-        determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
+        swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
+        if swpack == 'latest':
+            print ('go get latest pack')
+            Utils.upload_latest()
+        else:
+            print ('using latest, don\'t need to upload')
 
         # print('running all tests')
         # Utils.delete_existing_logfile(os.path.dirname(__file__))
