@@ -174,16 +174,36 @@ class Utils(object):
                 return element
         raise NoSuchElementException('Element with id=%s was not found.' % id)
 
+    # @classmethod
+    # def get_latest_sw_pack_version(cls):
+    #     BUILD_LOCATION = 'http://10.16.0.150:8080/job/CSR1000Release/lastSuccessfulBuild/artifact/BUILD.CSR1000V3/'
+    #     try:
+    #         soup = BeautifulSoup(urllib2.urlopen(BUILD_LOCATION).read())
+    #
+    #         cont = soup.find('table', {'class': 'fileList'})
+    #         tr = cont.contents
+    #         latest = tr[1].contents[1].text
+    #         # print('latest: ', latest)
+    #         return latest.lstrip('ctr8540-').rstrip('.swpack')
+    #     except IOError, msg:
+    #         print "Couldn't open URL %s: %s" % (BUILD_LOCATION, str(msg))
+
     @classmethod
     def get_latest_sw_pack_version(cls):
         BUILD_LOCATION = 'http://10.16.0.150:8080/job/CSR1000Release/lastSuccessfulBuild/artifact/BUILD.CSR1000V3/'
         try:
             soup = BeautifulSoup(urllib2.urlopen(BUILD_LOCATION).read())
 
-            cont = soup.find('table', {'class': 'fileList'})
-            tr = cont.contents
-            latest = tr[1].contents[1].text
-            return latest.lstrip('ctr8540-').rstrip('.swpack')
+            for row in soup('table', {'class': 'fileList'}):
+                tds = row('td')[3].contents[0].string
+                # print tds.lstrip('ctr8540-').rstrip('.swpack')
+                return tds.lstrip('ctr8540-').rstrip('.swpack')
+
+            # cont = soup.find('table', {'class': 'fileList'})
+            # tr = cont.contents
+            # latest = tr[1].contents[1].text
+            # print('latest: ', latest)
+            # return latest.lstrip('ctr8540-').rstrip('.swpack')
         except IOError, msg:
             print "Couldn't open URL %s: %s" % (BUILD_LOCATION, str(msg))
 
@@ -195,6 +215,7 @@ class Utils(object):
 
         for item in sw_details:
             if item.startswith('Active'):
+                # print(item.strip('Active Version:'))
                 return item.strip('Active Version:')
 
 

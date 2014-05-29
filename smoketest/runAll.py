@@ -29,6 +29,36 @@ def main():
     run_all.run_all()
 
 
+def reformat_for_compare(swpack):
+    # if build is master substitute master for 99.99.99
+    if swpack.find('master') != -1:
+        return swpack.replace('master', '99.99.99')
+    else:
+        return swpack
+
+
+def determine_latest_swpack(packA, packB):
+    print 'packA: %s, packB: %s' % (packA, packB)
+
+    a = packA.split('.')
+    b = packB.encode('ascii', 'ignore')
+    b1 = b.split('.')
+
+    for i in range(0, len(a)):
+        print 'A: %s, B: %s' % (type(a[i]), type(b1[i]))
+        print 'A: %s, B: %s' % (a[i], b1[i])
+        print(compare(int(a[i]), int(b1[i])))
+
+
+def compare(a, b):
+    if a < b:
+        return -1
+    elif a > b:
+        return 1
+    else:
+        return 0
+
+
 class RunAll():
     def __init__(self):
         # self.driver = Utils.create_driver(sys.argv[2])
@@ -38,11 +68,13 @@ class RunAll():
     @staticmethod
     def run_all():
         # active_sw_version = Utils.get_active_sw_version()
-        active_sw_version = '2.2.0.12.1685'
-
+        active_sw_version = '2.102.0.12.1912'
         latest_swpack = Utils.get_latest_sw_pack_version()
 
-        print "Active version: %s Latest Version: %s" % (active_sw_version, latest_swpack)
+        # print "Active version: %s Latest Version: %s" % (
+        #     reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
+
+        determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
 
         # print('running all tests')
         # Utils.delete_existing_logfile(os.path.dirname(__file__))
@@ -71,6 +103,7 @@ class RunAll():
         # poe.run_poe(self.driver, test_log)
         #
         # login_handler.end(self.driver)
+
 
 if __name__ == "__main__":
     main()
