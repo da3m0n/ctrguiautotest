@@ -1,6 +1,7 @@
 import sys
 import os
 
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from smoketest.systemconfiguration.dateTime import DateTime
@@ -30,37 +31,46 @@ def main():
 
 class RunAll():
     def __init__(self):
-        self.driver = Utils.create_driver(sys.argv[2])
+        # self.driver = Utils.create_driver(sys.argv[2])
         # self.testLog = TestLog()
+        print('init')
 
-    def run_all(self):
-        print('running all tests')
-        Utils.delete_existing_logfile(os.path.dirname(__file__))
+    @staticmethod
+    def run_all():
+        # active_sw_version = Utils.get_active_sw_version()
+        active_sw_version = '2.2.0.12.1685'
 
-        login_handler = LoginHandler()
-        login_handler.start(self.driver)
+        latest_swpack = Utils.get_latest_sw_pack_version()
 
-        test_log = TestLog('All Tests', os.path.dirname(__file__))
+        print "Active version: %s Latest Version: %s" % (active_sw_version, latest_swpack)
 
-        equipment_view = EquipmentView(login_handler)
-        equipment_view.run_equipment_view(self.driver, test_log)
-
-        sys_info = SystemInformation(login_handler)
-        sys_info.run_system_information(self.driver, test_log)
-
-        date_time = DateTime(login_handler)
-        date_time.run_date_time(self.driver, test_log)
-
-        sys_about = SystemAbout(login_handler)
-        sys_about.run_system_about(self.driver, test_log)
-
-        manu_details = ManufactureDetails(login_handler)
-        manu_details.run_manufacture_details(self.driver, test_log)
-
-        poe = PowerOverEthernet(login_handler)
-        poe.run_poe(self.driver, test_log)
-
-        login_handler.end(self.driver)
+        # print('running all tests')
+        # Utils.delete_existing_logfile(os.path.dirname(__file__))
+        #
+        # login_handler = LoginHandler()
+        # login_handler.start(self.driver)
+        #
+        # test_log = TestLog('All Tests', os.path.dirname(__file__))
+        #
+        # equipment_view = EquipmentView(login_handler)
+        # equipment_view.run_equipment_view(self.driver, test_log)
+        #
+        # sys_info = SystemInformation(login_handler)
+        # sys_info.run_system_information(self.driver, test_log)
+        #
+        # date_time = DateTime(login_handler)
+        # date_time.run_date_time(self.driver, test_log)
+        #
+        # sys_about = SystemAbout(login_handler)
+        # sys_about.run_system_about(self.driver, test_log)
+        #
+        # manu_details = ManufactureDetails(login_handler)
+        # manu_details.run_manufacture_details(self.driver, test_log)
+        #
+        # poe = PowerOverEthernet(login_handler)
+        # poe.run_poe(self.driver, test_log)
+        #
+        # login_handler.end(self.driver)
 
 if __name__ == "__main__":
     main()

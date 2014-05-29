@@ -5,6 +5,9 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait  # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
 from selenium import webdriver
+import urllib2
+from BeautifulSoup import BeautifulSoup
+from smoketest.telnet.Telnet import TelnetClient
 
 
 class Utils(object):
@@ -170,3 +173,32 @@ class Utils(object):
             else:
                 return element
         raise NoSuchElementException('Element with id=%s was not found.' % id)
+
+    @classmethod
+    def get_latest_sw_pack_version(cls):
+        BUILD_LOCATION = 'http://10.16.0.150:8080/job/CSR1000Release/lastSuccessfulBuild/artifact/BUILD.CSR1000V3/'
+        try:
+            soup = BeautifulSoup(urllib2.urlopen(BUILD_LOCATION).read())
+
+            cont = soup.find('table', {'class': 'fileList'})
+            tr = cont.contents
+            latest = tr[1].contents[1].text
+            return latest.lstrip('ctr8540-').rstrip('.swpack')
+        except IOError, msg:
+            print "Couldn't open URL %s: %s" % (BUILD_LOCATION, str(msg))
+
+    @classmethod
+    def get_active_sw_version(cls):
+        telnet = TelnetClient('root', 'admin123', '10.16.15.113')
+        sw_details = telnet.send('show swload', 'Active version:')
+        telnet.close()
+
+        for item in sw_details:
+            if item.startswith('Active'):
+                return item.strip('Active Version:')
+
+
+
+
+
+
