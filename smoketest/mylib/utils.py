@@ -8,6 +8,7 @@ from selenium import webdriver
 import urllib2
 from BeautifulSoup import BeautifulSoup
 from smoketest.telnet.Telnet import TelnetClient
+import threading
 
 
 class Utils(object):
@@ -226,11 +227,68 @@ class Utils(object):
         command = 'load-uri ' + cls.get_latest_sw_pack_version(False)
         telnet.send(command.encode('ascii', 'ignore'))
         telnet.send('load activate')
+
+        # cls.check_status(telnet)
+
+        rt = RepeatedTimer(7, cls.check_status, telnet)
+
         telnet.close()
-        print(cls.get_latest_sw_pack_version(False))
+        # print(cls.get_latest_sw_pack_version(False))
+
+    @classmethod
+    def check_status(self, telnet):
+        if telnet is None:
+            telnet = TelnetClient('root', 'admin123', '10.16.15.113')
+
+        load_progress = telnet.send('show swload')
+
+        for item in load_progress:
+            progress = ''
+            if item.startswith('Load'):
+                progress = item.strip('Load Progress:')
+
+                print progress
+            if item.startswith('Current'):
+                status = item.strip('Current Status:')
+                print status
+
+            if progress.__len__() > 1:
+                if progress != '(Not Applicable)':
+                    if int(progress) > 15:
+                        telnet.send('c t')
+                        telnet.send('swload')
+                        telnet.send('abort')
+                        print 'aborting...'
+                        telnet.close()
+                        return -1
 
 
 
+from threading import Timer
 
 
+class RepeatedTimer(object):
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer = None
+        self.interval = interval
+        self.function = function
+        self.args = args
+        self.kwargs = kwargs
+        self.is_running = False
+        self.start()
+
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
+
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False
 
