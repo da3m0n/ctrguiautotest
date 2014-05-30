@@ -14,6 +14,7 @@ import threading
 class Utils(object):
     # def __init__(self):
     # resultFile =
+    rt = None
 
     @staticmethod
     def create_driver(driverName):
@@ -219,6 +220,7 @@ class Utils(object):
                 active_version = item.strip('Active Version:')
                 return active_version.lstrip('\'').rstrip('\'')
 
+
     @classmethod
     def upload_latest(cls):
         telnet = TelnetClient('root', 'admin123', '10.16.15.113', debug=True)
@@ -236,7 +238,7 @@ class Utils(object):
         # print(cls.get_latest_sw_pack_version(False))
 
     @classmethod
-    def check_status(self, telnet):
+    def check_status(cls, timer, telnet):
         if telnet is None:
             telnet = TelnetClient('root', 'admin123', '10.16.15.113')
 
@@ -246,12 +248,10 @@ class Utils(object):
             progress = ''
             if item.startswith('Load'):
                 progress = item.strip('Load Progress:')
-
                 print progress
             if item.startswith('Current'):
                 status = item.strip('Current Status:')
                 print status
-
             if progress.__len__() > 1:
                 if progress != '(Not Applicable)':
                     if int(progress) > 15:
@@ -260,8 +260,7 @@ class Utils(object):
                         telnet.send('abort')
                         print 'aborting...'
                         telnet.close()
-                        return -1
-
+                        timer.stop()
 
 
 from threading import Timer
@@ -280,7 +279,7 @@ class RepeatedTimer(object):
     def _run(self):
         self.is_running = False
         self.start()
-        self.function(*self.args, **self.kwargs)
+        self.function(self, *self.args, **self.kwargs)
 
     def start(self):
         if not self.is_running:
