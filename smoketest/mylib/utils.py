@@ -256,24 +256,24 @@ class Utils(object):
             if item.startswith('Activation'):
                 progress = item.strip()
 
-                # if status == 'Activate ok (7)':
-                #     if telnet is not None:
-                #         telnet.close()
-                #     timer.stop()
-                #     print 'SOFTWARE LOAD FINISHED...'
-                #     func()
+            if status == 'Activate ok (7)':
+                if telnet is not None:
+                    telnet.close()
+                timer.stop()
+                print 'SOFTWARE LOAD FINISHED...'
+                func()
 
-            if progress.__len__() > 1:
-                if progress != '(Not Applicable)':
-                    print('Status:', item)
-                    if int(progress) > 15:
-                        telnet.send('c t')
-                        telnet.send('swload')
-                        telnet.send('abort')
-                        print 'aborting...'
-                        telnet.close()
-                        timer.stop()
-                        func()
+            # if progress.__len__() > 1:
+            #     if progress != '(Not Applicable)':
+            #         print('Status:', item)
+            #         if int(progress) > 15:
+            #             telnet.send('c t')
+            #             telnet.send('swload')
+            #             telnet.send('abort')
+            #             print 'aborting...'
+            #             telnet.close()
+            #             timer.stop()
+            #             func()
 
 
 from threading import Timer

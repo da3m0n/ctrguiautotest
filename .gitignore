@@ -20,7 +20,6 @@ Lib
 
 smoketest/output
 
-smoketest/logs/*.html
 smoketest/logs/*.xml
 
 
