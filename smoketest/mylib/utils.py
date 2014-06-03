@@ -222,7 +222,7 @@ class Utils(object):
 
 
     @classmethod
-    def upload_latest(cls):
+    def upload_latest(cls, func):
         telnet = TelnetClient('root', 'admin123', '10.16.15.113', debug=True)
         telnet.send('c t')
         telnet.send('swload')
@@ -232,13 +232,13 @@ class Utils(object):
 
         # cls.check_status(telnet)
 
-        rt = RepeatedTimer(7, cls.check_status, telnet)
+        rt = RepeatedTimer(7, cls.check_status, telnet, func)
 
         telnet.close()
         # print(cls.get_latest_sw_pack_version(False))
 
     @classmethod
-    def check_status(cls, timer, telnet):
+    def check_status(cls, timer, telnet, func):
         if telnet is None:
             telnet = TelnetClient('root', 'admin123', '10.16.15.113')
 
@@ -246,14 +246,26 @@ class Utils(object):
 
         for item in load_progress:
             progress = ''
+            status = ''
             if item.startswith('Load'):
                 progress = item.strip('Load Progress:')
                 print progress
             if item.startswith('Current'):
                 status = item.strip('Current Status:')
                 print status
+            if item.startswith('Activation'):
+                progress = item.strip()
+
+                # if status == 'Activate ok (7)':
+                #     if telnet is not None:
+                #         telnet.close()
+                #     timer.stop()
+                #     print 'SOFTWARE LOAD FINISHED...'
+                #     func()
+
             if progress.__len__() > 1:
                 if progress != '(Not Applicable)':
+                    print('Status:', item)
                     if int(progress) > 15:
                         telnet.send('c t')
                         telnet.send('swload')
@@ -261,6 +273,7 @@ class Utils(object):
                         print 'aborting...'
                         telnet.close()
                         timer.stop()
+                        func()
 
 
 from threading import Timer
