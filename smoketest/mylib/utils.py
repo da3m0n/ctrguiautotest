@@ -138,7 +138,7 @@ class Utils(object):
 
     @staticmethod
     def delete_existing_logfile(file):
-        logFile = os.path.abspath(file + '\logs\\testLog.xml')
+        logFile = os.path.abspath(file + '\\logs\\testLog.xml')
         print(logFile)
 
         if os.path.isfile(logFile):
@@ -232,7 +232,7 @@ class Utils(object):
 
         # cls.check_status(telnet)
 
-        rt = RepeatedTimer(7, cls.check_status, telnet, func)
+        rt = RepeatedTimer(15, cls.check_status, telnet, func)
 
         telnet.close()
         # print(cls.get_latest_sw_pack_version(False))

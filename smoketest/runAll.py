@@ -29,6 +29,13 @@ def main():
     run_all.run_all()
 
 
+from enum import Enum
+class ComparisonResult(Enum):
+    LATEST = 1
+    ACTIVE = 2
+    SAME = 3
+
+
 def reformat_for_compare(swpack):
     # if build is master substitute master for 99.99.99 for easier comparison
     if swpack.find('master') != -1:
@@ -37,27 +44,42 @@ def reformat_for_compare(swpack):
         return swpack
 
 
+def must_download_latest(active_swpack, latest_swpack):
+    active = active_swpack.split('.')
+    decoded_latest = latest_swpack.encode('ascii', 'ignore')
+    latest = decoded_latest.split('.')
+
+    for i in range(0, min(len(active), len(latest))):
+        if compare(int(active[i]), int(latest[i])) == ComparisonResult.SAME or compare(int(active[i]), int(
+                latest[i])) == ComparisonResult.ACTIVE:
+            res = False
+        else:
+            res = True
+    return res
+
+
+def compare(active, latest):
+    if active < latest:
+        return ComparisonResult.LATEST
+    elif active > latest:
+        return ComparisonResult.ACTIVE
+    else:
+        return ComparisonResult.SAME
+
+
 def determine_latest_swpack(active_swpack, latest_swpack):
     active = active_swpack.split('.')
     decoded_latest = latest_swpack.encode('ascii', 'ignore')
     latest = decoded_latest.split('.')
 
-    for i in range(0, len(active)):
-        if compare2(int(active[i]), int(latest[i])) == 'same':
+    for i in range(0, min(len(active), len(latest))):
+        if compare(int(active[i]), int(latest[i])) == 'same':
             continue
-        elif compare2(int(active[i]), int(latest[i])) == 'active':
+        elif compare(int(active[i]), int(latest[i])) == 'active':
             return 'active'
         else:
             return 'latest'
-
-
-def compare2(active, latest):
-    if active < latest:
-        return 'latest'
-    elif active > latest:
-        return 'active'
-    else:
-        return 'same'
+    return len(active) > len(latest)
 
 
 class RunAll():
@@ -71,16 +93,20 @@ class RunAll():
         latest_swpack = Utils.get_latest_sw_pack_version()
 
         # dummies for tests
-        # active_sw_version = 'master.12.1915'
-        # latest_swpack = 'master.12.1913'
+        # active_sw_version = 'master.12.1919'
+        # latest_swpack = 'master.12.1918'
 
-        swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
-        if swpack == 'latest':
+        # swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
+        get_latest = must_download_latest(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
+
+        if get_latest:
             print ('Get latest sw pack...')
-            Utils.upload_latest(self.do_rest)
+            Utils.delete_existing_logfile(self.dir)
+
+            # Utils.upload_latest(self.do_rest)
         else:
-            print ('Using latest, don\'t need to upload latest...')
-            self.do_rest()
+            print ('Using latest, don\'t need to upload latest... ')
+            # self.do_rest()
 
     def do_rest(self):
         print('Gonna run the smoketests...')
