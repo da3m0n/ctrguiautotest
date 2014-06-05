@@ -101,12 +101,10 @@ class RunAll():
 
         if get_latest:
             print ('Get latest sw pack...')
-            Utils.delete_existing_logfile(self.dir)
-
-            # Utils.upload_latest(self.do_rest)
+            Utils.upload_latest(self.do_rest)
         else:
             print ('Using latest, don\'t need to upload latest... ')
-            # self.do_rest()
+            self.do_rest()
 
     def do_rest(self):
         print('Gonna run the smoketests...')
