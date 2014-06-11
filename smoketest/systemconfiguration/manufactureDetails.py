@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import time
 from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
@@ -7,9 +7,10 @@ from smoketest.mylib.utils import Utils
 
 
 def main():
-    Utils.delete_existing_logfile()
+    log_dir = Utils.log_dir()
+    Utils.delete_existing_logfile(log_dir)
     manu_details = ManufactureDetails(IsolatedLoginHandler())
-    test_log = TestLog('Manufacture Details')
+    test_log = TestLog('Manufacture Details', log_dir)
     manu_details.run_manufacture_details(Utils.create_driver(sys.argv[2]), test_log)
 
 
@@ -25,8 +26,8 @@ class ManufactureDetails(object):
         test_log.start('Manufacture Details')
 
         driver.switch_to_default_content()
-        gui_lib.click_element(driver, 'menu_node_7_tree')
-        gui_lib.click_element(driver, 'menu_node_11')
+        gui_lib.click_element(driver, 'menu_node_system_tree')
+        gui_lib.click_element(driver, 'menu_node_manufacture')
 
         driver.switch_to_frame('frame_content')
         manu_details = driver.find_element_by_id('ManufactureDetailsWidget1_content').text

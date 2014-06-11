@@ -137,8 +137,9 @@ class Utils(object):
         driver.find_element(By.ID, element).click()
 
     @staticmethod
-    def delete_existing_logfile(file):
-        logFile = os.path.abspath(file + '\\logs\\testLog.xml')
+    def delete_existing_logfile(dir):
+        print('dir', dir)
+        logFile = os.path.abspath(dir + '\\logs\\testLog.xml')
         print(logFile)
 
         if os.path.isfile(logFile):
@@ -146,6 +147,11 @@ class Utils(object):
             os.remove(logFile)
         else:
             print('No existing ', logFile, ' file.')
+
+    @staticmethod
+    def log_dir():
+        return os.path.dirname(os.path.dirname(__file__))
+
 
     @staticmethod
     def find_element(driver, element):
@@ -223,11 +229,16 @@ class Utils(object):
 
     @classmethod
     def upload_latest(cls, func):
-        telnet = TelnetClient('root', 'admin123', '10.16.15.113', debug=True)
+        telnet = TelnetClient('root', 'admin123', '10.16.15.113', debug=False)
         telnet.send('c t')
         telnet.send('swload')
         command = 'load-uri ' + cls.get_latest_sw_pack_version(False)
         telnet.send(command.encode('ascii', 'ignore'))
+
+        if cls.must_send_abort(telnet):
+            print 'sending abort command...'
+            telnet.send('abort')
+
         telnet.send('load activate')
 
         # cls.check_status(telnet)
@@ -236,6 +247,20 @@ class Utils(object):
 
         telnet.close()
         # print(cls.get_latest_sw_pack_version(False))
+
+    @classmethod
+    def must_send_abort(cls, telnet):
+        progress = telnet.send('show swload')
+        for item in progress:
+            status = ''
+            send_abort = False
+            if item.startswith('Current'):
+                status = item.strip('Current Status:')
+
+            if status == 'Activate ok (7)':
+                send_abort = True
+                break
+        return send_abort
 
     @classmethod
     def check_status(cls, timer, telnet, func):
@@ -262,19 +287,6 @@ class Utils(object):
                 timer.stop()
                 print 'SOFTWARE LOAD FINISHED...'
                 func()
-
-            # if progress.__len__() > 1:
-            #     if progress != '(Not Applicable)':
-            #         print('Status:', item)
-            #         if int(progress) > 15:
-            #             telnet.send('c t')
-            #             telnet.send('swload')
-            #             telnet.send('abort')
-            #             print 'aborting...'
-            #             telnet.close()
-            #             timer.stop()
-            #             func()
-
 
 from threading import Timer
 

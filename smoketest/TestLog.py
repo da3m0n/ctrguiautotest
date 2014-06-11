@@ -12,7 +12,6 @@ class TestLog(object):
         """Class to log errors"""
         self.log = None
         self.doc = None
-        print('Creating testLog...')
         self.root = ET.Element("smoketests")
         self.per_test_errors = 0
         self.time = time.localtime()
@@ -48,5 +47,5 @@ class TestLog(object):
 
     def close(self):
         tree = ET.ElementTree(self.root)
-        path = os.path.abspath(self.dir + '\logs\\testLog.xml')
+        path = os.path.abspath(self.dir + '\\logs\\testLog.xml')
         tree.write(path)

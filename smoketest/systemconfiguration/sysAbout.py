@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import time
 
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,9 +12,10 @@ from smoketest.mylib.utils import Utils
 
 
 def main():
-    Utils.delete_existing_logfile()
+    log_dir = Utils.log_dir()
+    Utils.delete_existing_logfile(log_dir)
     about = SystemAbout(IsolatedLoginHandler())
-    test_log = TestLog('System About')
+    test_log = TestLog('System About', log_dir)
     about.run_system_about(Utils.create_driver(sys.argv[2]), test_log)
     print('Inside system about')
 
@@ -38,12 +39,15 @@ class SystemAbout(object):
         print "=====", iso, "====="
 
         driver.switch_to_default_content()
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_node_7_tree")))
+        # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_node_7_tree")))
 
-        driver.find_element_by_id("menu_node_7_tree").click()
-        time.sleep(2)
+        # driver.find_element_by_id("menu_node_7_tree").click()
+        # time.sleep(2)
         # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_node_10")))
-        driver.find_element_by_id("menu_node_10").click()
+
+        gui_lib.click_element(driver, 'menu_node_system_tree')
+        gui_lib.click_element(driver, 'menu_node_about')
+
         driver.switch_to_frame("frame_content")
 
         # about = driver.find_element(By.XPATH, "//body/fieldset/legend").text

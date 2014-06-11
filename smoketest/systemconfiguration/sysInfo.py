@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import time
 
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,11 +12,11 @@ from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 
 
 def main():
-    Utils.delete_existing_logfile()
+    log_dir = Utils.log_dir()
+    Utils.delete_existing_logfile(log_dir)
     system_info = SystemInformation(IsolatedLoginHandler())
-    test_log = TestLog('System Information')
+    test_log = TestLog('System Information', log_dir)
     system_info.run_system_information(Utils.create_driver(sys.argv[2]), test_log)
-    print("Inside system_info().main()")
 
 
 class SystemInformation(object):
@@ -39,8 +39,9 @@ class SystemInformation(object):
 
         driver.switch_to_default_content()
 
-        driver.find_element_by_id("menu_node_7_tree").click()
-        driver.find_element_by_id("menu_node_8").click()
+        gui_lib.click_element(driver, 'menu_node_system_tree')
+        gui_lib.click_element(driver, 'menu_node_system_info')
+
         driver.switch_to_frame("frame_content")
         table = driver.find_element_by_id("SystemInformationWidget1_TW_table")
         WebDriverWait(table, 10).until(EC.presence_of_element_located((By.ID, "SystemInformationWidget1_TW_0")))

@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import time
 
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,9 +12,10 @@ from smoketest.mylib.utils import Utils
 
 
 def main():
-    Utils.delete_existing_logfile()
+    log_dir = Utils.log_dir()
+    Utils.delete_existing_logfile(log_dir)
     poe = PowerOverEthernet(IsolatedLoginHandler())
-    test_log = TestLog('Power Over Ethernet')
+    test_log = TestLog('Power Over Ethernet', log_dir)
     poe.run_poe(Utils.create_driver(sys.argv[2]), test_log)
 
 
@@ -30,8 +31,8 @@ class PowerOverEthernet(object):
         test_helper = TestHelper(test_log)
 
         driver.switch_to_default_content()
-        gui_lib.click_element(driver, 'menu_node_7_tree')
-        gui_lib.click_element(driver, 'menu_node_12')
+        gui_lib.click_element(driver, 'menu_node_system_tree')
+        gui_lib.click_element(driver, 'menu_node_poe_config')
 
         test_log.start('Power Over Ethernet')
 

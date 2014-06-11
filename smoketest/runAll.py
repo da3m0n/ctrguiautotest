@@ -12,7 +12,7 @@ from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
 from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
 from smoketest.systemconfiguration.sysAbout import SystemAbout
-from smoketest.systemconfiguration.sysInfo2 import SystemInformation
+from smoketest.systemconfiguration.sysInfo import SystemInformation
 
 from optparse import OptionParser
 
@@ -84,7 +84,7 @@ def determine_latest_swpack(active_swpack, latest_swpack):
 
 class RunAll():
     def __init__(self):
-        self.dir = os.path.dirname(__file__)
+        self.dir = Utils.log_dir()
         self.test_log = TestLog('All Tests', self.dir)
         print('init')
 
@@ -93,8 +93,8 @@ class RunAll():
         latest_swpack = Utils.get_latest_sw_pack_version()
 
         # dummies for tests
-        # active_sw_version = 'master.12.1919'
-        # latest_swpack = 'master.12.1918'
+        active_sw_version = 'master.12.1919'
+        latest_swpack = 'master.12.1919'
 
         # swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
         get_latest = must_download_latest(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
@@ -116,6 +116,7 @@ class RunAll():
         login_handler.start(driver)
 
         test_log = TestLog('All Tests', self.dir)
+        test_log.start('Equipment View')
 
         equipment_view = EquipmentView(login_handler)
         equipment_view.run_equipment_view(driver, test_log)
@@ -126,11 +127,12 @@ class RunAll():
         date_time = DateTime(login_handler)
         date_time.run_date_time(driver, test_log)
 
-        sys_about = SystemAbout(login_handler)
-        sys_about.run_system_about(driver, test_log)
+        # These need to be updated as they have been moved
+        # sys_about = SystemAbout(login_handler)
+        # sys_about.run_system_about(driver, test_log)
 
-        manu_details = ManufactureDetails(login_handler)
-        manu_details.run_manufacture_details(driver, test_log)
+        # manu_details = ManufactureDetails(login_handler)
+        # manu_details.run_manufacture_details(driver, test_log)
 
         poe = PowerOverEthernet(login_handler)
         poe.run_poe(driver, test_log)
