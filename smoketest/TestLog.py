@@ -46,6 +46,14 @@ class TestLog(object):
         el.set('testName', test_name)
 
     def close(self):
+        local_time = time.localtime()
+        date = time.strftime('%d-%m-%Y', local_time)
+
         tree = ET.ElementTree(self.root)
-        path = os.path.abspath(self.dir + '\\logs\\testLog.xml')
+        log_dir = self.dir + '\\logs\\' + date
+        if not os.path.exists(log_dir):
+            os.mkdir(log_dir)
+        os.chdir(log_dir)
+
+        path = os.path.abspath(log_dir + '\\' + date + '.xml')
         tree.write(path)

@@ -6,7 +6,7 @@
     <script>
         var logs = (function () {
 
-            function loadXMLDoc(filename) {
+            this.loadXMLDoc = function (filename) {
                 var xhttp;
 
                 if (window.ActiveXObject) {
@@ -27,12 +27,11 @@
                     response: xhttp.responseXML,
                     responseType: xhttp.responseType
                 };
-            }
-
+            };
 
             function displayResult() {
-                var xml = loadXMLDoc("testLog.xml");
-                var xsl = loadXMLDoc("testLog.xsl");
+                var xml = this.loadXMLDoc("testLog.xml");
+                var xsl = this.loadXMLDoc("testLog.xsl");
                 // code for IE
                 if (window.ActiveXObject || xml.responseType === "msxml-document") {
                     document.getElementById("resultsContainer").innerHTML = xml.response.transformNode(xsl.response);
@@ -44,7 +43,6 @@
                     var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
                     document.getElementById("resultsContainer").appendChild(resultDocument);
                 }
-
             }
 
             return {

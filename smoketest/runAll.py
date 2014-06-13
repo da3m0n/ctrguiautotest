@@ -25,11 +25,16 @@ def main():
     if len(args) != 2:
         parser.error("wrong number of arguments")
 
-    run_all = RunAll()
-    run_all.run_all()
+
+    # run_all = RunAll()
+    # run_all.run_all()
+
+    Utils.print_tree(Utils.log_dir() + '\\logs')
 
 
 from enum import Enum
+
+
 class ComparisonResult(Enum):
     LATEST = 1
     ACTIVE = 2
