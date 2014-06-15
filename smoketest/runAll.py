@@ -25,9 +25,8 @@ def main():
     if len(args) != 2:
         parser.error("wrong number of arguments")
 
-
-    # run_all = RunAll()
-    # run_all.run_all()
+    run_all = RunAll()
+    run_all.run_all()
 
     Utils.print_tree(Utils.log_dir() + '\\logs')
 
@@ -139,8 +138,8 @@ class RunAll():
         # manu_details = ManufactureDetails(login_handler)
         # manu_details.run_manufacture_details(driver, test_log)
 
-        poe = PowerOverEthernet(login_handler)
-        poe.run_poe(driver, test_log)
+        # poe = PowerOverEthernet(login_handler)
+        # poe.run_poe(driver, test_log)
 
         login_handler.end(driver)
 

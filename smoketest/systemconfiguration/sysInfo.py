@@ -35,7 +35,7 @@ class SystemInformation(object):
         print "=====", iso, "====="
 
         test_log.start('System Information')
-        test_helper = TestHelper(test_log)
+        test_helper = TestHelper(test_log, driver)
 
         driver.switch_to_default_content()
 
@@ -59,7 +59,7 @@ class SystemInformation(object):
         sw_version = table.find_element_by_id('SystemInformationWidget1_TW_1_1')
         # driver.execute_script("document.getElementById('SystemInformationWidget1_TW_1_1').innerHTML=\"\";")
         test_helper.assert_true(len(sw_version.text) == 0, 'Expected SW Version to be > 0',
-                              'Testing SW Version Length')
+                                'Testing SW Version Length')
         # assert swVersionLen > 0, ('Expected length of Software Version to be greater than zero but was ', swVersionLen)
 
         # firmVersion = table.find_element_by_id('SystemInformationWidget1_TW_2_1')

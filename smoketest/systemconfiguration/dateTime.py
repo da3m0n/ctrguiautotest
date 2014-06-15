@@ -28,7 +28,7 @@ class DateTime():
         self.login_manager.login(driver)
 
         test_log.start('Date Time')
-        test_helper = TestHelper(test_log)
+        test_helper = TestHelper(test_log, driver)
 
         failure_count = 0
 
@@ -51,7 +51,7 @@ class DateTime():
         mycalendar = table.find_element_by_id('DateTimeWidget1_TW_1_1')
         test_helper.assert_true(len(mycalendar.text) <= 0, 'Expected Calendar length > 0', 'Testing Calendar length')
 
-        driver.execute_script("document.getElementById('DateTimeWidget1_TW_3_1').innerHTML=\"\";")
+        # driver.execute_script("document.getElementById('DateTimeWidget1_TW_3_1').innerHTML=\"\";")
         time_zone = table.find_element_by_id('DateTimeWidget1_TW_3_1')
         test_helper.assert_true(len(time_zone.text) <= 0, 'Expected TimeZone length > 0', 'Testing Timezone')
 

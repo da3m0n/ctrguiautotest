@@ -305,7 +305,7 @@ class Utils(object):
                 field2.set("file", date_file)
 
         tree = ET.ElementTree(root)
-        tree.write("filename.xml")
+        tree.write(Utils.log_dir() + "\\logs\\testdates.xml")
 
         dir_contents = os.walk(tree_root_dir).next()
         for cont in dir_contents[1]:
