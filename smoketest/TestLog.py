@@ -15,7 +15,7 @@ class TestLog(object):
         self.root = ET.Element("smoketests")
         self.per_test_errors = 0
         self.time = time.localtime()
-        self.all_tests_start = time.strftime('%Y-%m-%d %H:%M:%S ', self.time)
+        self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)
         self.dir = dir
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
@@ -24,7 +24,7 @@ class TestLog(object):
         # root = ET.Element("root")
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
 
-        test_start = time.strftime('%Y-%m-%d %H:%M:%S ', self.time)
+        test_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)
         # ET.SubElement(self.root, 'startTime', str(iso))
 
         el = ET.SubElement(self.doc, "testStart")
@@ -47,7 +47,7 @@ class TestLog(object):
 
     def close(self):
         local_time = time.localtime()
-        date = time.strftime('%d-%m-%Y', local_time)
+        date = time.strftime('%d %B %Y', local_time)
 
         tree = ET.ElementTree(self.root)
         log_dir = self.dir + '\\logs\\' + date

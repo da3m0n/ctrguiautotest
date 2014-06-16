@@ -10,12 +10,9 @@ class TestHelper(object):
         self.error_count = 0
 
     def assert_true(self, val, msg=None, test_name=None):
-        print('testName', test_name)
-        print('log dir', Utils.log_dir())
         if val:
             self.error_count += 1
             pwd = os.getcwd()
-            print('cwd', pwd)
             screenshots_dir = pwd + '\\screenshots'
             if not os.path.exists(screenshots_dir):
                 os.mkdir('screenshots')

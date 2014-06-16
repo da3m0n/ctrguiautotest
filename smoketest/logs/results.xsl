@@ -9,11 +9,7 @@
 
 
         <div id="resultsTable">
-            <div id="heading">
-                CTR Smoke Tests
-                <div id="lastUpdated">
-                    Last Updated: <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
-                </div>
+            <div class="heading">CTR Smoke Tests results for <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
             </div>
             <table border="1">
                 <tr>

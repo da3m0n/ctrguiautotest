@@ -292,17 +292,22 @@ class Utils(object):
     def print_tree(cls, tree_root_dir):
         import xml.etree.ElementTree as ET
 
-        root = ET.Element("ResultsFiles")
-        doc = ET.SubElement(root, 'logs')
+        root = ET.Element("resultsFiles")
+        # doc = ET.SubElement(root, 'logs')
 
         dir_contents = os.walk(tree_root_dir).next()
         for date_dir in dir_contents[1]:
             dir_next = os.walk(tree_root_dir + '\\' + date_dir).next()
-            field1 = ET.SubElement(doc, "testDate")
+            field1 = ET.SubElement(root, "testDate")
             field1.set("date", date_dir)
             for date_file in dir_next[2]:
                 field2 = ET.SubElement(field1, "fileName")
                 field2.set("file", date_file)
+            screenshots = os.walk(tree_root_dir + '\\' + date_dir + '\\screenshots').next()
+            el = ET.SubElement(field1, 'screenshots')
+            for screenshot in screenshots[2]:
+                field3 = ET.SubElement(el, 'screenshot')
+                field3.set('error', screenshot)
 
         tree = ET.ElementTree(root)
         tree.write(Utils.log_dir() + "\\logs\\testdates.xml")

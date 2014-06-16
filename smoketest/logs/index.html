@@ -1,12 +1,13 @@
 <html>
 <head>
     <title>Smoke Tests</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="smoketests.css"/>
 
     <script>
         var logs = (function () {
 
-            this.loadXMLDoc = function (filename) {
+            function loadXMLDoc(filename) {
                 var xhttp;
 
                 if (window.ActiveXObject) {
@@ -27,21 +28,21 @@
                     response: xhttp.responseXML,
                     responseType: xhttp.responseType
                 };
-            };
+            }
 
-            function displayResult() {
-                var xml = this.loadXMLDoc("testLog.xml");
-                var xsl = this.loadXMLDoc("testLog.xsl");
+            function displayResult(filename, xsl, elementId) {
+                var xml = loadXMLDoc(filename);
+                var xsl = loadXMLDoc(xsl);
                 // code for IE
                 if (window.ActiveXObject || xml.responseType === "msxml-document") {
-                    document.getElementById("resultsContainer").innerHTML = xml.response.transformNode(xsl.response);
+                    document.getElementById(elementId).innerHTML = xml.response.transformNode(xsl.response);
                 }
                 // code for Chrome, Firefox, Opera, etc.
                 else if (document.implementation && document.implementation.createDocument) {
                     var xsltProcessor = new XSLTProcessor();
                     xsltProcessor.importStylesheet(xsl.response);
                     var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
-                    document.getElementById("resultsContainer").appendChild(resultDocument);
+                    document.getElementById(elementId).appendChild(resultDocument);
                 }
             }
 
@@ -53,9 +54,19 @@
     </script>
 </head>
 <body>
-<div id="resultsContainer"></div>
+<div id="container">
+    <div class="row">
+    <div class="col-md-2">
+        <div id="testDates"></div>
+    </div>
+    <div class="col-md-4">
+        <div id="resultsContainer"></div>
+    </div>
+    </div>
+</div>
 <script>
-    window.onload = logs.displayResult();
+    logs.displayResult("testdates.xml", "dates.xsl", "testDates");
+    logs.displayResult("16 June 2014/16 June 2014.xml", "results.xsl", "resultsContainer");
 </script>
 </body>
 </html>
