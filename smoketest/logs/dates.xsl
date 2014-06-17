@@ -13,6 +13,7 @@
             <xsl:for-each select="resultsFiles/testDate">
                 <div class="panel panel-default">
                     <div class="panel-heading">
+
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#{generate-id(@date)}">
                                 <xsl:value-of select="@date"></xsl:value-of>
@@ -23,15 +24,31 @@
                         <div class="panel-body artifacts">
                             <ul>
                                 <li>
-                                    <a href="">
-                                        <xsl:value-of select="fileName/@file"></xsl:value-of>
-                                    </a>
+                                    <!--<xsl:variable name="test">-->
+                                        <!--<xsl:value-of select="fileName/@file"></xsl:value-of>-->
+                                    <!--</xsl:variable>-->
+                                    <!--<a href="{@date}/$test">-->
+                                        <!--<xsl:value-of select="fileName/@file"></xsl:value-of>-->
+                                    <!--</a>-->
+                                    <xsl:element name="a">
+                                        <xsl:attribute name="href">
+                                            <xsl:value-of select="fileName/@file"/>
+                                        </xsl:attribute>
+                                        <xsl:value-of select="fileName/@file"/>
+                                    </xsl:element>
+
                                 </li>
                                 <xsl:for-each select="screenshots/screenshot">
                                     <li>
-                                        <a href="{@error}">
-                                            <xsl:value-of select="@error"></xsl:value-of>
-                                        </a>
+                                        <xsl:element name="a">
+                                            <xsl:attribute name="href">
+                                                <xsl:value-of select="@url"/>
+                                            </xsl:attribute>
+                                            <xsl:value-of select="@error"/>
+                                        </xsl:element>
+                                        <!--<a href="{@date}">-->
+                                            <!--<xsl:value-of select="@error"></xsl:value-of>-->
+                                        <!--</a>-->
                                     </li>
                                 </xsl:for-each>
                             </ul>

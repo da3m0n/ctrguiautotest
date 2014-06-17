@@ -308,6 +308,7 @@ class Utils(object):
             for screenshot in screenshots[2]:
                 field3 = ET.SubElement(el, 'screenshot')
                 field3.set('error', screenshot)
+                field3.set('url', screenshots[0] + '\\' + screenshot)
 
         tree = ET.ElementTree(root)
         tree.write(Utils.log_dir() + "\\logs\\testdates.xml")
