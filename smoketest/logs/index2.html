@@ -2,8 +2,7 @@
 <head>
     <title>Smoke Tests</title>
     <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
-    <link rel="stylesheet" href="smoketests.css"/>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="smoketests2.css"/>
 
     <script>
         var logs = (function () {
@@ -55,36 +54,19 @@
     </script>
 </head>
 <body>
-<div class="container">
-        <!--<div class="col-lg-3">-->
-            <!--<div id="testDates"></div>-->
-        <!--</div>-->
-        <!--<div class="col-lg-9">-->
-            <!--<div id="resultsContainer"></div>-->
-        <!--</div>-->
-<div class="row">
-  <div id="dates" class="col-lg-3"></div>
-  <div id="tests" class="col-lg-9"></div>
+<div id="container">
+    <div class="row">
+    <div class="col-md-2">
+        <div id="testDates"></div>
+    </div>
+    <div class="col-md-4">
+        <div id="resultsContainer"></div>
+    </div>
+    </div>
 </div>
-</div>
-<script src="../vendor/js/jquery-1.11.1.min.js"></script>
-<script src="../vendor/js/bootstrap.js"></script>
 <script>
-    logs.displayResult("testdates.xml", "dates.xsl", "dates");
-    logs.displayResult("16 June 2014/16 June 2014.xml", "results.xsl", "tests");
+    logs.displayResult("testdates.xml", "dates2.xsl", "testDates");
+    logs.displayResult("16 June 2014/16 June 2014.xml", "results2.xsl", "resultsContainer");
 </script>
-<script>
-
-//    $(".testDate").click(function(){
-//        $testDate = $(this);
-//        $artifacts = $testDate.next();
-//
-//        $artifacts.slideToggle(500, function(){
-//           $testDate.text(function(){
-//              return $artifacts.is(":visible") ? "Collapse" : "Expand";
-//           });
-//        });
-//        alert('hello');
-//    });
-</script></body>
+</body>
 </html>
