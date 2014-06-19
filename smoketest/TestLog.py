@@ -2,6 +2,7 @@ import time
 from smoketest.mylib.utils import Utils
 import xml.etree.ElementTree as ET
 import os
+from xml.etree.ElementTree import Comment
 
 class TestLog(object):
     overall_errors = 0
@@ -13,6 +14,8 @@ class TestLog(object):
         self.log = None
         self.doc = None
         self.root = ET.Element("smoketests")
+        self.root.append(Comment('Do Not Change. Auto Generated in TestLog.py'))
+
         self.per_test_errors = 0
         self.time = time.localtime()
         self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S', self.time)
@@ -21,7 +24,6 @@ class TestLog(object):
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
         el.set('friendlyStart', self.url_friendly_start)
-
 
     def start(self, name):
         # root = ET.Element("root")
@@ -36,7 +38,6 @@ class TestLog(object):
         # field2 = ET.SubElement(doc, "field2")
         # field2.set("name", "asdfasd")
         # field2.text = "some vlaue2"
-
         self.num_tests_run += 1
 
     def log_it(self, data=None):
@@ -46,7 +47,7 @@ class TestLog(object):
     def log_it2(self, count, msg=None, test_name=None):
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
-        el.set('testName', Utils.insertUnderscores(test_name))
+        el.set('testName', Utils.insert_underscores(test_name))
 
     def close(self):
         local_time = time.localtime()
