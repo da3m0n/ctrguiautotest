@@ -32,7 +32,7 @@
                                     <!--</a>-->
                                     <xsl:element name="a">
                                         <xsl:attribute name="href">
-                                            <xsl:value-of select="fileName/@file"/>
+                                            <xsl:value-of select="fileName/@url"/>
                                         </xsl:attribute>
                                         <xsl:value-of select="fileName/@file"/>
                                     </xsl:element>

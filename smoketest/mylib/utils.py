@@ -297,26 +297,38 @@ class Utils(object):
 
         dir_contents = os.walk(tree_root_dir).next()
         for date_dir in dir_contents[1]:
-            dir_next = os.walk(tree_root_dir + '\\' + date_dir).next()
+            date_with_underscores = date_dir.replace(' ', '_')
+            dir_next = os.walk(tree_root_dir + '\\' + date_with_underscores).next()
             field1 = ET.SubElement(root, "testDate")
             field1.set("date", date_dir)
             for date_file in dir_next[2]:
                 field2 = ET.SubElement(field1, "fileName")
                 field2.set("file", date_file)
+                # field2.set('url', dir_next[0] + '\\' + date_file)
+                url_with_underscores = cls.insertUnderscores(date_file)
+                field2.set('url', os.path.join(os.path.relpath(dir_next[0], url_with_underscores)))
             screenshots = os.walk(tree_root_dir + '\\' + date_dir + '\\screenshots').next()
             el = ET.SubElement(field1, 'screenshots')
             for screenshot in screenshots[2]:
+                print('cwd', os.path.abspath(os.getcwd()))
                 field3 = ET.SubElement(el, 'screenshot')
-                field3.set('error', screenshot)
-                field3.set('url', screenshots[0] + '\\' + screenshot)
+                field3.set('error', cls.insertUnderscores(screenshot))
+                # field3.set('url', screenshots[0] + '\\' + screenshot)
+                screenshot_with_underscores = cls.insertUnderscores(screenshot)
+                field3.set('url', os.path.join(os.path.relpath(screenshots[0]), screenshot_with_underscores))
 
         tree = ET.ElementTree(root)
-        tree.write(Utils.log_dir() + "\\logs\\testdates.xml")
+        tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
+        # tree.write(Utils.log_dir() + "\\logs\\testdates.xml")
 
         dir_contents = os.walk(tree_root_dir).next()
         for cont in dir_contents[1]:
             print cont
 
+    @classmethod
+    def insertUnderscores(cls, str):
+        val = str.replace(' ', '_')
+        return val
 
 from threading import Timer
 
