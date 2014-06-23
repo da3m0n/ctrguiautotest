@@ -47,7 +47,7 @@ class TestLog(object):
     def log_it2(self, count, msg=None, test_name=None):
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
-        el.set('testName', Utils.insert_underscores(test_name))
+        el.set('testName', test_name)
 
     def close(self):
         local_time = time.localtime()
