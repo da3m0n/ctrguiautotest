@@ -44,6 +44,9 @@
                                             <xsl:attribute name="href">
                                                 <xsl:value-of select="@imageurl"/>
                                             </xsl:attribute>
+                                        <xsl:attribute name="data-lightbox">
+                                            <xsl:value-of select="@error"/>
+                                        </xsl:attribute>
                                             <xsl:value-of select="@error"/>
                                         </xsl:element>
                                         <!--<a href="{@date}">-->
