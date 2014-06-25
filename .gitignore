@@ -18,8 +18,6 @@ Lib
 
 *.pyc
 
-smoketest/output
-
-smoketest/logs/*.xml
+smoketest/logs
 
 
