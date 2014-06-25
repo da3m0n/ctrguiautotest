@@ -28,7 +28,7 @@ def main():
     run_all = RunAll()
     run_all.run_all()
 
-    Utils.print_tree(Utils.log_dir() + '\\logs')
+    Utils.print_tree(Utils.log_dir())
 
 
 from enum import Enum

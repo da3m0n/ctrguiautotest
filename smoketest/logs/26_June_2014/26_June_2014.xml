@@ -1,0 +1,21 @@
+<smoketests><!--Do Not Change. Auto Generated in TestLog.py-->
+    <allTestsStart allTestsStart="25 June 2014 14:46:58" friendlyStart="25_June_2014"/>
+    <testScreen testScreen="Equipment View">
+        <testStart teststart="25 June 2014 14:46:58 "/>
+    </testScreen>
+    <testScreen testScreen="Equipment View">
+        <testStart teststart="25 June 2014 14:46:58 "/>
+        <error msg="-" testName="Ensure Chassis displayed"/>
+    </testScreen>
+    <testScreen testScreen="System Information">
+        <testStart teststart="25 June 2014 14:46:58 "/>
+        <error msg="-" testName="Testing Headers"/>
+        <error msg="-" testName="Testing SW Version Length"/>
+    </testScreen>
+    <testScreen testScreen="Date Time">
+        <testStart teststart="25 June 2014 14:46:58 "/>
+        <error msg="-" testName="Testing Headers"/>
+        <error msg="Expected Calendar length &gt; 0" testName="Testing Calendar length"/>
+        <error msg="Expected TimeZone length &gt; 0" testName="Testing Timezone"/>
+    </testScreen>
+</smoketests>
