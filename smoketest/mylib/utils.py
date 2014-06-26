@@ -96,7 +96,7 @@ class Utils(object):
     #initialise the window size so that all elements are visible
     @classmethod
     def windowInit(self, driver):
-        driver.set_window_size(1080, 800)
+        driver.set_window_size(1200, 800)
         print "Window Resized"
         #handle = driver.window_handles
 

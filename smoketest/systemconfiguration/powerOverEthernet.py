@@ -28,7 +28,7 @@ class PowerOverEthernet(object):
         self.login_manager.login(driver)
 
         gui_lib = Utils()
-        test_helper = TestHelper(test_log)
+        test_helper = TestHelper(test_log, driver)
 
         driver.switch_to_default_content()
         gui_lib.click_element(driver, 'menu_node_system_tree')
@@ -46,7 +46,7 @@ class PowerOverEthernet(object):
 
         headers = table.find_elements_by_tag_name('th')
 
-        test_helper.assert_true(len(headers) > 0, 'Expected Headers, got None', 'Testing Headers')
+        test_helper.assert_true(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
 
         # insert error to test. Uncomment when needed
         driver.execute_script("document.getElementById('PoEConfigWidget1_TW_13_description').innerHTML=\"\";")

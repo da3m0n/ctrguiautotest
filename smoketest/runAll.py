@@ -137,8 +137,8 @@ class RunAll():
         # manu_details = ManufactureDetails(login_handler)
         # manu_details.run_manufacture_details(driver, test_log)
 
-        # poe = PowerOverEthernet(login_handler)
-        # poe.run_poe(driver, test_log)
+        poe = PowerOverEthernet(login_handler)
+        poe.run_poe(driver, test_log)
 
         login_handler.end(driver)
 
