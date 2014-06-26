@@ -16,7 +16,7 @@ node_modules
 
 Lib
 
-*.pyc
+#*.pyc
 
 smoketest/logs
 
