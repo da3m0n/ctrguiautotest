@@ -319,12 +319,14 @@ class Utils(object):
                 field2.set("file", xmlfile.replace('_', ' '))
                 field2.set('fileurl',  '/logs/' + logs_dir + '/' + xmlfile)
 
-                in_date_files = os.walk(next_in_logs[0] + '/screenshots').next()
-                el = ET.SubElement(field1, 'screenshots')
-                for image_name in in_date_files[2]:
-                    field3 = ET.SubElement(el, "screenshot")
-                    field3.set("error", image_name)
-                    field3.set('imageurl',  '/logs/' + logs_dir + '/screenshots/' + image_name)
+                if len(next_in_logs[1]) > 0:
+                    in_date_files = os.walk(next_in_logs[0] + '/screenshots').next()
+                    el = ET.SubElement(field1, 'screenshots')
+
+                    for image_name in in_date_files[2]:
+                        field3 = ET.SubElement(el, "screenshot")
+                        field3.set("error", image_name)
+                        field3.set('imageurl',  '/logs/' + logs_dir + '/screenshots/' + image_name)
 
         tree = ET.ElementTree(root)
         tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))

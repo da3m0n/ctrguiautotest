@@ -6,14 +6,13 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from smoketest.systemconfiguration.dateTime import DateTime
 from smoketest.TestLog import TestLog
-from smoketest.systemconfiguration.equipmentView2 import EquipmentView
 from smoketest.systemconfiguration.manufactureDetails import ManufactureDetails
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
 from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
 from smoketest.systemconfiguration.sysAbout import SystemAbout
 from smoketest.systemconfiguration.sysInfo import SystemInformation
-
+from smoketest.systemconfiguration.equipmentView import EquipmentView
 from optparse import OptionParser
 
 
@@ -120,7 +119,7 @@ class RunAll():
         login_handler.start(driver)
 
         test_log = TestLog('All Tests', self.dir)
-        test_log.start('Equipment View')
+        # test_log.start('Equipment View')
 
         equipment_view = EquipmentView(login_handler)
         equipment_view.run_equipment_view(driver, test_log)

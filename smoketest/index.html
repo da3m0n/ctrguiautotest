@@ -70,5 +70,19 @@
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
     logs.displayResult("logs/25_June_2014/25_June_2014.xml", "results.xsl", "tests");
 </script>
+<script>
+    $(".clicktest").click(function (e) {
+        var date = $(this).attr('href');
+        e.preventDefault();
+        $('#tests').html("");
+        $('#dates').html("");
+        test(date);
+    });
+
+    function test(date) {
+        logs.displayResult("logs/testDates.xml", "dates.xsl", "dates")
+        logs.displayResult(date, 'results.xsl', 'tests');
+    }
+</script>
 </body>
 </html>

@@ -7,6 +7,9 @@
         <!--test-->
         <!--</div>-->
 
+        <div class="row title">
+            Running Smoketest at <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
+        </div>
         <div class="row headerRow">
             <h3>
             <div id="boo7" class="col-lg-3">Test Screen</div>

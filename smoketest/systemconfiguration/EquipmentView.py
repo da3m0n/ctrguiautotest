@@ -1,31 +1,32 @@
 import sys
-
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-
 from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 from smoketest.mylib.utils import Utils
-from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
+
+__author__ = 'rnaude'
+
 
 def main():
+    print 'in main'
     log_dir = Utils.log_dir()
     Utils.delete_existing_logfile(log_dir)
-    test_log = TestLog('Equipment View', log_dir)
     equip_view = EquipmentView(IsolatedLoginHandler())
+    test_log = TestLog('Equipment View', log_dir)
     equip_view.run_equipment_view(Utils.create_driver(sys.argv[2]), test_log)
 
 
-class EquipmentView(object):
+class EquipmentView():
     def __init__(self, login_manager):
+        print ' in constructor'
         self.login_manager = login_manager
 
     def run_equipment_view(self, driver, test_log):
-        self.login_manager.login(driver)
         gui_lib = Utils()
-        test_helper = TestHelper(test_log, driver)
 
+        self.login_manager.login(driver)
+        test_helper = TestHelper(test_log, driver)
         test_log.start('Equipment View')
 
         prodDescription = driver.find_element(By.ID, "top_menu_product_description").text
@@ -44,8 +45,6 @@ class EquipmentView(object):
         test_log.close()
 
 
-if __name__ == "__man__":
+
+if __name__ == '__main__':
     main()
-
-
-

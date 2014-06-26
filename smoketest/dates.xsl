@@ -34,6 +34,9 @@
                                         <xsl:attribute name="href">
                                             <xsl:value-of select="fileName/@fileurl"/>
                                         </xsl:attribute>
+                                        <xsl:attribute name="class">clicktest
+                                            <!--<xsl:value-of select="@date"/>-->
+                                        </xsl:attribute>
                                         <xsl:value-of select="fileName/@file"/>
                                     </xsl:element>
 
