@@ -113,13 +113,16 @@ class RunAll():
         print('Gonna run the smoketests...')
         driver = Utils.create_driver(sys.argv[2])
 
+        # driver.Chrome("C:\ChromeDriver\chromedriver.exe")
+        # driver.Firefox()
+        # driver.Ie()
+
         Utils.delete_existing_logfile(self.dir)
 
         login_handler = LoginHandler()
         login_handler.start(driver)
 
         test_log = TestLog('All Tests', self.dir)
-        # test_log.start('Equipment View')
 
         equipment_view = EquipmentView(login_handler)
         equipment_view.run_equipment_view(driver, test_log)

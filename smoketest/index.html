@@ -49,8 +49,32 @@
                 }
             }
 
+            function getLatestTest(file) {
+                var xml = loadXMLDoc(file);
+                var xmldoc = xml.response;
+                var testDateTags = xmldoc.getElementsByTagName('testDate');
+                var dates = [];
+                var dateObj = {};
+
+                for (var i = 0; i < testDateTags.length; i++) {
+                    var sortDate = testDateTags.item(i).attributes[1].nodeValue;
+                    var date = testDateTags.item(i).attributes[0].nodeValue;
+                    dates.push(sortDate);
+                    dateObj = {'sortDate': [dates], 'date': date};
+                }
+
+                dates.sort(function(a, b){
+                    return b - a;
+                });
+
+
+                return dateObj;
+
+            }
+
             return {
-                displayResult: displayResult
+                displayResult: displayResult,
+                getLatestTest: getLatestTest
             };
         })();
 
@@ -67,8 +91,12 @@
 <script src="vendor/js/bootstrap.js"></script>
 <script src="vendor/js/lightbox.min.js"></script>
 <script>
+    var latest = logs.getLatestTest("logs/testDates.xml");
+    var newDate = latest.date.split(' ').join('_');
+    var newDateXml = newDate + '.xml';
+    
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    logs.displayResult("logs/25_June_2014/25_June_2014.xml", "results.xsl", "tests");
+    logs.displayResult("logs/" + newDate + "/" + newDateXml, "results.xsl", "tests");
 </script>
 <script>
     $(".clicktest").click(function (e) {

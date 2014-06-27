@@ -1,4 +1,6 @@
 import sys, os, time
+import datetime
+from enum import Enum
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
@@ -18,6 +20,21 @@ from xml.dom import minidom
 def main():
     utils = Utils
     utils.print_tree(Utils.log_dir())
+
+
+class Dates(Enum):
+    January = 1
+    February = 2
+    March = 3
+    April = 4
+    May = 5
+    June = 6
+    July = 7
+    August = 8
+    September = 9
+    October = 10
+    November = 11
+    December = 12
 
 
 class Utils(object):
@@ -312,6 +329,8 @@ class Utils(object):
             print logs_dir
             field1 = ET.SubElement(root, "testDate")
             field1.set("date", logs_dir.replace('_', ' '))
+            field1.set('sortDate', cls.reformat_date(logs_dir))
+
             # for logs in logs_dir
             next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
             for xmlfile in next_in_logs[2]:
@@ -333,10 +352,13 @@ class Utils(object):
 
 
     @classmethod
+    def reformat_date(cls, date):
+        return datetime.datetime.strptime(date, "%d_%B_%Y").strftime("%d%m%Y")
+
+    @classmethod
     def insert_underscores(cls, str):
         val = str.replace(' ', '_')
         return val
-
 
 from threading import Timer
 

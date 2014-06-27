@@ -9,14 +9,23 @@
             </h3>
         </div>
 
+        <!--<xsl:for-each select="resultsFiles/testDate">-->
+        <!--<div id="test">blah-->
+                <!--<xsl:value-of select="@sortDate"></xsl:value-of>-->
+        <!--</div>-->
+
+        <!--</xsl:for-each>-->
+
         <div class="panel-group" id="accordion">
             <xsl:for-each select="resultsFiles/testDate">
+            <xsl:sort select="@sortDate" data-type="number" order="descending"/>
                 <div class="panel panel-default">
                     <div class="panel-heading">
 
                         <h4 class="panel-title">
+
                             <a data-toggle="collapse" data-parent="#accordion" href="#{generate-id(@date)}">
-                                <xsl:value-of select="@date"></xsl:value-of>
+                                 <xsl:value-of select="@date"></xsl:value-of>
                             </a>
                         </h4>
                     </div>
@@ -24,12 +33,6 @@
                         <div class="panel-body artifacts">
                             <ul>
                                 <li>
-                                    <!--<xsl:variable name="test">-->
-                                        <!--<xsl:value-of select="fileName/@file"></xsl:value-of>-->
-                                    <!--</xsl:variable>-->
-                                    <!--<a href="{@date}/$test">-->
-                                        <!--<xsl:value-of select="fileName/@file"></xsl:value-of>-->
-                                    <!--</a>-->
                                     <xsl:element name="a">
                                         <xsl:attribute name="href">
                                             <xsl:value-of select="fileName/@fileurl"/>
