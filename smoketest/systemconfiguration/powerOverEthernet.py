@@ -17,6 +17,7 @@ def main():
     poe = PowerOverEthernet(IsolatedLoginHandler())
     test_log = TestLog('Power Over Ethernet', log_dir)
     poe.run_poe(Utils.create_driver(sys.argv[2]), test_log)
+    test_log.close()
 
 
 class PowerOverEthernet(object):
@@ -59,7 +60,6 @@ class PowerOverEthernet(object):
         time.sleep(2)
 
         self.login_manager.logout(driver)
-        test_log.close()
 
 if __name__ == "__main__":
     main()

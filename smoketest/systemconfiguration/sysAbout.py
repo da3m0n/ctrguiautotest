@@ -17,7 +17,7 @@ def main():
     about = SystemAbout(IsolatedLoginHandler())
     test_log = TestLog('System About', log_dir)
     about.run_system_about(Utils.create_driver(sys.argv[2]), test_log)
-    print('Inside system about')
+    test_log.close()
 
 
 class SystemAbout(object):
@@ -67,7 +67,6 @@ class SystemAbout(object):
 
         time.sleep(2)
         self.login_manager.logout(driver)
-        test_log.close()
 
 
 if __name__ == "__main__":

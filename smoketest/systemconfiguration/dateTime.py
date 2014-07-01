@@ -14,6 +14,7 @@ def main():
     date_time = DateTime(IsolatedLoginHandler())
     test_log = TestLog('Date Time', log_dir)
     date_time.run_date_time(Utils.create_driver(sys.argv[2]), test_log)
+    test_log.close()
 
 
 class DateTime():
@@ -57,7 +58,6 @@ class DateTime():
 
         # testLog.end_log2()
         self.login_manager.logout(driver)
-        test_log.close()
 
 
 if __name__ == "__main__":

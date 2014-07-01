@@ -15,6 +15,7 @@ def main():
     equip_view = EquipmentView(IsolatedLoginHandler())
     test_log = TestLog('Equipment View', log_dir)
     equip_view.run_equipment_view(Utils.create_driver(sys.argv[2]), test_log)
+    test_log.close()
 
 
 class EquipmentView():
@@ -42,7 +43,6 @@ class EquipmentView():
                                 'Ensure Chassis displayed')
 
         self.login_manager.logout(driver)
-        test_log.close()
 
 
 

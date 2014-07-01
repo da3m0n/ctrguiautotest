@@ -12,6 +12,7 @@ def main():
     manu_details = ManufactureDetails(IsolatedLoginHandler())
     test_log = TestLog('Manufacture Details', log_dir)
     manu_details.run_manufacture_details(Utils.create_driver(sys.argv[2]), test_log)
+    test_log.close()
 
 
 class ManufactureDetails(object):
@@ -37,7 +38,6 @@ class ManufactureDetails(object):
         # TestHelper.tear_down(driver)
 
         self.login_manager.logout(driver)
-        test_log.close()
 
 
 if __name__ == '__main__':

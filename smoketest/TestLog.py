@@ -53,6 +53,12 @@ class TestLog(object):
         local_time = time.localtime()
         date = time.strftime('%d_%B_%Y', local_time)
 
+        el = ET.SubElement(self.root, 'errorCount')
+        if self.per_test_errors > 0:
+            el.set('overallResult', 'Fail')
+        else:
+            el.set('overallResult', 'Pass')
+
         tree = ET.ElementTree(self.root)
         log_dir = self.dir + '\\logs\\' + date
         if not os.path.exists(log_dir):
