@@ -339,7 +339,7 @@ class Utils(object):
                 field2.set("file", xmlfile.replace('_', ' '))
                 field2.set('fileurl',  '/logs/' + logs_dir + '/' + xmlfile)
 
-                cls.extract_error_count(logs_dir + '/' + xmlfile)
+                result = cls.extract_error_count(logs_dir + '/' + xmlfile)
 
                 if len(next_in_logs[1]) > 0:
                     in_date_files = os.walk(next_in_logs[0] + '/screenshots').next()
@@ -348,7 +348,11 @@ class Utils(object):
                     for image_name in in_date_files[2]:
                         field3 = ET.SubElement(el, "screenshot")
                         field3.set("error", image_name)
-                        field3.set('imageurl',  '/logs/' + logs_dir + '/screenshots/' + image_name)
+
+                overallRes = ET.SubElement(field1, 'overallResult')
+                overallRes.set('overallResult', result)
+
+                field3.set('imageurl',  '/logs/' + logs_dir + '/screenshots/' + image_name)
 
         tree = ET.ElementTree(root)
         tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
@@ -362,10 +366,12 @@ class Utils(object):
         # root = tree.getroot()
         # print root
 
-        print soup.find('previous')
-        # print soup
-        # result = soup.previous.attrs[0][1]
-        # return result
+        smoketests = soup.findAll(lambda x: x.name == 'smoketests')
+        length = len(smoketests[0].contents[1]) - 1
+        contents = smoketests[0].contents[1].contents[length]
+        for content in contents.attrs:
+            result = content[1]
+        return result
 
     @classmethod
     def reformat_date(cls, date):
