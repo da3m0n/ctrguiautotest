@@ -19,7 +19,7 @@ class TestLog(object):
         self.per_test_errors = 0
         self.time = time.localtime()
         self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S', self.time)
-        self.url_friendly_start = time.strftime('%d_%B_%Y', self.time)
+        self.url_friendly_start = time.strftime('%Y_%B_%d', self.time)
         self.dir = dir
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
@@ -51,7 +51,7 @@ class TestLog(object):
 
     def close(self):
         local_time = time.localtime()
-        date = time.strftime('%d_%B_%Y', local_time)
+        date = time.strftime('%Y_%B_%d', local_time)
 
         el = ET.SubElement(self.root, 'errorCount')
         if self.per_test_errors > 0:

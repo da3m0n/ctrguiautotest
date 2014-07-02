@@ -12,7 +12,7 @@ from smoketest.mylib.utils import Utils
 from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
 from smoketest.systemconfiguration.sysAbout import SystemAbout
 from smoketest.systemconfiguration.sysInfo import SystemInformation
-from smoketest.systemconfiguration.equipmentView import EquipmentView
+from smoketest.systemconfiguration.EquipmentView import EquipmentView
 from optparse import OptionParser
 
 
@@ -92,8 +92,8 @@ class RunAll():
         print('init')
 
     def run_all(self):
-        active_sw_version = Utils.get_active_sw_version()
-        latest_swpack = Utils.get_latest_sw_pack_version()
+        # active_sw_version = Utils.get_active_sw_version()
+        # latest_swpack = Utils.get_latest_sw_pack_version()
 
         # dummies for tests
         active_sw_version = 'master.12.1919'
@@ -144,7 +144,8 @@ class RunAll():
         poe.run_poe(driver, test_log)
 
         login_handler.end(driver)
-
+        test_log.close()
+# 2003828.72
 
 if __name__ == "__main__":
     main()

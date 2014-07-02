@@ -99,6 +99,7 @@ class Utils(object):
     def logout(self, driver):
         try:
             #find the logout button
+            self.click_element(driver, "top_menu_users")
             self.click_element(driver, "top_menu_logout")
             print "Successfully logged out"
             driver.quit()
@@ -338,6 +339,8 @@ class Utils(object):
                 field2.set("file", xmlfile.replace('_', ' '))
                 field2.set('fileurl',  '/logs/' + logs_dir + '/' + xmlfile)
 
+                cls.extract_error_count(logs_dir + '/' + xmlfile)
+
                 if len(next_in_logs[1]) > 0:
                     in_date_files = os.walk(next_in_logs[0] + '/screenshots').next()
                     el = ET.SubElement(field1, 'screenshots')
@@ -352,8 +355,21 @@ class Utils(object):
 
 
     @classmethod
+    def extract_error_count(cls, xmlfile):
+        url = 'http://localhost/logs/' + xmlfile
+        soup = BeautifulSoup(urllib2.urlopen(url).read())
+        # tree = ET.fromstring(soup)
+        # root = tree.getroot()
+        # print root
+
+        print soup.find('previous')
+        # print soup
+        # result = soup.previous.attrs[0][1]
+        # return result
+
+    @classmethod
     def reformat_date(cls, date):
-        return datetime.datetime.strptime(date, "%d_%B_%Y").strftime("%d%m%Y")
+        return datetime.datetime.strptime(date, "%Y_%B_%d").strftime("%Y%B%d")
 
     @classmethod
     def insert_underscores(cls, str):
