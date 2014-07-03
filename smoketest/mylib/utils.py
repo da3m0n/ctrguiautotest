@@ -359,11 +359,6 @@ class Utils(object):
         tree = ET.ElementTree(root)
         tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
 
-
-    @staticmethod
-    def filter1(x):
-        return x.name == 'errorcount'
-
     @classmethod
     def extract_error_count(cls, xmlfile):
         url = 'http://localhost/logs/' + xmlfile
@@ -378,7 +373,7 @@ class Utils(object):
 
     @classmethod
     def reformat_date(cls, date):
-        return datetime.datetime.strptime(date, "%Y_%B_%d").strftime("%Y%B%d")
+        return datetime.datetime.strptime(date, "%Y_%B_%d").strftime("%Y%m%d")
 
     @classmethod
     def insert_underscores(cls, str):

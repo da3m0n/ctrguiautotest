@@ -3,11 +3,6 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="/">
-        <div class="row">
-            <h3>
-                Dates
-            </h3>
-        </div>
 
         <!--<xsl:for-each select="resultsFiles/testDate">-->
         <!--<div id="test">blah-->

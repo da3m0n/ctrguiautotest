@@ -23,6 +23,19 @@ body {
     margin: 0;
 }
 
+.container-spacer {
+    padding-top: 50px;
+}
+
+#jumbo-enhancements {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#dates {
+    padding-top: 30px;
+}
 .resultsRow li {
     padding: 5px;
     border-top: 0px solid #000000;

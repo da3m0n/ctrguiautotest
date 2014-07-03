@@ -63,7 +63,7 @@
                     dateObj = {'sortDate': [dates], 'date': date};
                 }
 
-                dates.sort(function(a, b){
+                dates.sort(function (a, b) {
                     return b - a;
                 });
 
@@ -81,12 +81,24 @@
     </script>
 </head>
 <body>
+<div class="jumbotron" id="jumbo-enhancements">
+    <div id="test-result"></div>
+</div>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header navbar-inverse">
+            <span class="navbar-brand">CSR Smoketests</span>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div id="dates" class="col-lg-3"></div>
         <div id="tests" class="col-lg-9"></div>
     </div>
 </div>
+
 <script src="vendor/js/jquery-1.11.1.min.js"></script>
 <script src="vendor/js/bootstrap.js"></script>
 <script src="vendor/js/lightbox.min.js"></script>
@@ -94,9 +106,11 @@
     var latest = logs.getLatestTest("logs/testDates.xml");
     var newDate = latest.date.split(' ').join('_');
     var newDateXml = newDate + '.xml';
-    
+
+    logs.displayResult("logs/testDates.xml", "quickResult.xsl", "test-result");
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
     logs.displayResult("logs/" + newDate + "/" + newDateXml, "results.xsl", "tests");
+
 </script>
 <script>
     $(".clicktest").click(function (e) {
