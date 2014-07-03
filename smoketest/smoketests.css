@@ -60,6 +60,12 @@ body {
     /*display: none*/
 }
 
-.testDate {
+.test-pass {
+    color: #008000;
+    font-size: 20px;
+}
 
+.test-fail {
+    color: #ff0000;
+    font-size: 20px;
 }

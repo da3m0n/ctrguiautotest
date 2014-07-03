@@ -29,16 +29,15 @@
                             </a>
                         </h4>
                         <div class="test pull-right">
-                            <!--<xsl:choose>-->
-                                <!--<xsl:when test="number(overallResult/@overallResult) == 0">-->
-                                    <!--happy-->
-                                <!--</xsl:when>-->
-                                <!--<xsl:otherwise>-->
-                                    <!--sad-->
-                                <!--</xsl:otherwise>-->
-<!---->
-                            <!--</xsl:choose>-->
-                            <xsl:value-of select="overallResult/@overallResult"/>
+                            <xsl:choose>
+                                <xsl:when test="errors/@totalErrors &gt; 0">
+                                    <span class="glyphicon glyphicon-remove test-fail"></span>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <span class="glyphicon glyphicon-ok test-pass"></span>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <!--<xsl:value-of select="errors/@totalErrors"/>-->
                         </div>
                         <div class="clearfix"></div>
                     </div>

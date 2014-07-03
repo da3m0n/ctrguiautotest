@@ -351,8 +351,8 @@ class Utils(object):
                         field3 = ET.SubElement(el, "screenshot")
                         field3.set("error", image_name)
 
-                overallRes = ET.SubElement(field1, 'overallResult')
-                overallRes.set('overallResult', result)
+                total_errors = ET.SubElement(field1, 'errors')
+                total_errors.set('totalErrors', result)
 
                 field3.set('imageurl',  '/logs/' + logs_dir + '/screenshots/' + image_name)
 
