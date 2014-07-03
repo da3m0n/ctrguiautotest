@@ -34,7 +34,6 @@ class TestLog(object):
         el = ET.SubElement(self.doc, "testStart")
         el.set("testStart", test_start)
 
-
     def log_it(self, data=None):
         el = ET.SubElement(self.doc, 'startTime')
         el.set('blah', data)

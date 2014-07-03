@@ -42,7 +42,7 @@ class PowerOverEthernet(object):
         failure_count = 0
         driver.switch_to_frame("frame_content")
         table_element = "PoEConfigWidget1_TW_table"
-        WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, table_element)))
+        WebDriverWait(driver, 30).until(EC.visibility_of_element_located((By.ID, table_element)))
         table = driver.find_element_by_id(table_element)
 
         headers = table.find_elements_by_tag_name('th')

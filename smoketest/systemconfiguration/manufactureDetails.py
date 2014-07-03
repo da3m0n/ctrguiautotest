@@ -22,7 +22,7 @@ class ManufactureDetails(object):
     def run_manufacture_details(self, driver, test_log):
         self.login_manager.login(driver)
         gui_lib = Utils()
-        test_helper = TestHelper(test_log)
+        test_helper = TestHelper(test_log, driver)
 
         test_log.start('Manufacture Details')
 

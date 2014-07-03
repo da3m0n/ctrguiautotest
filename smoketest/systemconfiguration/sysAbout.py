@@ -30,13 +30,7 @@ class SystemAbout(object):
         self.login_manager.login(driver)
         test_log.start('System About')
 
-        test_helper = TestHelper(test_log)
-
-        usr = "root"
-        pw = "admin123"
-        timetup = time.localtime()
-        iso = time.strftime('%Y-%m-%d %H:%M:%S ', timetup)
-        print "=====", iso, "====="
+        test_helper = TestHelper(test_log, driver)
 
         driver.switch_to_default_content()
         # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_node_7_tree")))
@@ -45,25 +39,32 @@ class SystemAbout(object):
         # time.sleep(2)
         # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_node_10")))
 
-        gui_lib.click_element(driver, 'menu_node_system_tree')
-        gui_lib.click_element(driver, 'menu_node_about')
+        gui_lib.click_element(driver, "top_menu_help")
+        gui_lib.click_element(driver, "help_about")
 
-        driver.switch_to_frame("frame_content")
+        original_window_handle = driver.current_window_handle
+
+        driver.switch_to_window(driver.window_handles[1])
 
         # about = driver.find_element(By.XPATH, "//body/fieldset/legend").text
         # assert about == "About", ("Expected About but got ", about)
 
-        # title = 'Aviat Networks Converged Transport Router'
-        # webTitle = driver.find_element_by_xpath('//body/fieldset/div/div/h3').text
+        title = 'Aviat Networks Converged Transport Router'
+        # webTitle = driver.find_element_by_xpath('//body/div/div/h3').text
+
         # assert title == webTitle, ('Expected ', title, ' but got ', webTitle)
         #
         # # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'licenses')))
         # time.sleep(2)
 
-        licenses = gui_lib.find_element(driver, 'licenses')  #driver.find_element_by_id('licenses')
-        # driver.execute_script("document.getElementById('licenses').innerHTML=\"\";")
+        licenses = gui_lib.find_element(driver, 'licenses')
+        driver.execute_script("document.getElementById('licenses').innerHTML=\"\";")
         test_helper.assert_true(len(licenses.text) == 0, 'Expected SW Version to be > 0',
                                'Checking Licenses text not empty')
+
+        driver.close()
+
+        driver.switch_to_window(original_window_handle)
 
         time.sleep(2)
         self.login_manager.logout(driver)

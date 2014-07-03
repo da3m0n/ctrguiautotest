@@ -20,7 +20,6 @@ def main():
 
 class EquipmentView():
     def __init__(self, login_manager):
-        print ' in constructor'
         self.login_manager = login_manager
 
     def run_equipment_view(self, driver, test_log):
@@ -30,20 +29,19 @@ class EquipmentView():
         test_helper = TestHelper(test_log, driver)
         test_log.start('Equipment View')
 
+        driver.switch_to_default_content()
         prodDescription = driver.find_element(By.ID, "top_menu_product_description").text
 
         driver.switch_to_frame("frame_content")
 
+        chassis = gui_lib.find_element_by_id(driver, 'ChassisViewWidget1_container')
         # driver.execute_script("document.getElementById('ChassisViewWidget1_container').innerHTML=\"\";")
-
-        chassis = driver.find_element_by_id('ChassisViewWidget1_container')
         # WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, chassis)))
 
         test_helper.assert_true(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
                                 'Ensure Chassis displayed')
 
         self.login_manager.logout(driver)
-
 
 
 if __name__ == '__main__':

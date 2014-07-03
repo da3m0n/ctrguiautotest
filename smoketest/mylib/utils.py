@@ -41,9 +41,8 @@ class Dates(Enum):
 
 class Utils(object):
     def __init__(self):
-        print( 'test')
-    # resultFile =
-    rt = None
+        rt = None
+        # resultFile =
 
     @staticmethod
     def create_driver(driverName):
@@ -127,7 +126,6 @@ class Utils(object):
             print("Address argument missing")
             sys.exit()
         address = "http://" + sys.argv[1]
-        print("Getting address:", address)
         #get page
         driver.get(address)
 
