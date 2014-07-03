@@ -9,6 +9,8 @@ from selenium.webdriver.support import expected_conditions as EC  # available si
 from selenium import webdriver
 import urllib2
 from BeautifulSoup import BeautifulSoup
+# from bs4 import BeautifulSoup
+# import BeautifulSoup
 from smoketest.telnet.Telnet import TelnetClient
 import threading
 
@@ -39,7 +41,7 @@ class Dates(Enum):
 
 class Utils(object):
     def __init__(self):
-        print 'test'
+        print( 'test')
     # resultFile =
     rt = None
 
@@ -64,7 +66,7 @@ class Utils(object):
             pw = "admin123"
             local_time = time.localtime()
             iso = time.strftime('%Y-%m-%d %H:%M:%S ', local_time)
-            print "=====", iso, "====="
+            print("=====", iso, "=====")
 
             self.getAddress(driver)
             self.windowInit(driver)
@@ -85,15 +87,15 @@ class Utils(object):
             # submit the form
             inputElement.submit()
         except:
-            print "Login page not as expected. Exiting..."
+            print("Login page not as expected. Exiting...")
             driver.quit()
         try:
             # we have to wait for the page to refresh, the last thing that seems to be updated is the title
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "layout_device_name")))
-            print 'Login Successful'
+            print('Login Successful')
             time.sleep(5)
         except:
-            print "Login unsuccessful"
+            print("Login unsuccessful")
 
     #logout, as too many sessions are not allowed
     def logout(self, driver):
@@ -101,31 +103,31 @@ class Utils(object):
             #find the logout button
             self.click_element(driver, "top_menu_users")
             self.click_element(driver, "top_menu_logout")
-            print "Successfully logged out"
+            print("Successfully logged out")
             driver.quit()
         except:
             try:
                 #otherwise check whether already on the login page
                 page1 = driver.find_element_by_name("Login")
             except:
-                print "Logout unsuccessful. This may cause errors with max number of sessions"
+                print("Logout unsuccessful. This may cause errors with max number of sessions")
 
 
     #initialise the window size so that all elements are visible
     @classmethod
     def windowInit(self, driver):
         driver.set_window_size(1200, 800)
-        print "Window Resized"
+        print("Window Resized")
         #handle = driver.window_handles
 
     #get the page from the address argument, eg. 192.168.11.11
     @classmethod
     def getAddress(self, driver):
         if len(sys.argv) < 2:
-            print "Address argument missing"
+            print("Address argument missing")
             sys.exit()
         address = "http://" + sys.argv[1]
-        print "Getting address:", address
+        print("Getting address:", address)
         #get page
         driver.get(address)
 
@@ -138,19 +140,19 @@ class Utils(object):
         #check that two windows exist
         handle = driver.window_handles
         if len(handle) != 2:
-            print "Incorrect number of windows found"
-            print handle
+            print("Incorrect number of windows found")
+            print(handle)
             sys.exit()
         time.sleep(5)
         try:
             driver.switch_to_window(handle[1])
-            print "changing to help window"
+            print("changing to help window")
         except:
-            print "Unable to change to the help window"
+            print("Unable to change to the help window")
             sys.exit()
         driver.switch_to_frame("body")
         popup = driver.find_element(By.XPATH, "//body/h1").text
-        print "Popup:", popup
+        print("Popup:", popup)
         popup = popup.upper()
         return popup
 
@@ -240,8 +242,8 @@ class Utils(object):
                     return BUILD_LOCATION + tds
 
 
-        except IOError, msg:
-            print "Couldn't open URL %s: %s" % (BUILD_LOCATION, str(msg))
+        except IOError as msg:
+            print("Couldn't open URL %s: %s" % (BUILD_LOCATION, str(msg)))
 
     @classmethod
     def get_active_sw_version(cls):
@@ -264,7 +266,7 @@ class Utils(object):
         telnet.send(command.encode('ascii', 'ignore'))
 
         if cls.must_send_abort(telnet):
-            print 'sending abort command...'
+            print('sending abort command...')
             telnet.send('abort')
 
         telnet.send('load activate')
@@ -302,10 +304,10 @@ class Utils(object):
             status = ''
             if item.startswith('Load'):
                 progress = item.strip('Load Progress:')
-                print progress
+                print(progress)
             if item.startswith('Current'):
                 status = item.strip('Current Status:')
-                print status
+                print(status)
             if item.startswith('Activation'):
                 progress = item.strip()
 
@@ -313,7 +315,7 @@ class Utils(object):
                 if telnet is not None:
                     telnet.close()
                 timer.stop()
-                print 'SOFTWARE LOAD FINISHED...'
+                print('SOFTWARE LOAD FINISHED...')
                 func()
 
     @classmethod
@@ -327,7 +329,7 @@ class Utils(object):
 
         dir_contents = os.walk(results_dir + '/logs/').next()
         for logs_dir in dir_contents[1]:
-            print logs_dir
+            print(logs_dir)
             field1 = ET.SubElement(root, "testDate")
             field1.set("date", logs_dir.replace('_', ' '))
             field1.set('sortDate', cls.reformat_date(logs_dir))
@@ -358,19 +360,20 @@ class Utils(object):
         tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
 
 
+    @staticmethod
+    def filter1(x):
+        return x.name == 'errorcount'
+
     @classmethod
     def extract_error_count(cls, xmlfile):
         url = 'http://localhost/logs/' + xmlfile
         soup = BeautifulSoup(urllib2.urlopen(url).read())
-        # tree = ET.fromstring(soup)
-        # root = tree.getroot()
-        # print root
 
-        smoketests = soup.findAll(lambda x: x.name == 'smoketests')
-        length = len(smoketests[0].contents[1]) - 1
-        contents = smoketests[0].contents[1].contents[length]
+        error_count = soup.findAll(lambda x: x.name == 'errorcount')
+        contents = error_count[0]
         for content in contents.attrs:
             result = content[1]
+            break
         return result
 
     @classmethod

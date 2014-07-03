@@ -8,6 +8,7 @@ class TestLog(object):
     overall_errors = 0
     num_tests_run = 0
     name = ''
+    test_errors = 0
 
     def __init__(self, name, dir):
         """Class to log errors"""
@@ -16,7 +17,6 @@ class TestLog(object):
         self.root = ET.Element("smoketests")
         self.root.append(Comment('Do Not Change. Auto Generated in TestLog.py'))
 
-        self.per_test_errors = 0
         self.time = time.localtime()
         self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S', self.time)
         self.url_friendly_start = time.strftime('%Y_%B_%d', self.time)
@@ -30,21 +30,17 @@ class TestLog(object):
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
 
         test_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)
-        # ET.SubElement(self.root, 'startTime', str(iso))
 
         el = ET.SubElement(self.doc, "testStart")
-        el.set("teststart", test_start)
+        el.set("testStart", test_start)
 
-        # field2 = ET.SubElement(doc, "field2")
-        # field2.set("name", "asdfasd")
-        # field2.text = "some vlaue2"
-        self.num_tests_run += 1
 
     def log_it(self, data=None):
         el = ET.SubElement(self.doc, 'startTime')
         el.set('blah', data)
 
     def log_it2(self, count, msg=None, test_name=None):
+        self.test_errors += count
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
         el.set('testName', test_name)
@@ -53,11 +49,8 @@ class TestLog(object):
         local_time = time.localtime()
         date = time.strftime('%Y_%B_%d', local_time)
 
-        el = ET.SubElement(self.root, 'errorCount')
-        if self.per_test_errors > 0:
-            el.set('overallResult', 'Fail')
-        else:
-            el.set('overallResult', 'Pass')
+        errors = ET.SubElement(self.root, 'errorCount')
+        errors.set('errorCount', str(self.test_errors))
 
         tree = ET.ElementTree(self.root)
         log_dir = self.dir + '\\logs\\' + date

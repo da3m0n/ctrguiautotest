@@ -21,6 +21,7 @@ class TestHelper(object):
 
     def assert_true(self, val, msg=None, test_name=None):
         if val:
+
             self.error_count += 1
             pwd = os.getcwd()
             screenshots_dir = pwd + '\\logs\\' + self.log.url_friendly_start + '\\screenshots'
@@ -38,6 +39,7 @@ class TestHelper(object):
             msg = '-'
             # self.driver.save_screenshot('testypass.png')
             self.log.log_it2(self.error_count, msg, test_name)
+        self.error_count = 0
 
     def assert_not_equal(self, val1, val2, msg=None):
         if val1 != val2:
