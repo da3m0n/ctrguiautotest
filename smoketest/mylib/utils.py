@@ -14,7 +14,6 @@ from BeautifulSoup import BeautifulSoup
 from smoketest.telnet.Telnet import TelnetClient
 import threading
 
-
 from xml.etree import ElementTree
 from xml.dom import minidom
 
@@ -103,7 +102,9 @@ class Utils(object):
             self.click_element(driver, "top_menu_users")
             self.click_element(driver, "top_menu_logout")
             print("Successfully logged out")
-            driver.quit()
+            login_button = Utils.find_element(driver, 'login')
+            if not login_button is None:
+                driver.quit()
         except:
             try:
                 #otherwise check whether already on the login page
@@ -190,7 +191,7 @@ class Utils(object):
             return 'not found'
 
     RETRIES = 3
-    TIMEOUT_SECONDS = 10
+    TIMEOUT_SECONDS = 30
 
     def find_element_by_id(self, driver, id):
 
@@ -337,7 +338,7 @@ class Utils(object):
             for xmlfile in next_in_logs[2]:
                 field2 = ET.SubElement(field1, "fileName")
                 field2.set("file", xmlfile.replace('_', ' '))
-                field2.set('fileurl',  '/logs/' + logs_dir + '/' + xmlfile)
+                field2.set('fileurl', '/logs/' + logs_dir + '/' + xmlfile)
 
                 result = cls.extract_error_count(logs_dir + '/' + xmlfile)
 
@@ -348,11 +349,12 @@ class Utils(object):
                     for image_name in in_date_files[2]:
                         field3 = ET.SubElement(el, "screenshot")
                         field3.set("error", image_name)
+                        field3.set('imageurl', '/logs/' + logs_dir + '/screenshots/' + image_name)
 
                 total_errors = ET.SubElement(field1, 'errors')
                 total_errors.set('totalErrors', result)
 
-                field3.set('imageurl',  '/logs/' + logs_dir + '/screenshots/' + image_name)
+
 
         tree = ET.ElementTree(root)
         tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
@@ -377,6 +379,7 @@ class Utils(object):
     def insert_underscores(cls, str):
         val = str.replace(' ', '_')
         return val
+
 
 from threading import Timer
 
@@ -405,6 +408,7 @@ class RepeatedTimer(object):
     def stop(self):
         self._timer.cancel()
         self.is_running = False
+
 
 if __name__ == "__main__":
     main()
