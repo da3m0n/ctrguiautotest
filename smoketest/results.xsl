@@ -7,8 +7,8 @@
         <!--test-->
         <!--</div>-->
 
-        <div class="row title">
-            Running Smoketest at <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
+        <div class="row" id="last-smoketest">
+            Last Smoketest run at <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
         </div>
         <div class="row headerRow">
             <h3>
@@ -27,12 +27,12 @@
                         <xsl:for-each select="error">
                             <xsl:choose>
                                 <xsl:when test="string-length(@msg) > 1">
-                                    <li class="fail">
+                                    <li class="test-fail">
                                         <xsl:value-of select="@testName"/>
                                     </li>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <li class="pass">
+                                    <li class="test-pass">
                                         <xsl:value-of select="@testName"/>
                                     </li>
                                 </xsl:otherwise>
@@ -45,10 +45,10 @@
                         <xsl:for-each select="error">
                             <xsl:choose>
                                 <xsl:when test="string-length(@msg) > 1">
-                                    <li class="fail">Fail</li>
+                                    <li class="test-fail">Fail</li>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <li class="pass">Pass</li>
+                                    <li class="test-pass">Pass</li>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:for-each>
@@ -60,12 +60,12 @@
                         <xsl:for-each select="error">
                             <xsl:choose>
                                 <xsl:when test="string-length(@msg) > 1">
-                                    <li class="fail">
+                                    <li class="test-fail">
                                         <xsl:value-of select="@msg"/>
                                     </li>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <li class="pass">
+                                    <li class="test-pass">
                                         <xsl:value-of select="@msg"/>
                                     </li>
                                 </xsl:otherwise>

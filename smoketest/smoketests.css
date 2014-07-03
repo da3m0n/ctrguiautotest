@@ -28,8 +28,8 @@ body {
 }
 
 #jumbo-enhancements {
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
@@ -41,24 +41,15 @@ body {
     border-top: 0px solid #000000;
 }
 
-.pass {
-    /*background-color: rgba(0, 245, 7, 0.4);*/
-    /*background-color: #9ccc33;*/
-    color: #148e0f;
-}
-
-.fail {
-    /*background-color: #db163d;*/
-    color: #db1b00;
-    /*background-color: rgba(255, 2, 2, 0.83);*/
-}
-
 #dateMenu ul {
     list-style: none;
     padding-left: 5px;
     /*margin: 0;*/
 }
-
+#last-smoketest {
+    padding-left: 150px;
+    color: #696969;
+}
 .artifacts {
     display: block;
 }
@@ -75,10 +66,8 @@ body {
 
 .test-pass {
     color: #008000;
-    font-size: 20px;
 }
 
 .test-fail {
     color: #ff0000;
-    font-size: 20px;
 }

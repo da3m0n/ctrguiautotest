@@ -48,7 +48,7 @@ class DateTime():
 
         test_helper.assert_true(len(headers) == 0, 'Expected Headers, got None', 'Testing Headers')
 
-        driver.execute_script("document.getElementById('DateTimeWidget1_TW_1_1').innerHTML=\"\";")
+        # driver.execute_script("document.getElementById('DateTimeWidget1_TW_1_1').innerHTML=\"\";")
         mycalendar = table.find_element_by_id('DateTimeWidget1_TW_1_1')
         test_helper.assert_true(len(mycalendar.text) <= 0, 'Expected Calendar length > 0', 'Testing Calendar length')
 

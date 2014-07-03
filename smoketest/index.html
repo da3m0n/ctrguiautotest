@@ -107,7 +107,7 @@
     var newDate = latest.date.split(' ').join('_');
     var newDateXml = newDate + '.xml';
 
-    logs.displayResult("logs/testDates.xml", "quickResult.xsl", "test-result");
+    logs.displayResult("logs/" + newDate + "/" + newDateXml, "quickResult.xsl", "test-result");
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
     logs.displayResult("logs/" + newDate + "/" + newDateXml, "results.xsl", "tests");
 
