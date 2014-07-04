@@ -328,7 +328,6 @@ class Utils(object):
 
         dir_contents = os.walk(results_dir + '/logs/').next()
         for logs_dir in dir_contents[1]:
-            print(logs_dir)
             field1 = ET.SubElement(root, "testDate")
             field1.set("date", logs_dir.replace('_', ' '))
             field1.set('sortDate', cls.reformat_date(logs_dir))
@@ -371,7 +370,8 @@ class Utils(object):
 
     @classmethod
     def reformat_date(cls, date):
-        return datetime.datetime.strptime(date, "%Y_%B_%d").strftime("%Y%m%d")
+        return datetime.datetime.strptime(date, "%d_%B_%Y").strftime("%Y%m%d")
+
 
     @classmethod
     def insert_underscores(cls, str):

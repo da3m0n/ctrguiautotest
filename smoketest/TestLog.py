@@ -23,7 +23,7 @@ class TestLog(object):
         self.dir = dir
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
-        el.set('friendlyStart', self.url_friendly_start)
+        # el.set('friendlyStart', self.url_friendly_start)
 
     def start(self, name):
         # root = ET.Element("root")
@@ -46,7 +46,7 @@ class TestLog(object):
 
     def close(self):
         local_time = time.localtime()
-        date = time.strftime('%Y_%B_%d', local_time)
+        date = time.strftime('%d_%B_%Y', local_time)
 
         errors = ET.SubElement(self.root, 'errorCount')
         errors.set('errorCount', str(self.test_errors))
