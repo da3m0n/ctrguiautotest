@@ -23,10 +23,8 @@ class TestLog(object):
         self.dir = dir
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
-        # el.set('friendlyStart', self.url_friendly_start)
 
     def start(self, name):
-        # root = ET.Element("root")
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
 
         test_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)

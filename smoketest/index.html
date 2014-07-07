@@ -1,6 +1,7 @@
 <html>
 <head>
     <title>Smoke Tests</title>
+    <meta http-equiv="refresh" content="86400" />
     <!--<link rel="stylesheet" href="vendor/css/screen.css">-->
     <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="smoketests.css"/>
@@ -34,8 +35,8 @@
             }
 
             function displayResult(filename, xsl, elementId) {
-                var xml = loadXMLDoc(filename);
-                var xsl = loadXMLDoc(xsl);
+                var xml = loadXMLDoc(filename),
+                        xsl = loadXMLDoc(xsl);
                 // code for IE
                 if (window.ActiveXObject || xml.responseType === "msxml-document") {
                     document.getElementById(elementId).innerHTML = xml.response.transformNode(xsl.response);
@@ -50,15 +51,15 @@
             }
 
             function getLatestTest(file) {
-                var xml = loadXMLDoc(file);
-                var xmldoc = xml.response;
-                var testDateTags = xmldoc.getElementsByTagName('testDate');
-                var dates = [];
-                var dateObj = {};
+                var xml = loadXMLDoc(file),
+                        xmldoc = xml.response,
+                        testDateTags = xmldoc.getElementsByTagName('testDate'),
+                        dates = [],
+                        dateObj = {};
 
                 for (var i = 0; i < testDateTags.length; i++) {
-                    var sortDate = testDateTags.item(i).attributes[1].nodeValue;
-                    var date = testDateTags.item(i).attributes[0].nodeValue;
+                    var sortDate = testDateTags.item(i).attributes[1].nodeValue,
+                            date = testDateTags.item(i).attributes[0].nodeValue;
                     dates.push(sortDate);
                     dateObj = {'sortDate': [dates], 'date': date};
                 }
@@ -113,16 +114,16 @@
 
 </script>
 <script>
-    $(".clicktest").click(function (e) {
+
+    $(".datesListener").on('click', function (e) {
         var date = $(this).attr('href');
         e.preventDefault();
-        $('#tests').html("");
-        $('#dates').html("");
-        test(date);
+        $('#tests').empty();
+        loadNewResults(date);
     });
 
-    function test(date) {
-        logs.displayResult("logs/testDates.xml", "dates.xsl", "dates")
+
+    function loadNewResults(date) {
         logs.displayResult(date, 'results.xsl', 'tests');
     }
 </script>
