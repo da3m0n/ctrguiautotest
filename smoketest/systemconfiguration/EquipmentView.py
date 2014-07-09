@@ -5,13 +5,10 @@ from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 from smoketest.mylib.utils import Utils
 
-__author__ = 'rnaude'
-
 
 def main():
     print 'in main'
     log_dir = Utils.log_dir()
-    Utils.delete_existing_logfile(log_dir)
     equip_view = EquipmentView(IsolatedLoginHandler())
     test_log = TestLog('Equipment View', log_dir)
     equip_view.run_equipment_view(Utils.create_driver(sys.argv[2]), test_log)

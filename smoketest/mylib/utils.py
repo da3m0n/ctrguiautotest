@@ -166,18 +166,6 @@ class Utils(object):
         driver.find_element(By.ID, element).click()
 
     @staticmethod
-    def delete_existing_logfile(dir):
-        print('dir', dir)
-        logFile = os.path.abspath(dir + '\\logs\\testLog.xml')
-        print(logFile)
-
-        if os.path.isfile(logFile):
-            print('Deleting existing log file.')
-            os.remove(logFile)
-        else:
-            print('No existing ', logFile, ' file.')
-
-    @staticmethod
     def log_dir():
         return os.path.dirname(os.path.dirname(__file__))
 

@@ -19,7 +19,7 @@ class TestLog(object):
 
         self.time = time.localtime()
         self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S', self.time)
-        self.url_friendly_start = time.strftime('%Y_%B_%d', self.time)
+        self.url_friendly_start = time.strftime('%d_%B_%Y', self.time)
         self.dir = dir
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)

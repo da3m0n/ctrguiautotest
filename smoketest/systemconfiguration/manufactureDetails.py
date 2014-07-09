@@ -8,7 +8,6 @@ from smoketest.mylib.utils import Utils
 
 def main():
     log_dir = Utils.log_dir()
-    Utils.delete_existing_logfile(log_dir)
     manu_details = ManufactureDetails(IsolatedLoginHandler())
     test_log = TestLog('Manufacture Details', log_dir)
     manu_details.run_manufacture_details(Utils.create_driver(sys.argv[2]), test_log)

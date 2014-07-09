@@ -13,7 +13,6 @@ from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
 
 def main():
     log_dir = Utils.log_dir()
-    Utils.delete_existing_logfile(log_dir)
     system_info = SystemInformation(IsolatedLoginHandler())
     test_log = TestLog('System Information', log_dir)
     system_info.run_system_information(Utils.create_driver(sys.argv[2]), test_log)

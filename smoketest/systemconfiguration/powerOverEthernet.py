@@ -13,7 +13,6 @@ from smoketest.mylib.utils import Utils
 
 def main():
     log_dir = Utils.log_dir()
-    Utils.delete_existing_logfile(log_dir)
     poe = PowerOverEthernet(IsolatedLoginHandler())
     test_log = TestLog('Power Over Ethernet', log_dir)
     poe.run_poe(Utils.create_driver(sys.argv[2]), test_log)

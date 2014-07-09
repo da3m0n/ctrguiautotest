@@ -10,7 +10,6 @@ import os
 
 def main():
     log_dir = Utils.log_dir()
-    Utils.delete_existing_logfile(log_dir)
     date_time = DateTime(IsolatedLoginHandler())
     test_log = TestLog('Date Time', log_dir)
     date_time.run_date_time(Utils.create_driver(sys.argv[2]), test_log)
@@ -50,7 +49,7 @@ class DateTime():
 
         # driver.execute_script("document.getElementById('DateTimeWidget1_TW_1_1').innerHTML=\"\";")
         mycalendar = table.find_element_by_id('DateTimeWidget1_TW_1_1')
-        test_helper.assert_true(len(mycalendar.text) <= 0, 'Expected Calendar length > 0', 'Testing Calendar length')
+        test_helper.assert_true(len(mycalendar.text) <= 0, 'No DateTimeWidget displayed', 'Testing DateTime widget')
 
         # driver.execute_script("document.getElementById('DateTimeWidget1_TW_3_1').innerHTML=\"\";")
         time_zone = table.find_element_by_id('DateTimeWidget1_TW_3_1')
