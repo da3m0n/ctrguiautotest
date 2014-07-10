@@ -20,9 +20,9 @@ class EquipmentView():
         self.login_manager = login_manager
 
     def run_equipment_view(self, driver, test_log):
-        gui_lib = Utils()
+        gui_lib = Utils(driver)
 
-        self.login_manager.login(driver)
+        self.login_manager.login()
         test_helper = TestHelper(test_log, driver)
         test_log.start('Equipment View')
 
@@ -38,7 +38,7 @@ class EquipmentView():
         test_helper.assert_true(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
                                 'Ensure Chassis displayed')
 
-        self.login_manager.logout(driver)
+        self.login_manager.logout()
 
 
 if __name__ == '__main__':

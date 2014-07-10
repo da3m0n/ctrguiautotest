@@ -23,9 +23,9 @@ class DateTime():
 
     def run_date_time(self, driver, test_log):
 
-        gui_lib = Utils()
+        gui_lib = Utils(driver)
 
-        self.login_manager.login(driver)
+        self.login_manager.login()
 
         test_log.start('Date Time')
         test_helper = TestHelper(test_log, driver)
@@ -33,8 +33,8 @@ class DateTime():
         failure_count = 0
 
         driver.switch_to_default_content()
-        gui_lib.click_element(driver, 'menu_node_system_tree')
-        gui_lib.click_element(driver, 'menu_node_date_time')
+        gui_lib.click_element('menu_node_system_tree')
+        gui_lib.click_element('menu_node_date_time')
 
         # gui_lib.click_element(driver, "menu_node_9")
         driver.switch_to_frame("frame_content")
@@ -56,7 +56,7 @@ class DateTime():
         test_helper.assert_true(len(time_zone.text) <= 0, 'Expected TimeZone length > 0', 'Testing Timezone')
 
         # testLog.end_log2()
-        self.login_manager.logout(driver)
+        self.login_manager.logout()
 
 
 if __name__ == "__main__":

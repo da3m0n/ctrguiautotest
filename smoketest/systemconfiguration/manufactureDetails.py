@@ -19,15 +19,15 @@ class ManufactureDetails(object):
         self.login_manager = login_manager
 
     def run_manufacture_details(self, driver, test_log):
-        self.login_manager.login(driver)
-        gui_lib = Utils()
+        self.login_manager.login()
+        gui_lib = Utils(driver)
         test_helper = TestHelper(test_log, driver)
 
         test_log.start('Manufacture Details')
 
         driver.switch_to_default_content()
-        gui_lib.click_element(driver, 'menu_node_system_tree')
-        gui_lib.click_element(driver, 'menu_node_manufacture')
+        gui_lib.click_element('menu_node_system_tree')
+        gui_lib.click_element('menu_node_manufacture')
 
         driver.switch_to_frame('frame_content')
         manu_details = driver.find_element_by_id('ManufactureDetailsWidget1_content').text
@@ -36,7 +36,7 @@ class ManufactureDetails(object):
 
         # TestHelper.tear_down(driver)
 
-        self.login_manager.logout(driver)
+        self.login_manager.logout()
 
 
 if __name__ == '__main__':

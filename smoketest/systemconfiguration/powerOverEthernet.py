@@ -25,14 +25,14 @@ class PowerOverEthernet(object):
         # self.test_log = TestLog(self.__class__.__name__)
 
     def run_poe(self, driver, test_log):
-        self.login_manager.login(driver)
+        self.login_manager.login()
 
-        gui_lib = Utils()
+        gui_lib = Utils(driver)
         test_helper = TestHelper(test_log, driver)
 
         driver.switch_to_default_content()
-        gui_lib.click_element(driver, 'menu_node_system_tree')
-        gui_lib.click_element(driver, 'menu_node_poe_config')
+        gui_lib.click_element('menu_node_system_tree')
+        gui_lib.click_element('menu_node_poe_config')
 
         test_log.start('Power Over Ethernet')
 
@@ -58,7 +58,7 @@ class PowerOverEthernet(object):
 
         time.sleep(2)
 
-        self.login_manager.logout(driver)
+        self.login_manager.logout()
 
 if __name__ == "__main__":
     main()

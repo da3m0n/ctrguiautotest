@@ -3,19 +3,20 @@ from smoketest.mylib.utils import Utils
 
 
 class LoginHandler(object):
-    def __init__(self):
-        self.utils = Utils()
+    def __init__(self, driver):
+        self.utils = Utils(driver)
+        self.driver = driver
 
-    def login(self, driver):
+    def login(self):
         print('doing nothing, already logged from start()')
 
-    def logout(self, driver):
+    def logout(self):
         print('normal logout')
 
-    def start(self, driver):
-        self.utils.startBrowser(driver)
-        self.utils.login(driver, 'root', 'admin123')
+    def start(self):
+        self.utils.startBrowser(self.driver)
+        self.utils.login(self.driver, 'root', 'admin123')
 
-    def end(self, driver):
-        driver.switch_to_default_content()
-        self.utils.logout(driver)
+    def end(self):
+        self.driver.switch_to_default_content()
+        self.utils.logout(self.driver)

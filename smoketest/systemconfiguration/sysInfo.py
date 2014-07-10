@@ -24,9 +24,9 @@ class SystemInformation(object):
         self.login_manager = login_manager
 
     def run_system_information(self, driver, test_log):
-        gui_lib = Utils()
+        gui_lib = Utils(driver)
 
-        self.login_manager.login(driver)
+        self.login_manager.login()
 
         usr = "root"
         pw = "admin123"
@@ -39,8 +39,8 @@ class SystemInformation(object):
 
         driver.switch_to_default_content()
 
-        gui_lib.click_element(driver, 'menu_node_system_tree')
-        gui_lib.click_element(driver, 'menu_node_system_info')
+        gui_lib.click_element('menu_node_system_tree')
+        gui_lib.click_element('menu_node_system_info')
 
         driver.switch_to_frame("frame_content")
         table = driver.find_element_by_id("SystemInformationWidget1_TW_table")
@@ -67,7 +67,7 @@ class SystemInformation(object):
         # assert firmVersionLen > 0, ('Expected length of Firmware Version to be greater than zero but was ', firmVersionLen)
 
         time.sleep(2)
-        self.login_manager.logout(driver)
+        self.login_manager.logout()
 
 
 if __name__ == "__main__":

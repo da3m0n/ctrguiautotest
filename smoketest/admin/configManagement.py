@@ -17,17 +17,17 @@ class ConfigManagement():
         self.login_manager = login_manager
 
     def run_config_management(self, driver, test_log):
-        gui_lib = Utils()
+        gui_lib = Utils(driver)
 
-        self.login_manager.login(driver)
+        self.login_manager.login()
 
         test_log.start('Config Management')
         test_helper = TestHelper(test_log, driver)
 
         driver.switch_to_default_content()
-        gui_lib.click_element(driver, 'menu_node_system_tree')
-        gui_lib.click_element(driver, 'menu_node_admin_tree')
-        gui_lib.click_element(driver, 'menu_node_config_management')
+        gui_lib.click_element('menu_node_system_tree')
+        gui_lib.click_element('menu_node_admin_tree')
+        gui_lib.click_element('menu_node_config_management')
 
         driver.switch_to_frame('frame_content')
 
@@ -35,7 +35,7 @@ class ConfigManagement():
         # driver.execute_script("document.getElementById('download').style.visibility='hidden'")
         test_helper.assert_true(len(downloadBtn.text) <= 0, 'Button has no text', 'Button text visible')
         test_helper.assert_true(downloadBtn.is_displayed() == False, 'Download button not displayed', 'Download button visible onscreen')
-        self.login_manager.logout(driver)
+        self.login_manager.logout()
 
 if __name__ == '__main__':
     main()

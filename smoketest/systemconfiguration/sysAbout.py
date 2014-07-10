@@ -24,9 +24,9 @@ class SystemAbout(object):
         self.login_manager = login_manager
 
     def run_system_about(self, driver, test_log):
-        gui_lib = Utils()
+        gui_lib = Utils(driver)
 
-        self.login_manager.login(driver)
+        self.login_manager.login()
         test_log.start('System About')
 
         test_helper = TestHelper(test_log, driver)
@@ -38,8 +38,8 @@ class SystemAbout(object):
         # time.sleep(2)
         # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_node_10")))
 
-        gui_lib.click_element(driver, "top_menu_help")
-        gui_lib.click_element(driver, "help_about")
+        gui_lib.click_element("top_menu_help")
+        gui_lib.click_element("help_about")
 
         original_window_handle = driver.current_window_handle
 
@@ -56,7 +56,7 @@ class SystemAbout(object):
         # # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'licenses')))
         # time.sleep(2)
 
-        licenses = gui_lib.find_element(driver, 'licenses')
+        licenses = gui_lib.find_element('licenses')
         # driver.execute_script("document.getElementById('licenses').innerHTML=\"\";")
         test_helper.assert_true(len(licenses.text) == 0, 'Expected SW Version to be > 0',
                                'Checking Licenses text not empty')
@@ -66,7 +66,7 @@ class SystemAbout(object):
         driver.switch_to_window(original_window_handle)
 
         time.sleep(2)
-        self.login_manager.logout(driver)
+        self.login_manager.logout()
 
 
 if __name__ == "__main__":

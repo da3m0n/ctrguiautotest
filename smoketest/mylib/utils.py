@@ -39,8 +39,11 @@ class Dates(Enum):
 
 
 class Utils(object):
-    def __init__(self):
+
+
+    def __init__(self, driver):
         rt = None
+        self.driver = driver
         # resultFile =
 
     @staticmethod
@@ -99,8 +102,8 @@ class Utils(object):
     def logout(self, driver):
         try:
             #find the logout button
-            self.click_element(driver, "top_menu_users")
-            self.click_element(driver, "top_menu_logout")
+            self.click_element("top_menu_users")
+            self.click_element("top_menu_logout")
             print("Successfully logged out")
             login_button = Utils.find_element(driver, 'login')
             if not login_button is None:
@@ -117,7 +120,6 @@ class Utils(object):
     @classmethod
     def windowInit(self, driver):
         driver.set_window_size(1200, 800)
-        print("Window Resized")
         #handle = driver.window_handles
 
     #get the page from the address argument, eg. 192.168.11.11
@@ -155,40 +157,33 @@ class Utils(object):
         popup = popup.upper()
         return popup
 
-    # need to complete this method
-    def insertJS(self, driver, elem, str):
-        driver.execute_script("document.getElementById('SystemInformationWidget1_TW_0_1_renderer').innerHTML=\"\";")
-        return None
-
-    @staticmethod
-    def click_element(driver, element):
-        WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
-        driver.find_element(By.ID, element).click()
+    def click_element(self, element):
+        WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
+        self.driver.find_element(By.ID, element).click()
 
     @staticmethod
     def log_dir():
         return os.path.dirname(os.path.dirname(__file__))
 
-
-    @staticmethod
-    def find_element(driver, element):
+    def find_element(self, element):
         try:
-            WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
-            return driver.find_element(By.ID, element)
+            WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
+            return self.driver.find_element(By.ID, element)
         except NoSuchElementException:
             return 'not found'
 
     RETRIES = 3
     TIMEOUT_SECONDS = 30
 
-    def find_element_by_id(self, driver, id):
+    @classmethod
+    def find_element_by_id(cls, driver, id):
 
         tries = 0
         element = None
 
-        while tries < self.RETRIES:
+        while tries < cls.RETRIES:
             try:
-                element = WebDriverWait(self, self.TIMEOUT_SECONDS).until(
+                element = WebDriverWait(cls, cls.TIMEOUT_SECONDS).until(
                     lambda l: driver.find_element_by_id(id))
                 # element = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
             except TimeoutException:

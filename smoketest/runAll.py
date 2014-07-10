@@ -98,8 +98,8 @@ class RunAll():
         latest_swpack = Utils.get_latest_sw_pack_version()
 
         # dummies for tests
-        active_sw_version = 'master.12.1919'
-        latest_swpack = 'master.12.1919'
+        # active_sw_version = 'master.12.1919'
+        # latest_swpack = 'master.12.1919'
 
         # swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
         get_latest = must_download_latest(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
@@ -119,8 +119,8 @@ class RunAll():
         # driver.Firefox()
         # driver.Ie()
 
-        login_handler = LoginHandler()
-        login_handler.start(driver)
+        login_handler = LoginHandler(driver)
+        login_handler.start()
 
         test_log = TestLog('All Tests', self.dir)
 
@@ -148,9 +148,8 @@ class RunAll():
         config_management = ConfigManagement(login_handler)
         config_management.run_config_management(driver, test_log)
 
-        login_handler.end(driver)
+        login_handler.end()
         test_log.close()
-# 2003828.72
 
 if __name__ == "__main__":
     main()
