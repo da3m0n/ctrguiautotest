@@ -35,9 +35,9 @@ class Sensors():
         title = driver.find_element(By.XPATH, "//body/fieldset/legend").text
         test_helper.assert_true(len(title) == 0, 'Expected page title, got None', 'Test page title is displayed')
 
-        table = gui_lib.find_element_by_id(driver, 'tableWidget1_table')
+        table = gui_lib.find_element_by_id('tableWidget1_table')
         # find the table header as a delay
-        gui_lib.find_element_by_id(driver, 'tableWidget1_table_header')
+        gui_lib.find_element_by_id('tableWidget1_table_header')
 
         table_rows = table.find_elements_by_tag_name('tr')
         print('table_rows', table_rows)

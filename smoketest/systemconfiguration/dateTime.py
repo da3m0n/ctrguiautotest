@@ -40,7 +40,7 @@ class DateTime():
         driver.switch_to_frame("frame_content")
 
         table = driver.find_element_by_id("DateTimeWidget1_TW_table")
-        WebDriverWait(table, 10).until(
+        WebDriverWait(table, 20).until(
             EC.presence_of_element_located((By.CLASS_NAME, "TableWidget_verticalTableHeading")))
 
         headers = table.find_elements_by_class_name('TableWidget_verticalTableHeading')

@@ -31,10 +31,10 @@ class ConfigManagement():
 
         driver.switch_to_frame('frame_content')
 
-        downloadBtn = gui_lib.find_element_by_id(driver, 'download')
+        download_btn = gui_lib.find_element_by_id('download')
         # driver.execute_script("document.getElementById('download').style.visibility='hidden'")
-        test_helper.assert_true(len(downloadBtn.text) <= 0, 'Button has no text', 'Button text visible')
-        test_helper.assert_true(downloadBtn.is_displayed() == False, 'Download button not displayed', 'Download button visible onscreen')
+        test_helper.assert_true(len(download_btn.text) <= 0, 'Button has no text', 'Button text visible')
+        test_helper.assert_true(download_btn.is_displayed() == False, 'Download button not displayed', 'Download button visible onscreen')
         self.login_manager.logout()
 
 if __name__ == '__main__':

@@ -105,13 +105,14 @@ class Utils(object):
             self.click_element("top_menu_users")
             self.click_element("top_menu_logout")
             print("Successfully logged out")
-            login_button = Utils.find_element(driver, 'login')
+            login_button = Utils.find_element('login')
             if not login_button is None:
                 driver.quit()
         except:
             try:
                 #otherwise check whether already on the login page
-                page1 = driver.find_element_by_name("Login")
+                driver.find_element_by_name("Login")
+                driver.quit()
             except:
                 print("Logout unsuccessful. This may cause errors with max number of sessions")
 
@@ -175,16 +176,15 @@ class Utils(object):
     RETRIES = 3
     TIMEOUT_SECONDS = 30
 
-    @classmethod
-    def find_element_by_id(cls, driver, id):
+    def find_element_by_id(self, element_id):
 
         tries = 0
         element = None
 
-        while tries < cls.RETRIES:
+        while tries < self.RETRIES:
             try:
-                element = WebDriverWait(cls, cls.TIMEOUT_SECONDS).until(
-                    lambda l: driver.find_element_by_id(id))
+                element = WebDriverWait(self.driver, self.TIMEOUT_SECONDS).until(
+                    lambda l: self.driver.find_element_by_id(element_id))
                 # element = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
             except TimeoutException:
                 tries += 1
@@ -192,7 +192,7 @@ class Utils(object):
                 continue
             else:
                 return element
-        raise NoSuchElementException('Element with id=%s was not found.' % id)
+        raise NoSuchElementException('Element with id=%s was not found.' % element_id)
 
     # @classmethod
     # def get_latest_sw_pack_version(cls):

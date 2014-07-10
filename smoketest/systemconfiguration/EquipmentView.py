@@ -31,7 +31,7 @@ class EquipmentView():
 
         driver.switch_to_frame("frame_content")
 
-        chassis = gui_lib.find_element_by_id(driver, 'ChassisViewWidget1_container')
+        chassis = gui_lib.find_element_by_id('ChassisViewWidget1_container')
         # driver.execute_script("document.getElementById('ChassisViewWidget1_container').innerHTML=\"\";")
         # WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, chassis)))
 
