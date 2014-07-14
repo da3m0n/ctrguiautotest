@@ -55,6 +55,7 @@ class LicenseManagement():
                                     len(upload_license_label)),
                                 'Check ' + upload_license_label + ' visible')
 
+        sleep(5)
         serial = driver.find_element_by_id('FeatureLicenseWidget1_serial')
 
         test_helper.assert_true(len(serial.text) <= 0,
