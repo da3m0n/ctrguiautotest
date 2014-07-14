@@ -1,15 +1,13 @@
 import sys
 import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from smoketest.admin.configManagement import ConfigManagement
 from smoketest.admin.license_management import LicenseManagement
 from smoketest.admin.software_management import SoftwareManagement
 from smoketest.status.alarms import Alarms
 from smoketest.status.event_log import EventLog
 from smoketest.status.sensors import Sensors
-
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from smoketest.systemconfiguration.dateTime import DateTime
 from smoketest.TestLog import TestLog
 from smoketest.systemconfiguration.manufactureDetails import ManufactureDetails
