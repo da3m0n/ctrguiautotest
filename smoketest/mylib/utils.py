@@ -191,7 +191,8 @@ class Utils(object):
                 continue
             else:
                 return element
-        raise NoSuchElementException('Element with id=%s was not found.' % element_id)
+        # raise NoSuchElementException('Element with id=%s was not found.' % element_id)
+        # return
 
     # @classmethod
     # def get_latest_sw_pack_version(cls):

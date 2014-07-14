@@ -1,6 +1,7 @@
 import sys
 import os
 from smoketest.admin.configManagement import ConfigManagement
+from smoketest.admin.license_management import LicenseManagement
 from smoketest.admin.software_management import SoftwareManagement
 from smoketest.status.alarms import Alarms
 from smoketest.status.sensors import Sensors
@@ -143,12 +144,9 @@ class RunAll():
         #
         # poe = PowerOverEthernet(login_handler)
         # poe.run_poe(driver, test_log)
-        #
+
         # sensors = Sensors(login_handler)
         # sensors.run_sensors(driver, test_log)
-        #
-        # config_management = ConfigManagement(login_handler)
-        # config_management.run_config_management(driver, test_log)
 
         # restart this test when id's have been added to Alarms page
         # alarms = Alarms(login_handler)
@@ -156,9 +154,12 @@ class RunAll():
 
         # config_management = ConfigManagement(login_handler)
         # config_management.run_config_management(driver, test_log)
+        #
+        # software_management = SoftwareManagement(login_handler)
+        # software_management.run_software_management(driver, test_log)
 
-        software_management = SoftwareManagement(login_handler)
-        software_management.run_software_management(driver, test_log)
+        license_management = LicenseManagement(login_handler)
+        license_management.run_license_management(driver, test_log)
 
         login_handler.end()
         test_log.close()

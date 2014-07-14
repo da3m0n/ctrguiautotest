@@ -37,7 +37,7 @@ class Sensors():
 
         table = gui_lib.find_element_by_id('tableWidget1_table')
         # find the table header as a delay
-        gui_lib.find_element_by_id('tableWidget1_table_header')
+        driver.find_element_by_id('tableWidget1_table_header')
 
         table_rows = table.find_elements_by_tag_name('tr')
         print('table_rows', table_rows)
