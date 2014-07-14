@@ -39,8 +39,6 @@ class Dates(Enum):
 
 
 class Utils(object):
-
-
     def __init__(self, driver):
         rt = None
         self.driver = driver
@@ -183,9 +181,10 @@ class Utils(object):
 
         while tries < self.RETRIES:
             try:
+                # element = WebDriverWait(self.driver, self.TIMEOUT_SECONDS).until(
+                #     lambda l: self.driver.find_element_by_id(element_id))
                 element = WebDriverWait(self.driver, self.TIMEOUT_SECONDS).until(
-                    lambda l: self.driver.find_element_by_id(element_id))
-                # element = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
+                    EC.visibility_of_element_located((By.ID, element_id)))
             except TimeoutException:
                 tries += 1
                 # self.switch_to_window(self.window_handles[0])

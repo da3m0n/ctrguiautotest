@@ -1,6 +1,7 @@
 import sys
 import os
 from smoketest.admin.configManagement import ConfigManagement
+from smoketest.admin.software_management import SoftwareManagement
 from smoketest.status.alarms import Alarms
 from smoketest.status.sensors import Sensors
 
@@ -153,8 +154,11 @@ class RunAll():
         # alarms = Alarms(login_handler)
         # alarms.run_alarms(driver, test_log)
 
-        config_management = ConfigManagement(login_handler)
-        config_management.run_config_management(driver, test_log)
+        # config_management = ConfigManagement(login_handler)
+        # config_management.run_config_management(driver, test_log)
+
+        software_management = SoftwareManagement(login_handler)
+        software_management.run_software_management(driver, test_log)
 
         login_handler.end()
         test_log.close()
