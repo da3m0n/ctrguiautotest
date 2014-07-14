@@ -1,6 +1,7 @@
 import sys
 import os
 from smoketest.admin.configManagement import ConfigManagement
+from smoketest.status.alarms import Alarms
 from smoketest.status.sensors import Sensors
 
 
@@ -98,8 +99,8 @@ class RunAll():
         latest_swpack = Utils.get_latest_sw_pack_version()
 
         # dummies for tests
-        # active_sw_version = 'master.12.1919'
-        # latest_swpack = 'master.12.1919'
+        active_sw_version = 'master.12.1919'
+        latest_swpack = 'master.12.1919'
 
         # swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
         get_latest = must_download_latest(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
@@ -124,26 +125,33 @@ class RunAll():
 
         test_log = TestLog('All Tests', self.dir)
 
-        equipment_view = EquipmentView(login_handler)
-        equipment_view.run_equipment_view(driver, test_log)
+        # equipment_view = EquipmentView(login_handler)
+        # equipment_view.run_equipment_view(driver, test_log)
+        #
+        # sys_about = SystemAbout(login_handler)
+        # sys_about.run_system_about(driver, test_log)
+        #
+        # manu_details = ManufactureDetails(login_handler)
+        # manu_details.run_manufacture_details(driver, test_log)
+        #
+        # sys_info = SystemInformation(login_handler)
+        # sys_info.run_system_information(driver, test_log)
+        #
+        # date_time = DateTime(login_handler)
+        # date_time.run_date_time(driver, test_log)
+        #
+        # poe = PowerOverEthernet(login_handler)
+        # poe.run_poe(driver, test_log)
+        #
+        # sensors = Sensors(login_handler)
+        # sensors.run_sensors(driver, test_log)
+        #
+        # config_management = ConfigManagement(login_handler)
+        # config_management.run_config_management(driver, test_log)
 
-        sys_about = SystemAbout(login_handler)
-        sys_about.run_system_about(driver, test_log)
-
-        manu_details = ManufactureDetails(login_handler)
-        manu_details.run_manufacture_details(driver, test_log)
-
-        sys_info = SystemInformation(login_handler)
-        sys_info.run_system_information(driver, test_log)
-
-        date_time = DateTime(login_handler)
-        date_time.run_date_time(driver, test_log)
-
-        poe = PowerOverEthernet(login_handler)
-        poe.run_poe(driver, test_log)
-
-        sensors = Sensors(login_handler)
-        sensors.run_sensors(driver, test_log)
+        # restart this test when id's have been added to Alarms page
+        # alarms = Alarms(login_handler)
+        # alarms.run_alarms(driver, test_log)
 
         config_management = ConfigManagement(login_handler)
         config_management.run_config_management(driver, test_log)
