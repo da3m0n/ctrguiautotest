@@ -6,7 +6,7 @@ from smoketest.admin.configManagement import ConfigManagement
 from smoketest.admin.license_management import LicenseManagement
 from smoketest.admin.software_management import SoftwareManagement
 from smoketest.status.alarms import Alarms
-from smoketest.status.event_log import EventLog
+from smoketest.status.eventLog import EventLog
 from smoketest.status.sensors import Sensors
 from smoketest.systemconfiguration.dateTime import DateTime
 from smoketest.TestLog import TestLog
@@ -147,8 +147,8 @@ class RunAll():
         sensors = Sensors(login_handler)
         sensors.run_sensors(driver, test_log)
 
-        # event_log = EventLog(login_handler)
-        # event_log.run_event_log(driver, test_log)
+        event_log = EventLog(login_handler)
+        event_log.run_event_log(driver, test_log)
 
         # restart this test when id's have been added to Alarms page
         # alarms = Alarms(login_handler)

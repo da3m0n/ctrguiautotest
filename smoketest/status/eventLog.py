@@ -1,3 +1,4 @@
+from time import sleep
 from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.IsolatedLoginHandler import IsolatedLoginHandler
@@ -35,7 +36,24 @@ class EventLog():
         driver.switch_to_frame('frame_content')
 
         table = driver.find_element_by_id('EventBrowserWidget1_table')
+        headers = table.find_elements_by_tag_name('th')
 
+        headers_list = []
+        for header in headers:
+            print('headers', header.text)
+            headers_list.append(header.text)
+
+        for i in range(len(headers)):
+            header = headers[i].text
+            header_text_len = len(header)
+            test_helper.assert_true(header_text_len <= 0,
+                                    'Expected ' + header + ' to be > 0 but was ' + str(header_text_len),
+                                    'Ensure ' + header + ' visible')
+
+        sleep(10)
+        rows = table.find_elements_by_tag_name('tr')
+
+        test_helper.assert_true(len(rows) <= 0, str(len(rows)) + ' Event Log rows displayed ', 'Ensure Event Log rows displayed ')
 
         test_log.close()
         self.login_manager.logout()
