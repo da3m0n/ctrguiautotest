@@ -11,17 +11,17 @@
             Last Smoketest run at <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
         </div>
         <div class="row headerRow">
-            <h3>
-            <div id="boo7" class="col-lg-3">Test Screen</div>
+            <h4>
+            <div id="boo7" class="col-lg-2">Test Screen</div>
             <div id="boo8" class="col-lg-4">Test Name</div>
             <div id="boo9" class="col-lg-1">Result</div>
-            <div id="boo10" class="col-lg-4">Reason</div>
-            </h3>
+            <div id="boo10" class="col-lg-5">Reason</div>
+            </h4>
         </div>
 
         <xsl:for-each select="smoketests/testScreen">
-            <div class="row resultsRow">
-                <div class="col-lg-3 testScreen"> <xsl:value-of select="@testScreen"/></div>
+            <div class="row resultsRow small">
+                <div class="col-lg-2 testScreen"> <xsl:value-of select="@testScreen"/></div>
                 <div class="col-lg-4">
                     <ul>
                         <xsl:for-each select="error">
@@ -55,7 +55,7 @@
                     </ul>
 
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-5">
                     <ul>
                         <xsl:for-each select="error">
                             <xsl:choose>

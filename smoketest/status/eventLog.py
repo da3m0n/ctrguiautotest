@@ -9,10 +9,10 @@ import sys
 def main():
     driver = Utils.create_driver(sys.argv[2])
     log_dir = Utils.log_dir()
-    Utils.delete_existing_logfile(log_dir)
+    # Utils.delete_existing_logfile(log_dir)
     test_log = TestLog(EventLog, log_dir)
     # create instance of class here and then  run method of class 
-    event_log = EventLog(IsolatedLoginHandler())
+    event_log = EventLog(IsolatedLoginHandler(driver))
     event_log.run_event_log(driver, test_log)
     test_log.close()
 
@@ -53,7 +53,8 @@ class EventLog():
         sleep(10)
         rows = table.find_elements_by_tag_name('tr')
 
-        test_helper.assert_true(len(rows) <= 0, str(len(rows)) + ' Event Log rows displayed ', 'Ensure Event Log rows displayed ')
+        test_helper.assert_true(len(rows) <= 0, str(len(rows)) + ' Event Log rows displayed ',
+                                'Ensure Event Log rows displayed ')
 
         test_log.close()
         self.login_manager.logout()

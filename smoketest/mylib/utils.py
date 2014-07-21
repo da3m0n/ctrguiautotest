@@ -357,7 +357,7 @@ class Utils(object):
 
 
     @classmethod
-    def insert_underscores(cls, str):
+    def __insert_underscores(cls, str):
         val = str.replace(' ', '_')
         return val
 
