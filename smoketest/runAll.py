@@ -1,9 +1,8 @@
 import sys
 import os
-from smoketest.ethernetconfiguration.PortManager import PortManager
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+from smoketest.ethernetconfiguration.PortManager import PortManager
 from smoketest.admin.configManagement import ConfigManagement
 from smoketest.admin.license_management import LicenseManagement
 from smoketest.admin.software_management import SoftwareManagement
@@ -128,45 +127,45 @@ class RunAll():
 
         test_log = TestLog('All Tests', self.dir)
 
-        # equipment_view = EquipmentView(login_handler)
-        # equipment_view.run_equipment_view(driver, test_log)
-        #
-        # sys_about = SystemAbout(login_handler)
-        # sys_about.run_system_about(driver, test_log)
-        #
-        # manu_details = ManufactureDetails(login_handler)
-        # manu_details.run_manufacture_details(driver, test_log)
-        #
-        # sys_info = SystemInformation(login_handler)
-        # sys_info.run_system_information(driver, test_log)
-        #
-        # date_time = DateTime(login_handler)
-        # date_time.run_date_time(driver, test_log)
-        #
-        # poe = PowerOverEthernet(login_handler)
-        # poe.run_poe(driver, test_log)
-        #
-        # sensors = Sensors(login_handler)
-        # sensors.run_sensors(driver, test_log)
-        #
-        # event_log = EventLog(login_handler)
-        # event_log.run_event_log(driver, test_log)
-        #
+        equipment_view = EquipmentView(login_handler)
+        equipment_view.run_equipment_view(driver, test_log)
+
+        sys_about = SystemAbout(login_handler)
+        sys_about.run_system_about(driver, test_log)
+
+        manu_details = ManufactureDetails(login_handler)
+        manu_details.run_manufacture_details(driver, test_log)
+
+        sys_info = SystemInformation(login_handler)
+        sys_info.run_system_information(driver, test_log)
+
+        date_time = DateTime(login_handler)
+        date_time.run_date_time(driver, test_log)
+
+        poe = PowerOverEthernet(login_handler)
+        poe.run_poe(driver, test_log)
+
+        sensors = Sensors(login_handler)
+        sensors.run_sensors(driver, test_log)
+
+        event_log = EventLog(login_handler)
+        event_log.run_event_log(driver, test_log)
+
         # # restart this test when id's have been added to Alarms page
         # # alarms = Alarms(login_handler)
         # # alarms.run_alarms(driver, test_log)
-        #
-        # config_management = ConfigManagement(login_handler)
-        # config_management.run_config_management(driver, test_log)
-        #
-        # software_management = SoftwareManagement(login_handler)
-        # software_management.run_software_management(driver, test_log)
-        #
-        # license_management = LicenseManagement(login_handler)
-        # license_management.run_license_management(driver, test_log)
-        #
-        port_mananger = PortManager(login_handler)
-        port_mananger.run_port_manager(driver, test_log)
+
+        config_management = ConfigManagement(login_handler)
+        config_management.run_config_management(driver, test_log)
+
+        software_management = SoftwareManagement(login_handler)
+        software_management.run_software_management(driver, test_log)
+
+        license_management = LicenseManagement(login_handler)
+        license_management.run_license_management(driver, test_log)
+
+        port_manager = PortManager(login_handler)
+        port_manager.run_port_manager(driver, test_log)
 
         login_handler.end()
         test_log.close()
