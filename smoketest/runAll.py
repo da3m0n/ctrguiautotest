@@ -2,7 +2,6 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from smoketest.ethernetconfiguration.PortManager import PortManager
 from smoketest.admin.configManagement import ConfigManagement
 from smoketest.admin.license_management import LicenseManagement
 from smoketest.admin.software_management import SoftwareManagement
@@ -18,6 +17,8 @@ from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
 from smoketest.systemconfiguration.sysAbout import SystemAbout
 from smoketest.systemconfiguration.sysInfo import SystemInformation
 from smoketest.systemconfiguration.EquipmentView import EquipmentView
+from smoketest.ethernetconfiguration.portManager import PortManager
+
 from optparse import OptionParser
 
 
