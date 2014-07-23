@@ -26,7 +26,7 @@ class TestLog(object):
 
     def start(self, name):
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
-
+        self.num_tests_run += 1
         test_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)
 
         el = ET.SubElement(self.doc, "testStart")
@@ -49,6 +49,9 @@ class TestLog(object):
         errors = ET.SubElement(self.root, 'errorCount')
         errors.set('errorCount', str(self.test_errors))
 
+        total_tests = ET.SubElement(self.root, 'totalTestCount')
+        total_tests.set('totalTestCount', str(self.num_tests_run))
+
         tree = ET.ElementTree(self.root)
         log_dir = self.dir + '\\logs\\' + date
         if not os.path.exists(log_dir):
@@ -57,3 +60,7 @@ class TestLog(object):
 
         path = os.path.abspath(log_dir + '\\' + date + '.xml')
         tree.write(path)
+
+    def add_num_screens(self, num_screens):
+        screens = ET.SubElement(self.root, 'totalScreens')
+        screens.set('totalScreens', str(num_screens))

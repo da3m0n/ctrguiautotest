@@ -74,7 +74,6 @@ class LicenseManagement():
                                     'Expected ' + button + ' to be > 0 but was ' + str(button_len),
                                     'Ensure ' + button + ' visible')
 
-        test_log.close()
         self.login_manager.logout()
 
 

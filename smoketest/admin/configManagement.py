@@ -61,7 +61,6 @@ class ConfigManagement():
                                     'Expected ' + restore_label + ' to be > 0 but was ' + str(restore_labels_len),
                                     'Ensure ' + restore_label + ' visible')
 
-        test_log.close()
         self.login_manager.logout()
 
 

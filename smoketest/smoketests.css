@@ -71,3 +71,8 @@ body {
 .test-fail {
     color: #ff0000;
 }
+
+#coverage-result {
+    width: 320px;
+    border: 1px solid #ff0000;
+}

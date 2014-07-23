@@ -1,7 +1,12 @@
 import sys
+from time import sleep
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from smoketest.admin.configManagement import ConfigManagement
 from smoketest.admin.license_management import LicenseManagement
 from smoketest.admin.software_management import SoftwareManagement
@@ -18,6 +23,7 @@ from smoketest.systemconfiguration.sysAbout import SystemAbout
 from smoketest.systemconfiguration.sysInfo import SystemInformation
 from smoketest.systemconfiguration.EquipmentView import EquipmentView
 from smoketest.ethernetconfiguration.portManager import PortManager
+from smoketest.tdmconfiguration.pseudowire import PseudoWire
 
 from optparse import OptionParser
 
@@ -115,6 +121,21 @@ class RunAll():
             print ('Using latest, don\'t need to upload latest... ')
             self.do_rest()
 
+    def get_num_screens(self, driver):
+        num_screens = 0
+        side_menu_folders = driver.find_elements_by_xpath("//div[@class='side_menu_tree']")
+        for folder in side_menu_folders:
+            id_attr = folder.get_attribute('id')
+            root_folder = driver.find_element_by_id(id_attr)
+            root_folder.click()
+            individual_pages = root_folder.find_elements_by_tag_name('a')
+            for page in individual_pages:
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.LINK_TEXT, page.text)))
+                if page.text != '':
+                    num_screens += 1
+                    # print('page', page.text, num_screens)
+        return num_screens
+
     def do_rest(self):
         print('Gonna run the smoketests...')
         driver = Utils.create_driver(sys.argv[2])
@@ -127,6 +148,10 @@ class RunAll():
         login_handler.start()
 
         test_log = TestLog('All Tests', self.dir)
+
+        test_log.add_num_screens(self.get_num_screens(driver))
+
+        driver.find_element_by_id('menu_node_equipment').click()
 
         equipment_view = EquipmentView(login_handler)
         equipment_view.run_equipment_view(driver, test_log)
@@ -168,8 +193,12 @@ class RunAll():
         port_manager = PortManager(login_handler)
         port_manager.run_port_manager(driver, test_log)
 
+        pseudo_wire = PseudoWire(login_handler)
+        pseudo_wire.run_pseudo_wire(driver, test_log)
+
         login_handler.end()
         test_log.close()
+
 
 if __name__ == "__main__":
     main()

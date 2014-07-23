@@ -6,7 +6,6 @@
         <!--<div id="resultsContainer">-->
         <!--test-->
         <!--</div>-->
-
         <div class="row" id="last-smoketest">
             Last Smoketest run at <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
         </div>

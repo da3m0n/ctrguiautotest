@@ -19,7 +19,6 @@ def main():
     port_manager.run_port_manager(driver, test_log)
     test_log.close()
 
-
 class TableHeaders(Enum):
     INDEX = ''
     STATUS = 'Status'
@@ -56,25 +55,26 @@ class PortManager():
         headers_arr = ['', 'Status1', 'Port', 'Enable', 'Description', 'Speed - Duplex', 'Default\nUser Priority',
                        'MAC Address', 'MTU']
 
-        header_to_hide = [
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_entity_index').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_operational_status').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_port').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_admin_status').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_description').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_user_duplex').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_priority').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_mac').innerHTML=\"\";",
-            "document.getElementById('PortSettingsWidget1intSet_TW_table_header_mtu').innerHTML=\"\";"]
+        header_ids = ['PortSettingsWidget1intSet_TW_table_header_entity_index',
+                      'PortSettingsWidget1intSet_TW_table_header_operational_status',
+                      'PortSettingsWidget1intSet_TW_table_header_port',
+                      'PortSettingsWidget1intSet_TW_table_header_admin_status',
+                      'PortSettingsWidget1intSet_TW_table_header_description',
+                      'PortSettingsWidget1intSet_TW_table_header_user_duplex',
+                      'PortSettingsWidget1intSet_TW_table_header_priority',
+                      'PortSettingsWidget1intSet_TW_table_header_mac',
+                      'PortSettingsWidget1intSet_TW_table_header_mtu']
 
+        test = self.build_id_array(header_ids)
+        # driver.execute_script(test)
         # these tests only check that headers are displayed. Wont flag if there are any missing,
         # the order incorrect etc. It is only a all or none deal
         for header in headers:
             headers_list.append(header.text)
 
         # uncomment to remove headers for testing
-        # for header in header_to_hide:
-        #     driver.execute_script(header)
+        for header in test:
+            driver.execute_script(header)
 
         for i in range(len(headers_list)):
             header = headers_list[i]
@@ -87,8 +87,14 @@ class PortManager():
         test_helper.assert_true(len(rows) <= 0, str(len(rows)) + ' Port Settings rows displayed ',
                                 'Ensure Port Settings rows displayed ')
 
-        test_log.close()
         self.login_manager.logout()
+
+    def build_id_array(self, id_array):
+        ret = []
+        for i in id_array:
+            val = "document.getElementById(\"" + i + "\").innerHTML=\"\";"
+            ret.append(val)
+        return ret
 
 
 if __name__ == '__main__':

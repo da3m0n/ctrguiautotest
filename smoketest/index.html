@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Smoke Tests</title>
-    <meta http-equiv="refresh" content="43200" />
+    <meta http-equiv="refresh" content="43200"/>
     <!--<link rel="stylesheet" href="vendor/css/screen.css">-->
     <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="smoketests.css"/>
@@ -88,8 +88,15 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header navbar-inverse">
-            <span class="navbar-brand">CTR Smoketests</span>
+            <span class="navbar-brand pull-left">CTR Smoketests</span>
         </div>
+        <div id="coverage-result" class="pull-right">
+        </div>
+        <!--<div id="coverage">-->
+        <!--<div id="coverage-result" class="navbar-brand pull-right">-->
+        <!--<span class="navbar-brand pull-left">Coverage</span>-->
+        <!--</div>-->
+        <!--</div>-->
     </div>
 </div>
 <div class="container">
@@ -107,6 +114,7 @@
     var newDate = latest.date.split(' ').join('_');
     var newDateXml = newDate + '.xml';
 
+    logs.displayResult("logs/" + newDate + "/" + newDateXml, "coverage.xsl", "coverage-result");
     logs.displayResult("logs/" + newDate + "/" + newDateXml, "quickResult.xsl", "test-result");
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
     logs.displayResult("logs/" + newDate + "/" + newDateXml, "results.xsl", "tests");

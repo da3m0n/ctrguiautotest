@@ -52,7 +52,7 @@ class Alarms():
             test_helper.assert_true(len(btn.text.strip()) == 0, 'No text on button', 'Check buttons have text')
             print(len(btn.text.strip()))
 
-        test_log.close()
+        # test_log.close()
         self.login_manager.logout()
 
 

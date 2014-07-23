@@ -56,7 +56,7 @@ class EventLog():
         test_helper.assert_true(len(rows) <= 0, str(len(rows)) + ' Event Log rows displayed ',
                                 'Ensure Event Log rows displayed ')
 
-        test_log.close()
+        # test_log.close()
         self.login_manager.logout()
 
 

@@ -67,7 +67,6 @@ class SoftwareManagement():
         test_helper.assert_true(len(start_btn) <= 0, 'Expected Start button to be displayed, was not',
                                 'Check Start button displayed')
 
-        test_log.close()
         self.login_manager.logout()
 
 

@@ -361,6 +361,11 @@ class Utils(object):
         val = str.replace(' ', '_')
         return val
 
+    def open_all(self):
+        side_menus = self.driver.find_elements_by_class('side_menu_folder')
+        print('side folders', len(side_menus))
+
+
 
 from threading import Timer
 
