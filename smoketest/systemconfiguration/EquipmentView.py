@@ -32,6 +32,9 @@ class EquipmentView():
         driver.switch_to_default_content()
         prodDescription = driver.find_element(By.ID, "top_menu_product_description").text
         # print('prodDescription', prodDescription)
+        test_helper.assert_true(len(prodDescription) == 0,
+                                'Expected Product Name to be > 0 but was ' + str(len(prodDescription)),
+                                'Ensure Product Name visible')
 
         driver.switch_to_frame("frame_content")
 
@@ -42,8 +45,8 @@ class EquipmentView():
         # driver.execute_script("document.getElementById('ChassisViewWidget1_container').innerHTML=\"\";")
         # WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, chassis)))
         # print('chassis text', chassis.text)
-        test_helper.assert_true(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
-                                'Ensure Chassis displayed')
+        # test_helper.assert_true(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
+        #                         'Ensure Chassis displayed')
 
         self.login_manager.logout()
 
