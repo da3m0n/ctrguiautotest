@@ -72,7 +72,11 @@ body {
     color: #ff0000;
 }
 
+#coverage-label {
+    color: blue;
+}
 #coverage-result {
     width: 320px;
-    border: 1px solid #ff0000;
+    color: #999;
+    /*border: 1px solid #ff0000;*/
 }

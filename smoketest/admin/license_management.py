@@ -12,10 +12,11 @@ import sys
 def main():
     driver = Utils.create_driver(sys.argv[2])
     log_dir = Utils.log_dir()
-    Utils.delete_existing_logfile(log_dir)
+    # Utils.delete_existing_logfile(log_dir)
     test_log = TestLog(LicenseManagement, log_dir)
     # create instance of class here and then  run method of class 
-
+    license_mgmt = LicenseManagement(IsolatedLoginHandler(driver))
+    license_mgmt.run_license_management(driver, test_log)
     test_log.close()
 
 
@@ -57,7 +58,6 @@ class LicenseManagement():
 
         sleep(5)
         serial = driver.find_element_by_id('FeatureLicenseWidget1_serial')
-
         test_helper.assert_true(len(serial.text) <= 0,
                                 'Expected serial number to be > 0 but was ' + str(len(serial.text)),
                                 'Check Serial Number displayed')

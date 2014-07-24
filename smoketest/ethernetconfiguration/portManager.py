@@ -1,4 +1,5 @@
 from enum import Enum
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -18,6 +19,7 @@ def main():
     port_manager = PortManager(IsolatedLoginHandler(driver))
     port_manager.run_port_manager(driver, test_log)
     test_log.close()
+
 
 class TableHeaders(Enum):
     INDEX = ''
@@ -48,7 +50,12 @@ class PortManager():
 
         # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_node_10")))
         driver.switch_to_frame('frame_content')
-        WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, 'PortSettingsWidget1intSet_TW_table')))
+        try:
+            WebDriverWait(driver, 30).until(
+                EC.visibility_of_element_located((By.ID, 'PortSettingsWidget1intSet_TW_table')))
+        except TimeoutException:
+            test_log.log_info('TimeoutException while waiting for Port Settings table')
+
         table = driver.find_element_by_id('PortSettingsWidget1intSet_TW_table')
         headers = table.find_elements_by_tag_name('th')
         headers_list = []
@@ -73,8 +80,8 @@ class PortManager():
             headers_list.append(header.text)
 
         # uncomment to remove headers for testing
-        for header in test:
-            driver.execute_script(header)
+        # for header in test:
+        #     driver.execute_script(header)
 
         for i in range(len(headers_list)):
             header = headers_list[i]

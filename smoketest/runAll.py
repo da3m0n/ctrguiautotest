@@ -150,7 +150,7 @@ class RunAll():
         test_log = TestLog('All Tests', self.dir)
 
         test_log.add_num_screens(self.get_num_screens(driver))
-
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
         driver.find_element_by_id('menu_node_equipment').click()
 
         equipment_view = EquipmentView(login_handler)
