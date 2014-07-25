@@ -2,14 +2,6 @@ import os
 from smoketest.mylib.utils import Utils
 
 
-def make_sure_path_exists(path):
-    import errno
-
-    try:
-        os.makedirs(path)
-    except OSError as exception:
-        if exception.errno != errno.EEXIST:
-            raise
 
 
 class TestHelper(object):
@@ -23,17 +15,19 @@ class TestHelper(object):
         if val:
 
             self.error_count += 1
-            pwd = os.getcwd()
-            screenshots_dir = pwd + '\\logs\\' + self.log.url_friendly_start + '\\screenshots'
-
-            if make_sure_path_exists(screenshots_dir):
-                os.mkdir('screenshots')
-                os.chdir(screenshots_dir)
-                self.driver.save_screenshot(test_name + '.png')
-            else:
-                os.chdir(screenshots_dir)
-                self.driver.save_screenshot(test_name + '.png')
-            os.chdir(pwd)
+            utils = Utils(self.driver)
+            utils.save_screenshot(test_name)
+            # pwd = os.getcwd()
+            # screenshots_dir = pwd + '\\logs\\' + self.log.url_friendly_start + '\\screenshots'
+            #
+            # if make_sure_path_exists(screenshots_dir):
+            #     os.mkdir('screenshots')
+            #     os.chdir(screenshots_dir)
+            #     self.driver.save_screenshot(test_name + '.png')
+            # else:
+            #     os.chdir(screenshots_dir)
+            #     self.driver.save_screenshot(test_name + '.png')
+            # os.chdir(pwd)
             self.log.log_it2(self.error_count, msg, test_name)
         else:
             msg = '-'

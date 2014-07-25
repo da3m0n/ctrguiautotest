@@ -139,6 +139,8 @@ class RunAll():
     def do_rest(self):
         print('Gonna run the smoketests...')
         driver = Utils.create_driver(sys.argv[2])
+        utils = Utils(driver)
+        utils.delete_existing_dir()
 
         # driver.Chrome("C:\ChromeDriver\chromedriver.exe")
         # driver.Firefox()

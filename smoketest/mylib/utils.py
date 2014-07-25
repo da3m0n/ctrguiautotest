@@ -1,4 +1,4 @@
-import sys, os, time
+import sys, os, time, shutil
 import datetime
 from enum import Enum
 from selenium import webdriver
@@ -42,7 +42,9 @@ class Utils(object):
     def __init__(self, driver):
         rt = None
         self.driver = driver
-        # resultFile =
+        self.pwd = os.getcwd()
+        self.local_time = time.localtime()
+        self.date = time.strftime('%d_%B_%Y', self.local_time)
 
     @staticmethod
     def create_driver(driverName):
@@ -191,8 +193,8 @@ class Utils(object):
                 continue
             else:
                 return element
-        # raise NoSuchElementException('Element with id=%s was not found.' % element_id)
-        # return
+                # raise NoSuchElementException('Element with id=%s was not found.' % element_id)
+                # return
 
     # @classmethod
     # def get_latest_sw_pack_version(cls):
@@ -365,7 +367,37 @@ class Utils(object):
         side_menus = self.driver.find_elements_by_class('side_menu_folder')
         print('side folders', len(side_menus))
 
+    def save_screenshot(self, test_name):
+        # pwd = os.getcwd()
+        # local_time = time.localtime()
+        # date = time.strftime('%d_%B_%Y', local_time)
+        screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\screenshots'
 
+        if os.path.exists(screenshots_dir):
+            print('directory', screenshots_dir, ' exists')
+            os.chdir(screenshots_dir)
+            self.driver.save_screenshot(test_name + '.png')
+        else:
+            print('directory', screenshots_dir, ' does not exist')
+            self.__make_sure_path_exists(screenshots_dir)
+            os.chdir(screenshots_dir)
+            self.driver.save_screenshot(test_name + '.png')
+        os.chdir(self.pwd)
+
+    @classmethod
+    def __make_sure_path_exists(cls, path):
+        import errno
+
+        try:
+            os.makedirs(path)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+
+    def delete_existing_dir(self):
+        screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\screenshots'
+        if os.path.exists(screenshots_dir):
+            shutil.rmtree(screenshots_dir)
 
 from threading import Timer
 
