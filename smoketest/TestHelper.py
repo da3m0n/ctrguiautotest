@@ -13,21 +13,9 @@ class TestHelper(object):
 
     def assert_true(self, val, msg=None, test_name=None):
         if val:
-
             self.error_count += 1
             utils = Utils(self.driver)
             utils.save_screenshot(test_name)
-            # pwd = os.getcwd()
-            # screenshots_dir = pwd + '\\logs\\' + self.log.url_friendly_start + '\\screenshots'
-            #
-            # if make_sure_path_exists(screenshots_dir):
-            #     os.mkdir('screenshots')
-            #     os.chdir(screenshots_dir)
-            #     self.driver.save_screenshot(test_name + '.png')
-            # else:
-            #     os.chdir(screenshots_dir)
-            #     self.driver.save_screenshot(test_name + '.png')
-            # os.chdir(pwd)
             self.log.log_it2(self.error_count, msg, test_name)
         else:
             msg = '-'

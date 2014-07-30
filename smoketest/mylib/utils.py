@@ -368,9 +368,6 @@ class Utils(object):
         print('side folders', len(side_menus))
 
     def save_screenshot(self, test_name):
-        # pwd = os.getcwd()
-        # local_time = time.localtime()
-        # date = time.strftime('%d_%B_%Y', local_time)
         screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\screenshots'
 
         if os.path.exists(screenshots_dir):
@@ -398,6 +395,26 @@ class Utils(object):
         screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\screenshots'
         if os.path.exists(screenshots_dir):
             shutil.rmtree(screenshots_dir)
+
+    @staticmethod
+    def build_id_array(table):
+        header_id_arr = []
+        headers = table.find_elements_by_tag_name('th')
+
+        for head in headers:
+            header_id_arr.append(head.get_attribute('id'))
+
+        return header_id_arr
+
+    @staticmethod
+    def build_inner_html_array(id_array):
+        ret = []
+        for i in id_array:
+            val = "document.getElementById(\"" + i + "\").innerHTML=\"\";"
+            ret.append(val)
+        return ret
+
+
 
 from threading import Timer
 

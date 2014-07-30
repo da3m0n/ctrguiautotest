@@ -173,6 +173,8 @@ class RunAll():
         poe = PowerOverEthernet(login_handler)
         poe.run_poe(driver, test_log)
 
+        # test.create('date & time', ['clock source', 'time'])
+
         sensors = Sensors(login_handler)
         sensors.run_sensors(driver, test_log)
 

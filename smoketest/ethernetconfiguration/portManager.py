@@ -72,7 +72,8 @@ class PortManager():
                       'PortSettingsWidget1intSet_TW_table_header_mac',
                       'PortSettingsWidget1intSet_TW_table_header_mtu']
 
-        test = self.build_id_array(header_ids)
+        test = Utils.build_inner_html_array(Utils.build_id_array(table))
+
         # driver.execute_script(test)
         # these tests only check that headers are displayed. Wont flag if there are any missing,
         # the order incorrect etc. It is only a all or none deal
@@ -95,14 +96,6 @@ class PortManager():
                                 'Ensure Port Settings rows displayed ')
 
         self.login_manager.logout()
-
-    def build_id_array(self, id_array):
-        ret = []
-        for i in id_array:
-            val = "document.getElementById(\"" + i + "\").innerHTML=\"\";"
-            ret.append(val)
-        return ret
-
 
 if __name__ == '__main__':
     main()
