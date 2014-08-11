@@ -151,13 +151,16 @@ class RunAll():
 
         test_log = TestLog('All Tests', self.dir)
 
-        # test_log.add_num_screens(self.get_num_screens(driver))
-        # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
-        # driver.find_element_by_id('menu_node_equipment').click()
+        test_log.add_num_screens(self.get_num_screens(driver))
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
+        driver.find_element_by_id('menu_node_equipment').click()
 
         smoke_test = SmokeTest(driver, test_log)
         smoke_test.create('System Configuration/Date & Time',
                           ['Clock Source', 'Date', 'Time', 'Timezone'])
+        smoke_test.create('System Configuration/System Information',
+                          ['Hardware Version', 'Firmware Version'])
+
         # equipment_view = EquipmentView(login_handler)
         # equipment_view.run_equipment_view(driver, test_log)
         #
