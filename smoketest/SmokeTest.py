@@ -39,7 +39,17 @@ class SmokeTest():
                                              'Ensure ' + item + ' to be visible')
                 break
 
-        finder.test_values(values, self.test_helper)
+        for idx, row in enumerate(values):
+            name = items_to_test[idx]
+            self.test_helper.assert_true(len(name) == 0, 'Expected ' + name + ' to be > 0 but was ' + str(
+                len(name)), 'Ensure ' + name + ' visible')
+            for td in row:
+                self.test_helper.assert_true(len(td) == 0,
+                                             'Expected ' + td + ' to be > 0 but was ' + str(
+                                                 len(td)),
+                                             'Ensure ' + name + ' data visible')
+
+                # finder.test_values(values, self.test_helper)
 
     def __navigate_to_location(self, breadcrumbs):
         self.driver.switch_to_default_content()
@@ -66,24 +76,6 @@ def toXPathStringLiteral(s):
     return "concat('%s')" % s.replace("'", "',\"'\",'")
 
 
-class visibility_exact_element_located(object):
-    def __init__(self, label):
-        self.label = label
-
-    def __call__(self, driver):
-        words = self.label.split()
-        exps = []
-        for word in words:
-            exps.append("contains(normalize-space(),%s)" % toXPathStringLiteral(word))
-
-        elements = driver.find_elements_by_xpath("//th[" + " and ".join(exps) + "]")
-
-        for el in elements:
-            if el.is_displayed() and " ".join(el.text.split()) == " ".join(words):
-                return el
-        return False
-
-
 def remove_unnecessary_rows(rows):
     new_rows = []
     for idx, row in enumerate(rows):
@@ -100,66 +92,35 @@ class table_row_header_finder(object):
         self.vals = dict()
 
     def find_label(self, label):
-        return visibility_exact_element_located(label)
+        return element_locater('th', label)
 
     def find_values(self, label):
-        rows = label.find_elements_by_xpath('../../tr')
-        rows = remove_unnecessary_rows(rows)
-        headers = []
-        header_label_index = self.find_header_label_index(label, rows)
-        values_arr = []
-        # requested_row = self.get_requested_row(label, rows)
+        return find_values_same_row_as_label(label)
 
-        row_data = rows[header_label_index].text.split('\n')
+        # def test_values(self, values, test_helper):
+        #     for row in values:
+        #         test_helper.assert_true(len(row[0]) == 0,
+        #                                 'Expected ' + row[0] + ' to be > 0 but was ' + str(
+        #                                     len(row[0])),
+        #                                 'Ensure ' + row[0] + ' header visible')
+        #         for cell in row:
+        #             test_helper.assert_true(len(cell) == 0,
+        #                                     'Expected ' + cell + ' to be > 0 but was ' + str(
+        #                                         len(cell)),
+        #                                     'Ensure ' + row[0] + ' values visible')
 
-        for row_item in row_data:
-            if row_item == '':
-                print('FAIL. We have a blank value')
 
-        # for row_num, row in enumerate(rows):
-        #
-        #     header_id = row.get_attribute('id').lower()
-        #     if str(header_id).find('indicator') != -1 or str(header_id).find('header') != -1:
-        #         continue
-        #
-        #     cols = row.find_element_by_xpath('./td[2]')
-        #
-        #     vals = cols.text
-        #     self.vals.update({'value': vals})
-        #     values_arr.append(vals)
-        #     headers.append({'header': label.text, 'value': vals})
-
-        # headers.append({'header': label.text, 'value': values_arr})
-        return row_data
-
-    def find_header_label_index(self, label, rows):
-        header_indexes = []
-        # idx = 0
-
-        for idx, row in enumerate(rows):
-            # header_id = row.get_attribute('id').lower()
-            # if str(header_id).find('indicator') != -1 or str(header_id).find('header') != -1 or header_id == '':
-            #     idx = 0
-            #     continue
-
-            # idx += 1
-            items = row.text.split('\n')
-            if label.text == items[0]:
-                header_indexes.append({idx, items[0]})
-                return idx
-        return False
-
-    def test_values(self, values, test_helper):
-        for row in values:
-            test_helper.assert_true(len(row[0]) == 0,
-                                    'Expected ' + row[0] + ' to be > 0 but was ' + str(
-                                        len(row[0])),
-                                    'Ensure ' + row[0] + ' header visible')
-            for cell in row:
-                test_helper.assert_true(len(cell) == 0,
-                                        'Expected ' + cell + ' to be > 0 but was ' + str(
-                                            len(cell)),
-                                        'Ensure ' + row[0] + ' values visible')
+def find_values_same_row_as_label(label):
+    row_data = []
+    elements = label.find_elements_by_xpath('../td|../th')
+    found = False
+    for el in elements:
+        if el.is_displayed:
+            if found and el.text != "":
+                row_data.append(el.text)
+            elif not found:
+                found = el == label
+    return row_data
 
 
 class table_column_header_finder(object):
@@ -167,7 +128,7 @@ class table_column_header_finder(object):
         self.vals = dict()
 
     def find_label(self, label):
-        return visibility_exact_element_located(label)
+        return element_locater('th', label)
 
     def find_values(self, label):
         rows = label.find_elements_by_xpath('../../tr')
@@ -187,8 +148,7 @@ class table_column_header_finder(object):
             self.vals.update({'value': vals})
             values_arr.append(vals)
 
-        headers.append({'header': label.text, 'value': values_arr})
-        return headers
+        return values_arr
 
     def test_values(self, values, test_helper):
         for item in values:
@@ -212,9 +172,47 @@ def find_header_label_index(label):
         index += 1
 
 
-class label_and_value_finder(object):
-    def __init__(self):
+class td_label_finder(object):
+    def __init__(self, label):
         pass
+
+    def find_label(self, label):
+        return element_locater('td', self.label)
+
+    def find_values(self, label):
+        return find_values_same_row_as_label(label)
+
+
+def normalize_label(x):
+    return " ".join(x.split())
+
+
+def compare_label(x, y):
+    return normalize_label(x) == normalize_label(y)
+
+
+def find_element(driver, el_type, label):
+    words = label.split()
+    exps = []
+    for word in words:
+        exps.append("contains(normalize-space(),%s)" % toXPathStringLiteral(word))
+
+    elements = driver.find_elements_by_xpath("//" + el_type + "[" + " and ".join(exps) + "]")
+
+    norm_label = normalize_label(label)
+    for el in elements:
+        if el.is_displayed() and normalize_label(el.text) == norm_label:
+            return el
+    return False
+
+
+class element_locater(object):
+    def __init__(self, el_type, label):
+        self.el_type = el_type
+        self.label = label
+
+    def __call__(self, driver):
+        return find_element(driver, self.el_type, self.label)
 
 
 class MisMatchException(Exception):
