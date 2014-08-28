@@ -16,12 +16,38 @@ class SmokeTest():
         self.gui_lib = Utils(driver)
         self.test_helper = TestHelper(self.test_log, self.driver)
 
-    def create(self, screen_name, items_to_test, finder):
+    def __navigate_to_screen(self, screen_name):
         breadcrumbs = screen_name.split('/')
         self.__navigate_to_location(breadcrumbs)
         self.driver.switch_to_frame('frame_content')
-
         self.test_log.start(breadcrumbs[-1])
+
+    def create_alarms_test(self, screen_name, buttons, finder):
+        self.__navigate_to_screen(screen_name)
+
+        # time.sleep(5)
+        # self.driver.execute_script(
+        #     "document.getElementsByClassName('alarms_resetChangeIndicators')[0].style.display=\"none\";")
+        # self.driver.execute_script(
+        #     "document.getElementsByClassName('alarms_resetChangeIndicators')[0].innerHTML=\"\";")
+
+        for button in buttons:
+            try:
+                button_el = WebDriverWait(self.driver, 30).until(finder.find_buttons(button))
+                button_text = button_el.text
+                self.test_helper.assert_true(len(button_text) == 0,
+                                             'Expected ' + button_text + ' to be > 0, but was ' + str(
+                                                 len(button_text)),
+                                             'Ensure ' + button_text + ' is displayed.')
+            except TimeoutException:
+                self.test_helper.assert_true(True,
+                                             'Expected ' + button + ' but TimeoutException occurred.',
+                                             'Ensure ' + button + ' is displayed.')
+                break
+
+    def create(self, screen_name, items_to_test, finder, just_headers=False):
+        self.__navigate_to_screen(screen_name)
+
         # time.sleep(5)
         # self.driver.execute_script("document.getElementById('tableWidget1_3_mapping').innerHTML=\"\";")
 
@@ -31,25 +57,30 @@ class SmokeTest():
             try:
                 label_name = WebDriverWait(self.driver, 30).until(finder.find_label(item))
 
-                vals = finder.find_values(label_name)
-                values.append(vals)
+                if not just_headers:
+                    vals = finder.find_values(label_name)
+                    values.append(vals)
+                else:
+                    label = label_name.find_element_by_class_name('syslog_heading')
+                    self.test_helper.assert_true(len(label.text) == 0,
+                                                 'Expected ' + label.text + ' to be > 0, but was ' + str(
+                                                     len(label.text)),
+                                                 'Ensure ' + label.text + ' is displayed.')
             except TimeoutException:
                 self.test_helper.assert_true(True,
                                              'Expected ' + item + ' but TimeoutException occurred.',
-                                             'Ensure ' + item + ' to be visible')
+                                             'Ensure ' + item + ' is displayed.')
                 break
 
         for idx, row in enumerate(values):
             name = items_to_test[idx]
             self.test_helper.assert_true(len(name) == 0, 'Expected ' + name + ' to be > 0 but was ' + str(
-                len(name)), 'Ensure ' + name + ' visible')
+                len(name)), 'Ensure ' + name + ' visible.')
             for td in row:
                 self.test_helper.assert_true(len(td) == 0,
                                              'Expected ' + td + ' to be > 0 but was ' + str(
                                                  len(td)),
-                                             'Ensure ' + name + ' data visible')
-
-                # finder.test_values(values, self.test_helper)
+                                             'Ensure ' + name + ' data visible.')
 
     def __navigate_to_location(self, breadcrumbs):
         self.driver.switch_to_default_content()
@@ -87,6 +118,18 @@ def remove_unnecessary_rows(rows):
     return new_rows
 
 
+class button_finder(object):
+    def __init__(self):
+        pass
+
+    def find_label(self, label):
+        return element_locater('button', label)
+
+    def find_buttons(self, button):
+        print(button)
+        return element_locater('button', button)
+
+
 class table_row_header_finder(object):
     def __init__(self):
         self.vals = dict()
@@ -96,18 +139,6 @@ class table_row_header_finder(object):
 
     def find_values(self, label):
         return find_values_same_row_as_label(label)
-
-        # def test_values(self, values, test_helper):
-        #     for row in values:
-        #         test_helper.assert_true(len(row[0]) == 0,
-        #                                 'Expected ' + row[0] + ' to be > 0 but was ' + str(
-        #                                     len(row[0])),
-        #                                 'Ensure ' + row[0] + ' header visible')
-        #         for cell in row:
-        #             test_helper.assert_true(len(cell) == 0,
-        #                                     'Expected ' + cell + ' to be > 0 but was ' + str(
-        #                                         len(cell)),
-        #                                     'Ensure ' + row[0] + ' values visible')
 
 
 def find_values_same_row_as_label(label):
@@ -150,18 +181,15 @@ class table_column_header_finder(object):
 
         return values_arr
 
-    def test_values(self, values, test_helper):
-        for item in values:
-            # self.assert_value(item[0]['header'])
-            test_helper.assert_true(len(item[0]['header']) == 0,
-                                    'Expected ' + item[0]['header'] + ' to be > 0 but was ' + str(
-                                        len(item[0]['header'])),
-                                    'Ensure ' + item[0]['header'] + ' label visible')
-            for idx, value in enumerate(item[0]['value']):
-                test_helper.assert_true(len(value) == 0,
-                                        'Expected ' + value + ' to be > 0 but was ' + str(
-                                            len(value)),
-                                        'Ensure ' + value + ' values visible')
+    def find_headers(self, label):
+        # rows = label.find_elements_by_xpath('//th/div/div')
+        # headers = label.find_elements_by_xpath('../th|../td')
+        header = label.find_element_by_class_name('syslog_heading')
+        headers_arr = []
+
+        if label.text == header.text:
+            headers_arr.append(header.text)
+        return headers_arr
 
 
 def find_header_label_index(label):
@@ -173,11 +201,8 @@ def find_header_label_index(label):
 
 
 class td_label_finder(object):
-    def __init__(self, label):
-        pass
-
     def find_label(self, label):
-        return element_locater('td', self.label)
+        return element_locater('td', label)
 
     def find_values(self, label):
         return find_values_same_row_as_label(label)
@@ -191,9 +216,20 @@ def compare_label(x, y):
     return normalize_label(x) == normalize_label(y)
 
 
+def find_base(el):
+    children = el.find_elements_by_xpath("./div")
+    res = [el]
+
+    for child in children:
+        for childEl in find_base(child):
+            res.append(childEl)
+    return res
+
+
 def find_element(driver, el_type, label):
     words = label.split()
     exps = []
+
     for word in words:
         exps.append("contains(normalize-space(),%s)" % toXPathStringLiteral(word))
 
@@ -201,8 +237,10 @@ def find_element(driver, el_type, label):
 
     norm_label = normalize_label(label)
     for el in elements:
-        if el.is_displayed() and normalize_label(el.text) == norm_label:
-            return el
+        if el.is_displayed():
+            for el1 in find_base(el):
+                if el1.is_displayed() and normalize_label(el1.text) == norm_label:
+                    return el
     return False
 
 
