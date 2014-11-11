@@ -22,6 +22,21 @@ class SmokeTest():
         self.driver.switch_to_frame('frame_content')
         self.test_log.start(breadcrumbs[-1])
 
+    def create_equipment_test(self, screen_name):
+        self.__navigate_to_screen(screen_name)
+
+        # self.driver.switch_to_frame("frame_content")
+        time.sleep(5)  # added this as I got tired of trying to figure out why it wasn't waiting correctly below
+        WebDriverWait(self.driver, 50).until(
+            EC.visibility_of_element_located((By.ID, 'ChassisViewWidget1_container')))
+
+        chassis = self.driver.find_element_by_id('ChassisViewWidget1_container')
+        # driver.execute_script("document.getElementById('ChassisViewWidget1_container').innerHTML=\"\";")
+        # WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, chassis)))
+        print('chassis text', chassis.text)
+        self.test_helper.assert_true(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
+                                     'Ensure Chassis displayed')
+
     def create_alarms_test(self, screen_name, buttons, finder):
         self.__navigate_to_screen(screen_name)
 

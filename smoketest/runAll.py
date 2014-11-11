@@ -1,5 +1,7 @@
 import sys
 from time import sleep
+from selenium import webdriver
+# from selenium.webdriver.chrome import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
@@ -160,7 +162,8 @@ class RunAll():
 
         smoke_test = SmokeTest(driver, test_log)
 
-        # # Start Status Tests
+        # Start Status Tests
+        smoke_test.create_equipment_test('Status/Equipment')
         smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], button_finder())
         smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
                           table_column_header_finder(), True)
@@ -168,8 +171,8 @@ class RunAll():
                           td_label_finder())
         smoke_test.create('Status/Reports', ['Helpdesk File:'], td_label_finder())
 
-        # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
-        # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
+        # # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
+        # # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
 
 
         # Start System Configuration Tests
@@ -197,12 +200,12 @@ class RunAll():
         smoke_test.create('Ethernet Configuration/Port Manager', ['Port', 'MAC Address'], table_column_header_finder())
 
         # Start Radio Configuration Tests
-        smoke_test.create('Radio Configuration/Radio Link Configuration',
+        smoke_test.create('Radio Configuration/Radio Links',
                           ['Bandwidth:', 'Modulation Mode:', 'Tx / Rx Spacing:'],
                           td_label_finder())
         smoke_test.create('Radio Configuration/Radio Link Diagnostics', ['Radio Link', 'RFU Details'],
                           table_row_header_finder())
-        smoke_test.create('Radio Configuration/Radio Link Protection',
+        smoke_test.create('Radio Configuration/Radio Protection',
                           ['Id', 'Primary Interface', 'Secondary Interface', 'Type'], table_column_header_finder())
         smoke_test.create('Radio Configuration/Radio Protection Diagnostics',
                           ['Prot Interface', 'Locked Online Plugin', 'Locked Transmit Path'],
@@ -228,10 +231,11 @@ class RunAll():
                           table_column_header_finder())
         smoke_test.create('Statistics/ARP Cache', ['MAC Address', 'Interface', 'IP Address', 'Media Type'],
                           table_column_header_finder())
+        smoke_test.create('Statistics/MAC Address Table', ['VLAN', 'MAC Address', 'Type', 'PW Index', 'Port'],
+                          table_column_header_finder())
 
         login_handler.end()
         test_log.close()
-
 
 if __name__ == "__main__":
     main()
