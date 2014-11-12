@@ -171,9 +171,8 @@ class RunAll():
                           td_label_finder())
         smoke_test.create('Status/Reports', ['Helpdesk File:'], td_label_finder())
 
-        # # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
-        # # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
-
+        # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
+        # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
 
         # Start System Configuration Tests
         smoke_test.create('System Configuration/System Information',
@@ -187,7 +186,7 @@ class RunAll():
 
         # Start Network Synchronization
         smoke_test.create('System Configuration/Network Synchronization/Network Clock',
-                          ['Equipment Clock', 'Clock Mode (Local PPL)', 'Switchover Mode'],
+                          ['Clock Mode (Local PPL)', 'Switchover Mode'],
                           table_row_header_finder())
 
         # Start Admin Tests
@@ -208,8 +207,8 @@ class RunAll():
         smoke_test.create('Radio Configuration/Radio Protection',
                           ['Id', 'Primary Interface', 'Secondary Interface', 'Type'], table_column_header_finder())
         smoke_test.create('Radio Configuration/Radio Protection Diagnostics',
-                          ['Prot Interface', 'Locked Online Plugin', 'Locked Transmit Path'],
-                          table_column_header_finder())
+                          ['Protected Interface', 'Locked Online Plugin', 'Locked Transmit Path'],
+                          table_row_header_finder())
 
         # Start TDM Configuration
         smoke_test.create('TDM Configuration/Tributary Diagnostics',
@@ -229,13 +228,14 @@ class RunAll():
         smoke_test.create('Statistics/Ethernet',
                           ['Interface', 'FCS Errors', 'Late Collisions', 'Symbol Errors'],
                           table_column_header_finder())
-        smoke_test.create('Statistics/ARP Cache', ['MAC Address', 'Interface', 'IP Address', 'Media Type'],
+        smoke_test.create('Statistics/ARP Cache', ['MAC Address', 'Interface', 'IP Address', 'Mapping'],
                           table_column_header_finder())
         smoke_test.create('Statistics/MAC Address Table', ['VLAN', 'MAC Address', 'Type', 'PW Index', 'Port'],
                           table_column_header_finder())
 
         login_handler.end()
         test_log.close()
+
 
 if __name__ == "__main__":
     main()
