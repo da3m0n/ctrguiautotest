@@ -9,26 +9,26 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from smoketest.admin.configManagement import ConfigManagement
-from smoketest.admin.license_management import LicenseManagement
-from smoketest.admin.software_management import SoftwareManagement
-from smoketest.status.alarms import Alarms
-from smoketest.status.eventLog import EventLog
-from smoketest.status.sensors import Sensors
-from smoketest.systemconfiguration.dateTime import DateTime
-from smoketest.TestLog import TestLog
-from smoketest.systemconfiguration.manufactureDetails import ManufactureDetails
-from smoketest.mylib.LoginHandler import LoginHandler
-from smoketest.mylib.utils import Utils
-from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
-from smoketest.systemconfiguration.sysAbout import SystemAbout
-from smoketest.systemconfiguration.sysInfo import SystemInformation
-from smoketest.systemconfiguration.EquipmentView import EquipmentView
-from smoketest.ethernetconfiguration.portManager import PortManager
-from smoketest.tdmconfiguration.pseudowire import PseudoWire
-from smoketest.aurorasmoketest.AuroraSmokeTest import AuroraSmokeTest, td_label_finder, button_finder, AuroraSmokeTest
-from smoketest.aurorasmoketest.AuroraSmokeTest import table_column_header_finder
-from smoketest.aurorasmoketest.AuroraSmokeTest import table_row_header_finder
+#from aurorasmoketest.admin.configManagement import ConfigManagement
+#from smoketest.admin.license_management import LicenseManagement
+#from smoketest.admin.software_management import SoftwareManagement
+#from smoketest.status.alarms import Alarms
+#from smoketest.status.eventLog import EventLog
+#from smoketest.status.sensors import Sensors
+#from smoketest.systemconfiguration.dateTime import DateTime
+from aurorasmoketest.TestLog import TestLog
+#from smoketest.systemconfiguration.manufactureDetails import ManufactureDetails
+from aurorasmoketest.mylib.LoginHandler import LoginHandler
+from aurorasmoketest.mylib.utils import Utils
+#from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
+#from smoketest.systemconfiguration.sysAbout import SystemAbout
+#from smoketest.systemconfiguration.sysInfo import SystemInformation
+#from smoketest.systemconfiguration.EquipmentView import EquipmentView
+#from smoketest.ethernetconfiguration.portManager import PortManager
+#from smoketest.tdmconfiguration.pseudowire import PseudoWire
+from aurorasmoketest.AuroraSmokeTest import AuroraSmokeTest, td_label_finder, button_finder, AuroraSmokeTest
+from aurorasmoketest.AuroraSmokeTest import table_column_header_finder
+from aurorasmoketest.AuroraSmokeTest import table_row_header_finder
 from optparse import OptionParser
 
 
