@@ -80,10 +80,10 @@ class Utils(object):
     def login(self, driver, username, password):
         try:
             # find the login element and type in the username
-            inputElement = driver.find_element_by_name("Login")
+            inputElement = driver.find_element_by_id("username")
             inputElement.send_keys(username)
             # find the password element and type in the password
-            inputElement = driver.find_element_by_name("Password")
+            inputElement = driver.find_element_by_id("password")
             inputElement.send_keys(password)
             # submit the form
             inputElement.submit()
