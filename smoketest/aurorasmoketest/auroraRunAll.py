@@ -3,7 +3,7 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from smoketest.aurorasmoketest.mylib.LoginHandler import LoginHandler
+# from smoketest.aurorasmoketest.mylib.LoginHandler import LoginHandler
 from smoketest.aurorasmoketest.mylib.utils import Utils
 from smoketest.aurorasmoketest.AuroraSmokeTest import AuroraSmokeTest
 from optparse import OptionParser
@@ -79,6 +79,41 @@ class RunAll():
         # smoke_test.navigate_to_screen('Statistics/MAC Address Table')
 
         login_handler.end()
+
+
+class LoginHandler(object):
+    def __init__(self, driver):
+        self.utils = Utils(driver)
+        self.driver = driver
+
+    def login(self):
+        print('doing nothing, already logged from start()')
+
+    def logout(self):
+        print('normal logout')
+
+    def start(self):
+        self.utils.startBrowser(self.driver)
+        self.utils.login(self.driver, 'root', 'admin123')
+
+    def end(self):
+        self.driver.switch_to_default_content()
+        self.utils.logout(self.driver)
+
+
+class IsolatedLoginHandler(object):
+    def __init__(self, driver):
+        self.driver = driver
+        self.utils = Utils(driver)
+
+    def login(self):
+        # self.utils.delete_existing_logfile()
+        self.utils.startBrowser(self.driver)
+        self.utils.login(self.driver, 'root', 'admin123')
+
+    def logout(self):
+        self.driver.switch_to_default_content()
+        self.utils.logout(self.driver)
 
 if __name__ == "__main__":
     for i in range(0, 2):
