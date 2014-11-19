@@ -3,7 +3,8 @@ from selenium.webdriver.support.expected_conditions import _find_elements
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from smoketest.aurorasmoketest.mylib.utils import Utils
+
+from smoketest.aurorasmoketest.utils import Utils
 
 
 class AuroraSmokeTest():

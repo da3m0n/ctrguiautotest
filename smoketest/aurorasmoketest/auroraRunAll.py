@@ -1,10 +1,12 @@
 import sys
+
 import os
+
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # from smoketest.aurorasmoketest.mylib.LoginHandler import LoginHandler
-from smoketest.aurorasmoketest.mylib.utils import Utils
+from smoketest.aurorasmoketest.utils import Utils
 from smoketest.aurorasmoketest.AuroraSmokeTest import AuroraSmokeTest
 from optparse import OptionParser
 

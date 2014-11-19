@@ -5,9 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC  # available si
 from selenium import webdriver
 
 
-def main():
-    utils = Utils
-
 class Utils(object):
     def __init__(self, driver):
         rt = None
@@ -78,29 +75,3 @@ class Utils(object):
     def click_element(self, element):
         WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
         self.driver.find_element(By.ID, element).click()
-
-    # RETRIES = 3
-    # TIMEOUT_SECONDS = 30
-    #
-    # def find_element_by_id(self, element_id):
-    #
-    #     tries = 0
-    #     element = None
-    #
-    #     while tries < self.RETRIES:
-    #         try:
-    #             # element = WebDriverWait(self.driver, self.TIMEOUT_SECONDS).until(
-    #             #     lambda l: self.driver.find_element_by_id(element_id))
-    #             element = WebDriverWait(self.driver, self.TIMEOUT_SECONDS).until(
-    #                 EC.visibility_of_element_located((By.ID, element_id)))
-    #         except TimeoutException:
-    #             tries += 1
-    #             # self.switch_to_window(self.window_handles[0])
-    #             continue
-    #         else:
-    #             return element
-    #             # raise NoSuchElementException('Element with id=%s was not found.' % element_id)
-    #             # return
-
-if __name__ == "__main__":
-    main()
