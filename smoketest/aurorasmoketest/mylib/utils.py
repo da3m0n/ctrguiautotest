@@ -109,12 +109,9 @@ class Utils(object):
             if not login_button is None:
                 driver.quit()
         except:
-            try:
-                #otherwise check whether already on the login page
-                driver.find_element_by_name("Login")
-                driver.quit()
-            except:
-                print("Logout unsuccessful. This may cause errors with max number of sessions")
+            print("Logout button not found, must be logged out...hopefully.")
+        finally:
+            driver.quit()
 
 
     #initialise the window size so that all elements are visible

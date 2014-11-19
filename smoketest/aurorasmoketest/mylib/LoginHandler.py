@@ -1,5 +1,4 @@
-import sys, os
-from aurorasmoketest.mylib.utils import Utils
+from smoketest.aurorasmoketest.mylib.utils import Utils
 
 
 class LoginHandler(object):
