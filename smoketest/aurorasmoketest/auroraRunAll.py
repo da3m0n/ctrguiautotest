@@ -10,7 +10,7 @@ from AuroraSmokeTest import AuroraSmokeTest
 from optparse import OptionParser
 
 
-def main():
+def main(counter):
     parser = OptionParser(usage="usage: %prog ipAddress browser")
     # parser.add_option("-c", "--chelp", help="Add arguments for IP Address for radio and target browser")
     (options, args) = parser.parse_args()
@@ -19,19 +19,18 @@ def main():
         parser.error("wrong number of arguments")
 
     run_all = RunAll()
-    run_all.do_rest()
+    run_all.do_rest(counter)
 
 
 class RunAll():
-    def do_rest(self):
+    def do_rest(self, counter):
         driver = Utils.create_driver(sys.argv[2])
         try:
-            login_handler = LoginHandler(driver)
+            login_handler = LoginHandler(driver, counter)
             login_handler.start()
-
             smoke_test = AuroraSmokeTest(driver)
 
-        # Start Status Tests
+            # Start Status Tests
             smoke_test.navigate_to_screen('Status/Equipment')
             smoke_test.navigate_to_screen('Status/Alarms')
             smoke_test.navigate_to_screen('Status/Event Log')
@@ -45,36 +44,36 @@ class RunAll():
             smoke_test.navigate_to_screen('System Configuration/PoE Configuration')
             smoke_test.navigate_to_screen('System Configuration/Backup Power')
 
-        # # Start Network Synchronization
+            # # Start Network Synchronization
             smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Clock')
             smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Sync Sources')
 
-        # # Start Admin Tests
+            # # Start Admin Tests
             smoke_test.navigate_to_screen('System Configuration/Admin/Configuration Management')
             smoke_test.navigate_to_screen('System Configuration/Admin/Software Management')
             smoke_test.navigate_to_screen('System Configuration/Admin/License Management')
 
-        # # Start Ethernet Configuration
+            # # Start Ethernet Configuration
             smoke_test.navigate_to_screen('Ethernet Configuration/Port Manager')
-        # No license for LA
-        # smoke_test.navigate_to_screen('Ethernet Configuration/Link Aggregation')
+            # No license for LA
+            # smoke_test.navigate_to_screen('Ethernet Configuration/Link Aggregation')
 
-        # # Start Radio Configuration Tests
+            # # Start Radio Configuration Tests
             smoke_test.navigate_to_screen('Radio Configuration/Radio Links')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Link Diagnostics')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Protection')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Protection Diagnostics')
 
-        # # Start TDM Configuration
+            # # Start TDM Configuration
             smoke_test.navigate_to_screen('TDM Configuration/Pseudowire')
             smoke_test.navigate_to_screen('TDM Configuration/Tributary Diagnostics')
 
-        # # Start Statistics Tests
+            # # Start Statistics Tests
             smoke_test.navigate_to_screen('Statistics/Interface')
             smoke_test.navigate_to_screen('Statistics/Ethernet')
             smoke_test.navigate_to_screen('Statistics/Radio Link Performance')
-        # Need to handle pop up
-        # smoke_test.navigate_to_screen('Statistics/Radio Link History')
+            # Need to handle pop up
+            # smoke_test.navigate_to_screen('Statistics/Radio Link History')
             smoke_test.navigate_to_screen('Statistics/Radio G826')
             smoke_test.navigate_to_screen('Statistics/ARP Cache')
             smoke_test.navigate_to_screen('Statistics/MAC Address Table')
@@ -85,10 +84,12 @@ class RunAll():
             driver.get("http://" + sys.argv[1] + "/logout")
             driver.quit()
 
+
 class LoginHandler(object):
-    def __init__(self, driver):
+    def __init__(self, driver, counter):
         self.utils = Utils(driver)
         self.driver = driver
+        self.counter = counter
 
     def login(self):
         print('doing nothing, already logged from start()')
@@ -98,31 +99,22 @@ class LoginHandler(object):
 
     def start(self):
         self.utils.startBrowser(self.driver)
-        self.utils.login(self.driver, 'root', 'admin123')
+        self.utils.login(self.driver, 'root', 'admin123', counter)
 
     def end(self):
         self.driver.switch_to_default_content()
         self.utils.logout(self.driver)
 
 
-class IsolatedLoginHandler(object):
-    def __init__(self, driver):
-        self.driver = driver
-        self.utils = Utils(driver)
-
-    def login(self):
-        # self.utils.delete_existing_logfile()
-        self.utils.startBrowser(self.driver)
-        self.utils.login(self.driver, 'root', 'admin123')
-
-    def logout(self):
-        self.driver.switch_to_default_content()
-        self.utils.logout(self.driver)
-
 if __name__ == "__main__":
-    while(1):
-		try:
-			main()
-		except Exception, e:
-			print("Main loop exception")
-			print(e)
+    counter = 0
+    while 1:
+        try:
+            counter += 1
+            main(counter)
+        except Exception, e:
+            import signal
+            print("Main loop exception")
+            print(e)
+            print("About to kill process: ", os.getpid())
+            os.kill(os.getpid(), signal.SIGBREAK)

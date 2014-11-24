@@ -26,7 +26,7 @@ class Utils(object):
         driver.set_window_size(1200, 800)
 
     @classmethod
-    def login(self, driver, username, password):
+    def login(cls, driver, username, password, counter):
         try:
             # find the login element and type in the username
             inputElement = driver.find_element_by_id("username")
@@ -42,7 +42,7 @@ class Utils(object):
         try:
             # we have to wait for the page to refresh, the last thing that seems to be updated is the title
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "layout_device_name")))
-            print('Login Successful')
+            print "Login Successful - #", counter
             time.sleep(5)
         except:
             print("Login unsuccessful")
