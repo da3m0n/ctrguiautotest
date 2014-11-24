@@ -33,8 +33,7 @@ class AuroraSmokeTest():
             if not expanded:
                 folder.click()
             self.__navigate_to_location_rec(folder, breadcrumbs[1:])
-
-
+			
 class my_visibility_of_elements(object):
     def __init__(self, locator, name):
         self.locator = locator

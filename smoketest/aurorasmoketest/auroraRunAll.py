@@ -2,12 +2,11 @@ import sys
 
 import os
 
-import smoketest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # from smoketest.aurorasmoketest.mylib.LoginHandler import LoginHandler
 from aurorasmoketest.utils import Utils
-from aurorasmoketest.AuroraSmokeTest import AuroraSmokeTest
+from AuroraSmokeTest import AuroraSmokeTest
 from optparse import OptionParser
 
 
@@ -26,62 +25,65 @@ def main():
 class RunAll():
     def do_rest(self):
         driver = Utils.create_driver(sys.argv[2])
+        try:
+            login_handler = LoginHandler(driver)
+            login_handler.start()
 
-        login_handler = LoginHandler(driver)
-        login_handler.start()
-
-        smoke_test = AuroraSmokeTest(driver)
+            smoke_test = AuroraSmokeTest(driver)
 
         # Start Status Tests
-        smoke_test.navigate_to_screen('Status/Equipment')
-        smoke_test.navigate_to_screen('Status/Alarms')
-        smoke_test.navigate_to_screen('Status/Event Log')
-        smoke_test.navigate_to_screen('Status/Sensors')
-        smoke_test.navigate_to_screen('Status/Reports')
-        smoke_test.navigate_to_screen('Status/Manufacture Details')
+            smoke_test.navigate_to_screen('Status/Equipment')
+            smoke_test.navigate_to_screen('Status/Alarms')
+            smoke_test.navigate_to_screen('Status/Event Log')
+            smoke_test.navigate_to_screen('Status/Sensors')
+            smoke_test.navigate_to_screen('Status/Reports')
+            smoke_test.navigate_to_screen('Status/Manufacture Details')
 
-        smoke_test.navigate_to_screen('System Configuration/System Information')
-        smoke_test.navigate_to_screen('System Configuration/Date & Time')
-        smoke_test.navigate_to_screen('System Configuration/Connected Devices')
-        smoke_test.navigate_to_screen('System Configuration/PoE Configuration')
-        smoke_test.navigate_to_screen('System Configuration/Backup Power')
+            smoke_test.navigate_to_screen('System Configuration/System Information')
+            smoke_test.navigate_to_screen('System Configuration/Date & Time')
+            smoke_test.navigate_to_screen('System Configuration/Connected Devices')
+            smoke_test.navigate_to_screen('System Configuration/PoE Configuration')
+            smoke_test.navigate_to_screen('System Configuration/Backup Power')
 
         # # Start Network Synchronization
-        smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Clock')
-        smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Sync Sources')
+            smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Clock')
+            smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Sync Sources')
 
         # # Start Admin Tests
-        smoke_test.navigate_to_screen('System Configuration/Admin/Configuration Management')
-        smoke_test.navigate_to_screen('System Configuration/Admin/Software Management')
-        smoke_test.navigate_to_screen('System Configuration/Admin/License Management')
+            smoke_test.navigate_to_screen('System Configuration/Admin/Configuration Management')
+            smoke_test.navigate_to_screen('System Configuration/Admin/Software Management')
+            smoke_test.navigate_to_screen('System Configuration/Admin/License Management')
 
         # # Start Ethernet Configuration
-        smoke_test.navigate_to_screen('Ethernet Configuration/Port Manager')
+            smoke_test.navigate_to_screen('Ethernet Configuration/Port Manager')
         # No license for LA
         # smoke_test.navigate_to_screen('Ethernet Configuration/Link Aggregation')
 
         # # Start Radio Configuration Tests
-        smoke_test.navigate_to_screen('Radio Configuration/Radio Links')
-        smoke_test.navigate_to_screen('Radio Configuration/Radio Link Diagnostics')
-        smoke_test.navigate_to_screen('Radio Configuration/Radio Protection')
-        smoke_test.navigate_to_screen('Radio Configuration/Radio Protection Diagnostics')
+            smoke_test.navigate_to_screen('Radio Configuration/Radio Links')
+            smoke_test.navigate_to_screen('Radio Configuration/Radio Link Diagnostics')
+            smoke_test.navigate_to_screen('Radio Configuration/Radio Protection')
+            smoke_test.navigate_to_screen('Radio Configuration/Radio Protection Diagnostics')
 
         # # Start TDM Configuration
-        smoke_test.navigate_to_screen('TDM Configuration/Pseudowire')
-        smoke_test.navigate_to_screen('TDM Configuration/Tributary Diagnostics')
+            smoke_test.navigate_to_screen('TDM Configuration/Pseudowire')
+            smoke_test.navigate_to_screen('TDM Configuration/Tributary Diagnostics')
 
         # # Start Statistics Tests
-        smoke_test.navigate_to_screen('Statistics/Interface')
-        smoke_test.navigate_to_screen('Statistics/Ethernet')
-        smoke_test.navigate_to_screen('Statistics/Radio Link Performance')
+            smoke_test.navigate_to_screen('Statistics/Interface')
+            smoke_test.navigate_to_screen('Statistics/Ethernet')
+            smoke_test.navigate_to_screen('Statistics/Radio Link Performance')
         # Need to handle pop up
         # smoke_test.navigate_to_screen('Statistics/Radio Link History')
-        smoke_test.navigate_to_screen('Statistics/Radio G826')
-        smoke_test.navigate_to_screen('Statistics/ARP Cache')
-        smoke_test.navigate_to_screen('Statistics/MAC Address Table')
+            smoke_test.navigate_to_screen('Statistics/Radio G826')
+            smoke_test.navigate_to_screen('Statistics/ARP Cache')
+            smoke_test.navigate_to_screen('Statistics/MAC Address Table')
 
-        login_handler.end()
-
+            login_handler.end()
+        except Exception, e:
+            print(e)
+            driver.get("http://" + sys.argv[1] + "/logout")
+            driver.quit()
 
 class LoginHandler(object):
     def __init__(self, driver):
@@ -118,5 +120,9 @@ class IsolatedLoginHandler(object):
         self.utils.logout(self.driver)
 
 if __name__ == "__main__":
-    for i in range(0, 2):
-        main()
+    while(1):
+		try:
+			main()
+		except Exception, e:
+			print("Main loop exception")
+			print(e)

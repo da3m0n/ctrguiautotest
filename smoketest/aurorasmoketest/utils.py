@@ -50,13 +50,15 @@ class Utils(object):
     #logout, as too many sessions are not allowed
     def logout(self, driver):
         try:
+		    driver.get("http://" + sys.argv[1] + "/logout")
+		#
             #find the logout button
-            self.click_element("top_menu_users")
-            self.click_element("top_menu_logout")
-            print("Successfully logged out")
-            login_button = Utils.find_element('login')
-            if not login_button is None:
-                driver.quit()
+        #    self.click_element("top_menu_users")
+        #    self.click_element("top_menu_logout")
+        #    print("Successfully logged out")
+        #    login_button = Utils.find_element('login')
+        #    if not login_button is None:
+        #        driver.quit()
         except:
             print("Logout button not found, must be logged out...hopefully.")
         finally:
