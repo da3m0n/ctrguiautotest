@@ -9,23 +9,9 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from smoketest.admin.configManagement import ConfigManagement
-from smoketest.admin.license_management import LicenseManagement
-from smoketest.admin.software_management import SoftwareManagement
-from smoketest.status.alarms import Alarms
-from smoketest.status.eventLog import EventLog
-from smoketest.status.sensors import Sensors
-from smoketest.systemconfiguration.dateTime import DateTime
 from smoketest.TestLog import TestLog
-from smoketest.systemconfiguration.manufactureDetails import ManufactureDetails
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
-from smoketest.systemconfiguration.powerOverEthernet import PowerOverEthernet
-from smoketest.systemconfiguration.sysAbout import SystemAbout
-from smoketest.systemconfiguration.sysInfo import SystemInformation
-from smoketest.systemconfiguration.EquipmentView import EquipmentView
-from smoketest.ethernetconfiguration.portManager import PortManager
-from smoketest.tdmconfiguration.pseudowire import PseudoWire
 from smoketest.SmokeTest import SmokeTest, td_label_finder, button_finder
 from smoketest.SmokeTest import table_column_header_finder
 from smoketest.SmokeTest import table_row_header_finder
@@ -143,7 +129,7 @@ class RunAll():
     def do_rest(self):
         print('Gonna run the smoketests...')
         driver = Utils.create_driver(sys.argv[2])
-        utils = Utils(driver)
+        utils = Utils(driver, self.test_log)
         utils.delete_existing_dir()
 
         # driver.Chrome("C:\ChromeDriver\chromedriver.exe")

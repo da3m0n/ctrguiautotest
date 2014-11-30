@@ -4,7 +4,7 @@ from smoketest.mylib.utils import Utils
 
 class LoginHandler(object):
     def __init__(self, driver):
-        self.utils = Utils(driver)
+        self.utils = Utils(driver, None)
         self.driver = driver
 
     def login(self):

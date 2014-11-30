@@ -39,7 +39,8 @@ class Dates(Enum):
 
 
 class Utils(object):
-    def __init__(self, driver):
+    def __init__(self, driver, test_log):
+        self.test_log = test_log
         rt = None
         self.driver = driver
         self.pwd = os.getcwd()
@@ -414,7 +415,51 @@ class Utils(object):
             ret.append(val)
         return ret
 
+    def navigate_to_screen(self, screen_name):
+        breadcrumbs = screen_name.split('/')
+        self.__navigate_to_location(breadcrumbs)
+        self.driver.switch_to_frame('frame_content')
+        self.test_log.start(breadcrumbs[-1])
 
+    def __navigate_to_location(self, breadcrumbs):
+        self.driver.switch_to_default_content()
+        self.__navigate_to_location_rec(self.driver, breadcrumbs)
+
+    def __navigate_to_location_rec(self, root, breadcrumbs):
+        breadcrumb = breadcrumbs[0]
+        if len(breadcrumbs) == 1:
+            WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.LINK_TEXT, breadcrumbs[0])))
+            last_el = self.driver.find_element_by_link_text(breadcrumbs[0])
+            last_el.click()
+        else:
+            folder = WebDriverWait(root, 20).until(
+                my_visibility_of_elements((By.XPATH, "//div[@class='side_menu_folder']"), breadcrumb))
+            expanded = len(folder.find_elements_by_class_name('expanded')) > 0
+            if not expanded:
+                folder.click()
+            self.__navigate_to_location_rec(folder, breadcrumbs[1:])
+
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support.expected_conditions import _find_elements
+
+
+class my_visibility_of_elements(object):
+    def __init__(self, locator, name):
+        self.locator = locator
+        self.name = name
+
+    def __call__(self, driver):
+        try:
+            folders = _find_elements(driver, self.locator)
+            for folder in folders:
+                # time.sleep(0.25)
+                if folder.is_displayed():
+                    if folder.text == self.name:
+                        return folder
+
+            return False
+        except StaleElementReferenceException:
+            return False
 
 from threading import Timer
 
