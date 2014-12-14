@@ -18,5 +18,5 @@ class LoginHandler(object):
         self.utils.login(self.driver, 'root', 'admin123')
 
     def end(self):
-        self.driver.switch_to_default_content()
+        # self.driver.switch_to_default_content()
         self.utils.logout(self.driver)

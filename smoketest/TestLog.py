@@ -16,8 +16,8 @@ class TestLog(object):
         """Class to log errors"""
         self.log = None
         self.doc = None
-        self.root = ET.Element("smoketests")
-        self.root.append(Comment('Do Not Change. Auto Generated in TestLog.py'))
+        self.root = ET.Element(name)
+        self.root.append(Comment('Don\'t bother changing. Auto Generated in TestLog.py'))
 
         self.time = time.localtime()
         self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S', self.time)
@@ -40,6 +40,8 @@ class TestLog(object):
 
     def log_it2(self, count, msg=None, test_name=None):
         self.test_errors += count
+        if self.doc == None:
+            self.doc = ET.SubElement(self.root, "blahblah", testScreen=test_name)
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
         el.set('testName', test_name)

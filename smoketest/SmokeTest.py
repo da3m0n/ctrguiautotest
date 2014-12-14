@@ -10,11 +10,12 @@ from smoketest.mylib.utils import Utils
 
 
 class SmokeTest():
-    def __init__(self, driver, test_log):
+    def __init__(self, driver, test_log, test_helper):
         self.test_log = test_log
         self.driver = driver
         self.gui_lib = Utils(driver, test_log)
-        self.test_helper = TestHelper(self.test_log, self.driver)
+        # self.test_helper = TestHelper(self.test_log, self.driver)
+        self.test_helper = test_helper
 
     # def __navigate_to_screen(self, screen_name):
     #     breadcrumbs = screen_name.split('/')

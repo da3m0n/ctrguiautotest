@@ -106,7 +106,7 @@ class Utils(object):
             self.click_element("top_menu_users")
             self.click_element("top_menu_logout")
             print("Successfully logged out")
-            login_button = Utils.find_element('login')
+            login_button = Utils.find_element("login")
             if not login_button is None:
                 driver.quit()
         except:
@@ -418,7 +418,7 @@ class Utils(object):
     def navigate_to_screen(self, screen_name):
         breadcrumbs = screen_name.split('/')
         self.__navigate_to_location(breadcrumbs)
-        self.driver.switch_to_frame('frame_content')
+        # self.driver.switch_to_frame('frame_content')
         self.test_log.start(breadcrumbs[-1])
 
     def __navigate_to_location(self, breadcrumbs):

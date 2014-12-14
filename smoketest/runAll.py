@@ -1,11 +1,15 @@
 import sys
-from time import sleep
 from selenium import webdriver
 # from selenium.webdriver.chrome import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.select import Select
+import time
 import os
+from smoketest.TestHelper import TestHelper
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -91,6 +95,8 @@ class RunAll():
     def __init__(self):
         self.dir = Utils.log_dir()
         self.test_log = TestLog('All Tests', self.dir)
+        self.driver = Utils.create_driver(sys.argv[2])
+        self.utils = Utils(self.driver, self.test_log)
         print('init')
 
     def run_all(self):
@@ -128,99 +134,169 @@ class RunAll():
 
     def do_rest(self):
         print('Gonna run the smoketests...')
-        driver = Utils.create_driver(sys.argv[2])
-        utils = Utils(driver, self.test_log)
-        utils.delete_existing_dir()
+        # driver = Utils.create_driver(sys.argv[2])
+        # utils = Utils(driver, self.test_log)
+        self.utils.delete_existing_dir()
 
         # driver.Chrome("C:\ChromeDriver\chromedriver.exe")
         # driver.Firefox()
         # driver.Ie()
 
-        login_handler = LoginHandler(driver)
+        login_handler = LoginHandler(self.driver)
         login_handler.start()
 
-        test_log = TestLog('All Tests', self.dir)
+        test_log = TestLog("smoketests", self.dir)
+        test_helper = TestHelper(test_log, self.driver)
 
         # Uncomment this to get coverage graph
-        test_log.add_num_screens(self.get_num_screens(driver))
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
-        driver.find_element_by_id('menu_node_equipment').click()
+        # test_log.add_num_screens(self.get_num_screens(self.driver))
+        # WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
+        # self.driver.find_element_by_id('menu_node_equipment').click()
 
-        smoke_test = SmokeTest(driver, test_log)
+        smoke_test = SmokeTest(self.driver, test_log, test_helper)
 
         # Start Status Tests
-        smoke_test.create_equipment_test('Status/Equipment')
-        smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], button_finder())
-        smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
-                          table_column_header_finder(), True)
-        smoke_test.create('Status/Sensors', ['Temperature Inlet 1/0', 'Voltage 1/0', 'Current 1/0'],
-                          td_label_finder())
-        smoke_test.create('Status/Reports', ['Helpdesk File:'], td_label_finder())
+        # smoke_test.create_equipment_test('Status/Equipment')
+        # smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], button_finder())
+        # smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
+        #                   table_column_header_finder(), True)
+        # smoke_test.create('Status/Sensors', ['Temperature Inlet 1/0', 'Voltage 1/0', 'Current 1/0'],
+        #                   td_label_finder())
+        # smoke_test.create('Status/Reports', ['Helpdesk File:'], td_label_finder())
 
         # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
         # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
 
         # Start System Configuration Tests
-        smoke_test.create('System Configuration/System Information',
-                          ['Hardware Version', 'Firmware Version', 'Switch MAC'], table_row_header_finder())
-        smoke_test.create('System Configuration/Date & Time',
-                          ['Date', 'Time', 'Timezone'], table_row_header_finder())
-        smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
-                          table_column_header_finder())
-        smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
-                          table_column_header_finder())
+        # smoke_test.create('System Configuration/System Information',
+        #                   ['Hardware Version', 'Firmware Version', 'Switch MAC'], table_row_header_finder())
+        # smoke_test.create('System Configuration/Date & Time',
+        #                   ['Date', 'Time', 'Timezone'], table_row_header_finder())
+        # smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
+        #                   table_column_header_finder())
+        # smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
+        #                   table_column_header_finder())
+        #
+        # # Start Network Synchronization
+        # smoke_test.create('System Configuration/Network Synchronization/Network Clock',
+        #                   ['Clock Mode (Local PPL)', 'Switchover Mode'],
+        #                   table_row_header_finder())
+        #
+        # # Start Admin Tests
+        # smoke_test.create('System Configuration/Admin/Configuration Management', ['Restore From:', 'Config File:'],
+        #                   td_label_finder())
+        # smoke_test.create('System Configuration/Admin/Software Management', ['Active Version:', 'Inactive Version:'],
+        #                   td_label_finder())
+        #
+        # # Start Ethernet Configuration
+        # smoke_test.create('Ethernet Configuration/Port Manager', ['Port', 'MAC Address'], table_column_header_finder())
+        #
+        # # Start Radio Configuration Tests
+        # smoke_test.create('Radio Configuration/Radio Links',
+        #                   ['Bandwidth:', 'Modulation Mode:', 'Tx / Rx Spacing:'],
+        #                   td_label_finder())
+        # smoke_test.create('Radio Configuration/Radio Link Diagnostics', ['Radio Link', 'RFU Details'],
+        #                   table_row_header_finder())
+        # smoke_test.create('Radio Configuration/Radio Protection',
+        #                   ['Id', 'Primary Interface', 'Secondary Interface', 'Type'], table_column_header_finder())
+        # smoke_test.create('Radio Configuration/Radio Protection Diagnostics',
+        #                   ['Protected Interface', 'Locked Online Plugin', 'Locked Transmit Path'],
+        #                   table_row_header_finder())
+        #
+        # # Start TDM Configuration
+        # smoke_test.create('TDM Configuration/Tributary Diagnostics',
+        #                   ['Tributary', 'Elapsed Time', 'Severely Errored Seconds'],
+        #                   table_row_header_finder())
+        # smoke_test.create('TDM Configuration/Pseudowire',
+        #                   ['Switch MAC', 'Mode', 'Recovery Clock Freq'],
+        #                   table_row_header_finder())
+        #
+        # # Start Statistics Tests
+        # smoke_test.create('Statistics/Interface',
+        #                   ['Interface', 'MTU', 'In Octets', 'Out Octets', 'In Errors'],
+        #                   table_column_header_finder())
+        # smoke_test.create('Statistics/Radio Link Performance',
+        #                   ['Active Rx Time', 'Current BER', 'Local RSL', '512QAM Rx Time', 'XPD'],
+        #                   table_row_header_finder())
+        # smoke_test.create('Statistics/Ethernet',
+        #                   ['Interface', 'FCS Errors', 'Late Collisions', 'Symbol Errors'],
+        #                   table_column_header_finder())
+        # smoke_test.create('Statistics/ARP Cache', ['MAC Address', 'Interface', 'IP Address', 'Mapping'],
+        #                   table_column_header_finder())
+        # smoke_test.create('Statistics/MAC Address Table', ['VLAN', 'MAC Address', 'Type', 'PW Index', 'Port'],
+        #                   table_column_header_finder())
 
-        # Start Network Synchronization
-        smoke_test.create('System Configuration/Network Synchronization/Network Clock',
-                          ['Clock Mode (Local PPL)', 'Switchover Mode'],
-                          table_row_header_finder())
-
-        # Start Admin Tests
-        smoke_test.create('System Configuration/Admin/Configuration Management', ['Restore From:', 'Config File:'],
-                          td_label_finder())
-        smoke_test.create('System Configuration/Admin/Software Management', ['Active Version:', 'Inactive Version:'],
-                          td_label_finder())
-
-        # Start Ethernet Configuration
-        smoke_test.create('Ethernet Configuration/Port Manager', ['Port', 'MAC Address'], table_column_header_finder())
-
-        # Start Radio Configuration Tests
-        smoke_test.create('Radio Configuration/Radio Links',
-                          ['Bandwidth:', 'Modulation Mode:', 'Tx / Rx Spacing:'],
-                          td_label_finder())
-        smoke_test.create('Radio Configuration/Radio Link Diagnostics', ['Radio Link', 'RFU Details'],
-                          table_row_header_finder())
-        smoke_test.create('Radio Configuration/Radio Protection',
-                          ['Id', 'Primary Interface', 'Secondary Interface', 'Type'], table_column_header_finder())
-        smoke_test.create('Radio Configuration/Radio Protection Diagnostics',
-                          ['Protected Interface', 'Locked Online Plugin', 'Locked Transmit Path'],
-                          table_row_header_finder())
-
-        # Start TDM Configuration
-        smoke_test.create('TDM Configuration/Tributary Diagnostics',
-                          ['Tributary', 'Elapsed Time', 'Severely Errored Seconds'],
-                          table_row_header_finder())
-        smoke_test.create('TDM Configuration/Pseudowire',
-                          ['Switch MAC', 'Mode', 'Recovery Clock Freq'],
-                          table_row_header_finder())
-
-        # Start Statistics Tests
-        smoke_test.create('Statistics/Interface',
-                          ['Interface', 'MTU', 'In Octets', 'Out Octets', 'In Errors'],
-                          table_column_header_finder())
-        smoke_test.create('Statistics/Radio Link Performance',
-                          ['Active Rx Time', 'Current BER', 'Local RSL', '512QAM Rx Time', 'XPD'],
-                          table_row_header_finder())
-        smoke_test.create('Statistics/Ethernet',
-                          ['Interface', 'FCS Errors', 'Late Collisions', 'Symbol Errors'],
-                          table_column_header_finder())
-        smoke_test.create('Statistics/ARP Cache', ['MAC Address', 'Interface', 'IP Address', 'Mapping'],
-                          table_column_header_finder())
-        smoke_test.create('Statistics/MAC Address Table', ['VLAN', 'MAC Address', 'Type', 'PW Index', 'Port'],
-                          table_column_header_finder())
+        # test_log = TestLog('All Tests', self.dir)
+        self.utils.navigate_to_screen("System Configuration/System Information")
+        self.write_config_test(self.driver)
 
         login_handler.end()
         test_log.close()
+
+
+    def write_config_test(self, driver):
+        test_log = TestLog("writetest", self.dir)
+        test_helper = TestHelper(test_log, driver)
+
+        driver.switch_to_default_content()
+
+        # driver.switch_to_frame("frame_content")
+        time.sleep(5)
+        WebDriverWait(driver, 20).until(
+            EC.visibility_of_element_located((By.ID, "SystemInformationWidget1_TW_3_1_renderer")))
+
+        node_name = driver.find_element_by_id("SystemInformationWidget1_TW_3_1_renderer_input")
+        contact = driver.find_element_by_id("SystemInformationWidget1_TW_5_1_renderer_input")
+        location = driver.find_element_by_id("SystemInformationWidget1_TW_6_1_renderer_input")
+
+        node_name.clear()
+        contact.clear()
+        location.clear()
+
+        node_name.send_keys(self.random_letters(10))
+        contact.send_keys(self.random_letters(30))
+        location.send_keys(self.random_letters(30))
+
+        initial_node_name = node_name.get_attribute("value")
+        initial_contact = contact.get_attribute("value")
+        initial_location = location.get_attribute("value")
+
+        apply_btn = driver.find_element_by_class_name("apply")
+        apply_btn.is_enabled()
+        apply_btn.click()
+
+        self.utils.navigate_to_screen("System Configuration/System Information")
+        WebDriverWait(driver, 30).until(
+            EC.visibility_of_element_located((By.ID, "SystemInformationWidget1_TW_3_1_renderer")))
+
+        updated_node_name = driver.find_element_by_id("SystemInformationWidget1_TW_3_1_renderer_input").get_attribute("value")
+        updated_contact = driver.find_element_by_id("SystemInformationWidget1_TW_5_1_renderer_input").get_attribute("value")
+        updated_location = driver.find_element_by_id("SystemInformationWidget1_TW_6_1_renderer_input").get_attribute("value")
+
+        print(initial_node_name, updated_node_name)
+        print(initial_contact, updated_contact)
+        print(initial_location, updated_location)
+
+        v1 = self.compare_vals(initial_node_name, updated_node_name)
+        v2 = self.compare_vals(initial_contact, updated_contact)
+        v3 = self.compare_vals(initial_location, updated_location)
+
+        test_helper.assert_true(initial_node_name != updated_node_name, 'Expected ' + initial_node_name + ' but was ' + updated_node_name,
+                                'Ensure Node name is persisted')
+        print(v1, v2, v3)
+
+
+    def compare_vals(self, initial_node_name, updated_node_name):
+        return initial_node_name == updated_node_name
+
+
+    import string
+
+
+    def random_letters(self, size=6, chars=string.ascii_letters + string.digits):
+        import random
+
+        return ''.join(random.choice(chars) for _ in range(size))
 
 
 if __name__ == "__main__":
