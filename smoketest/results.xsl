@@ -7,7 +7,7 @@
         <!--test-->
         <!--</div>-->
         <div class="row" id="last-smoketest">
-            Last Smoketest run at <xsl:value-of select="smoketests/allTestsStart/@allTestsStart"></xsl:value-of>
+            Last Smoketest run at <xsl:value-of select="tests/allTestsStart/@allTestsStart"></xsl:value-of>
         </div>
         <div class="row headerRow">
             <h4>
@@ -18,7 +18,7 @@
             </h4>
         </div>
 
-        <xsl:for-each select="smoketests/testScreen">
+        <xsl:for-each select="tests/testScreen">
             <div class="row resultsRow small">
                 <div class="col-lg-2 testScreen"> <xsl:value-of select="@testScreen"/></div>
                 <div class="col-lg-4">

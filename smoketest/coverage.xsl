@@ -5,19 +5,19 @@
     <xsl:template match="/">
         <div class="progress">
             <xsl:variable name="totalScreenCount">
-                <xsl:value-of select="smoketests/totalScreens/@totalScreens"></xsl:value-of>
+                <xsl:value-of select="tests/totalScreens/@totalScreens"></xsl:value-of>
             </xsl:variable>
             <xsl:variable name="totalTestsCount">
-                <xsl:value-of select="smoketests/totalTestCount/@totalTestCount"></xsl:value-of>
+                <xsl:value-of select="tests/totalTestCount/@totalTestCount"></xsl:value-of>
             </xsl:variable>
             <xsl:variable name="coveragePercentage">
-                <xsl:value-of select="smoketests/coveragePercentage/@coveragePercentage"></xsl:value-of>
+                <xsl:value-of select="tests/coveragePercentage/@coveragePercentage"></xsl:value-of>
             </xsl:variable>
 
             <div class="progress-bar" role="progressbar" aria-valuenow="{$totalTestsCount}" aria-valuemin="0"
                  aria-valuemax="{$totalScreenCount}"
                  style="width: {$coveragePercentage};">
-                <xsl:value-of select="smoketests/coveragePercentage/@coveragePercentage"></xsl:value-of>
+                <xsl:value-of select="tests/coveragePercentage/@coveragePercentage"></xsl:value-of>
             </div>
         </div>
 

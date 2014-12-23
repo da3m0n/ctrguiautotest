@@ -4,7 +4,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="/">
         <xsl:choose>
-            <xsl:when test="smoketests/errorCount/@errorCount &gt; 0">
+            <xsl:when test="tests/errorCount/@errorCount &gt; 0">
                 <!--<h1 class="test-fail">Fail</h1>-->
                 <div class="test-fail">
                     <h1>Fail</h1>

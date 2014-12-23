@@ -57,8 +57,8 @@
                         dates = [];
 
                 for (var i = 0; i < testDateTags.length; i++) {
-                    var sortDate = testDateTags.item(i).attributes[1].value,
-                            date = testDateTags.item(i).attributes[0].value;
+                    var sortDate = testDateTags.item(i).attributes[1].nodeValue,
+                            date = testDateTags.item(i).attributes[0].nodeValue;
 
                     dates.push({'sortDate': sortDate, 'date': date});
                 }
@@ -107,7 +107,7 @@
     var newDate = latest[0].date.split(' ').join('_');
     var newDateXml = newDate + '.xml';
 
-    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
+//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
     logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "overallResult.xsl", "test-result");
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
     logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");

@@ -304,7 +304,7 @@ class Utils(object):
                 func()
 
     @classmethod
-    def print_tree(cls, results_dir):
+    def print_tree(cls, results_dir, test_type):
         import xml.etree.ElementTree as ET
         from xml.etree.ElementTree import Comment
 
@@ -319,13 +319,13 @@ class Utils(object):
             field1.set('sortDate', cls.reformat_date(logs_dir))
 
             # for logs in logs_dir
-            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
+            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
             for xmlfile in next_in_logs[2]:
                 field2 = ET.SubElement(field1, "fileName")
                 field2.set("file", xmlfile.replace('_', ' '))
                 field2.set('fileurl', '/logs/' + logs_dir + '/' + xmlfile)
 
-                result = cls.extract_error_count(logs_dir + '/' + xmlfile)
+                result = cls.extract_error_count(logs_dir + '/' + test_type + '/' + xmlfile)
 
                 if len(next_in_logs[1]) > 0:
                     in_date_files = os.walk(next_in_logs[0] + '/screenshots').next()

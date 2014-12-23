@@ -12,11 +12,12 @@ class TestLog(object):
     test_errors = 0
     num_screens = 0
 
-    def __init__(self, name, dir):
+    def __init__(self, dir, test_type="smoketest"):
         """Class to log errors"""
+        self.test_type = test_type
         self.log = None
         self.doc = None
-        self.root = ET.Element(name)
+        self.root = ET.Element("tests")
         self.root.append(Comment('Don\'t bother changing. Auto Generated in TestLog.py'))
 
         self.time = time.localtime()
@@ -34,14 +35,11 @@ class TestLog(object):
         el = ET.SubElement(self.doc, "testStart")
         el.set("testStart", test_start)
 
-    def log_it(self, data=None):
-        el = ET.SubElement(self.doc, 'startTime')
-        el.set('blah', data)
-
     def log_it2(self, count, msg=None, test_name=None):
         self.test_errors += count
         if self.doc == None:
-            self.doc = ET.SubElement(self.root, "blahblah", testScreen=test_name)
+            # self.doc = ET.SubElement(self.root, "blahblah", testScreen=test_name)
+            self.start(test_name)
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
         el.set('testName', test_name)
@@ -59,7 +57,7 @@ class TestLog(object):
 
         total_tests = ET.SubElement(self.root, 'totalTestCount')
         total_tests.set('totalTestCount', str(self.num_tests_run))
-        time.sleep(2) # cause would sometimes return zero screens for whatever reason
+        time.sleep(2)  # cause would sometimes return zero screens for whatever reason
 
         if self.num_screens > 0:
             coverage_percentage = float(self.num_tests_run / float(self.num_screens) * 100)
@@ -72,6 +70,15 @@ class TestLog(object):
             os.mkdir(log_dir)
         os.chdir(log_dir)
 
+        tests = log_dir + '\\' + self.test_type
+        if not os.path.exists(tests):
+            os.mkdir(tests)
+        os.chdir(tests)
+
+
+
+        # path = os.path.abspath(log_dir + '\\' + date + '\\' + self.test_type + '.xml')
+        # path = os.path.abspath(log_dir + '\\' + self.test_type + '.xml')
         path = os.path.abspath(log_dir + '\\' + date + '.xml')
         tree.write(path)
 
