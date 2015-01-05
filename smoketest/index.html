@@ -107,10 +107,15 @@
     var newDate = latest[0].date.split(' ').join('_');
     var newDateXml = newDate + '.xml';
 
-    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
-    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "overallResult.xsl", "test-result");
+    logs.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "coverage.xsl", "coverage-result");
+    logs.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "overallResult.xsl", "test-result");
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");
+    logs.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "results.xsl", "tests");
+
+//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
+//    logs.displayResult("logs/" + newDate + "/smoketest/" + "smoketest.xml", "overallResult.xsl", "test-result");
+//    logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
+//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");
 
 </script>
 <script>

@@ -79,7 +79,7 @@ class TestLog(object):
 
         # path = os.path.abspath(log_dir + '\\' + date + '\\' + self.test_type + '.xml')
         # path = os.path.abspath(log_dir + '\\' + self.test_type + '.xml')
-        path = os.path.abspath(log_dir + '\\' + date + '.xml')
+        path = os.path.abspath(tests + '\\' + date + '.xml')
         tree.write(path)
 
     def add_num_screens(self, num_screens):
