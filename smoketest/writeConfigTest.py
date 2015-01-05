@@ -33,7 +33,7 @@ def main():
     run_all = RunAll()
     run_all.run_all()
 
-    Utils.print_tree(Utils.log_dir())
+    Utils.print_tree(Utils.log_dir(), "writeConfigTest")
 
 
 class RunAll():

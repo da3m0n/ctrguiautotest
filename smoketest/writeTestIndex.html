@@ -86,10 +86,9 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header navbar-inverse">
-            <span class="navbar-brand pull-left">CTR Smoketests</span>
+            <span class="navbar-brand pull-left">CTR Config Write Tests</span>
         </div>
-        <div id="coverage-result" class="pull-right"><strong>Test Coverage</strong>
-        </div>
+        <!--<div id="coverage-result" class="pull-right"><strong>Test Coverage</strong></div>-->
     </div>
 </div>
 <div class="container">
@@ -107,10 +106,15 @@
     var newDate = latest[0].date.split(' ').join('_');
     var newDateXml = newDate + '.xml';
 
-//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
-    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "overallResult.xsl", "test-result");
+//    logs.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "coverage.xsl", "coverage-result");
+    logs.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "overallResult.xsl", "test-result");
     logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");
+    logs.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "results.xsl", "tests");
+
+//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
+//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "overallResult.xsl", "test-result");
+//    logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
+//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");
 
 </script>
 <script>
