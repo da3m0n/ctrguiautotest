@@ -7,76 +7,6 @@
     <link rel="stylesheet" href="smoketests.css"/>
     <link rel="stylesheet" href="vendor/css/lightbox.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
-    <script>
-        var logs = (function () {
-
-            function loadXMLDoc(filename) {
-                var xhttp;
-
-                if (window.ActiveXObject) {
-                    xhttp = new ActiveXObject("Msxml2.XMLHTTP");
-                }
-                else {
-                    xhttp = new XMLHttpRequest();
-                }
-                xhttp.open("GET", filename, false);
-                try {
-                    xhttp.responseType = "msxml-document"
-                } catch (err) {
-                } // Helping IE11
-                xhttp.send("");
-//                return xhttp.responseXML;
-
-                return {
-                    response: xhttp.responseXML,
-                    responseType: xhttp.responseType
-                };
-            }
-
-            function displayResult(filename, xsl, elementId) {
-                var xml = loadXMLDoc(filename),
-                        xsl = loadXMLDoc(xsl);
-                // code for IE
-                if (window.ActiveXObject || xml.responseType === "msxml-document") {
-                    document.getElementById(elementId).innerHTML = xml.response.transformNode(xsl.response);
-                }
-                // code for Chrome, Firefox, Opera, etc.
-                else if (document.implementation && document.implementation.createDocument) {
-                    var xsltProcessor = new XSLTProcessor();
-                    xsltProcessor.importStylesheet(xsl.response);
-                    var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
-                    document.getElementById(elementId).appendChild(resultDocument);
-                }
-            }
-
-            function getLatestTest(file) {
-                var xml = loadXMLDoc(file),
-                        xmldoc = xml.response,
-                        testDateTags = xmldoc.getElementsByTagName('testDate'),
-                        dates = [];
-
-                for (var i = 0; i < testDateTags.length; i++) {
-                    var sortDate = testDateTags.item(i).attributes[1].value,
-                            date = testDateTags.item(i).attributes[0].value;
-
-                    dates.push({'sortDate': sortDate, 'date': date});
-                }
-
-                dates.sort(function (a, b) {
-                    return b.sortDate - a.sortDate;
-                });
-
-                return dates;
-            }
-
-            return {
-                displayResult: displayResult,
-                getLatestTest: getLatestTest
-            };
-        })();
-
-    </script>
 </head>
 <body>
 <div class="jumbotron" id="jumbo-enhancements">
@@ -86,51 +16,22 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header navbar-inverse">
-            <span class="navbar-brand pull-left">CTR Smoketests</span>
-        </div>
-        <div id="coverage-result" class="pull-right"><strong>Test Coverage</strong>
+            <span class="navbar-brand pull-left">CTR Auto Tests</span>
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container absolute-center">
     <div class="row">
-        <div id="dates" class="col-lg-3"></div>
-        <div id="tests" class="col-lg-9"></div>
+        <h1><a href="http://localhost/smoketestindex.html">Smoketests</a></h1>
+    </div>
+    <div class="row">
+        <h1><a href="http://localhost/writetestindex.html">Write Tests</a></h1>
     </div>
 </div>
 
 <script src="vendor/js/jquery-1.11.1.min.js"></script>
 <script src="vendor/js/bootstrap.js"></script>
 <script src="vendor/js/lightbox.min.js"></script>
-<script>
-    var latest = logs.getLatestTest("logs/testDates.xml");
-    var newDate = latest[0].date.split(' ').join('_');
-    var newDateXml = newDate + '.xml';
 
-    logs.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "coverage.xsl", "coverage-result");
-    logs.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "overallResult.xsl", "test-result");
-    logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    logs.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "results.xsl", "tests");
-
-//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
-//    logs.displayResult("logs/" + newDate + "/smoketest/" + "smoketest.xml", "overallResult.xsl", "test-result");
-//    logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");
-
-</script>
-<script>
-
-    $(".datesListener").on('click', function (e) {
-        var date = $(this).attr('href');
-        e.preventDefault();
-        $('#tests').empty();
-        loadNewResults(date);
-    });
-
-
-    function loadNewResults(date) {
-        logs.displayResult(date, 'results.xsl', 'tests');
-    }
-</script>
 </body>
 </html>

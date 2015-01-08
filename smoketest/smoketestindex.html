@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="smoketests.css"/>
     <link rel="stylesheet" href="vendor/css/lightbox.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
 </head>
 <body>
 <div class="jumbotron" id="jumbo-enhancements">
@@ -17,9 +16,10 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header navbar-inverse">
-            <span class="navbar-brand pull-left"><a href="\">CTR Config Write Tests</a></span>
+            <span class="navbar-brand pull-left"><a href="\">CTR Smoketests</a></span>
         </div>
-        <!--<div id="coverage-result" class="pull-right"><strong>Test Coverage</strong></div>-->
+        <div id="coverage-result" class="pull-right"><strong>Test Coverage</strong>
+        </div>
     </div>
 </div>
 <div class="container">
@@ -38,13 +38,13 @@
     var newDate = latest[0].date.split(' ').join('_');
     var newDateXml = newDate + '.xml';
 
-//    logs.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "coverage.xsl", "coverage-result");
-    utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "overallResult.xsl", "test-result");
+    utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "coverage.xsl", "coverage-result");
+    utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "overallResult.xsl", "test-result");
     utils.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "results.xsl", "tests");
+    utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "results.xsl", "tests");
 
 //    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
-//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "overallResult.xsl", "test-result");
+//    logs.displayResult("logs/" + newDate + "/smoketest/" + "smoketest.xml", "overallResult.xsl", "test-result");
 //    logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
 //    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");
 
@@ -60,7 +60,7 @@
 
 
     function loadNewResults(date) {
-        logs.displayResult(date, 'results.xsl', 'tests');
+        utils.displayResult(date, 'results.xsl', 'tests');
     }
 </script>
 </body>
