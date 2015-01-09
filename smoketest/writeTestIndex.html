@@ -29,9 +29,6 @@
     </div>
 </div>
 
-<script src="vendor/js/jquery-1.11.1.min.js"></script>
-<script src="vendor/js/bootstrap.js"></script>
-<script src="vendor/js/lightbox.min.js"></script>
 <script src="utils.js"></script>
 <script>
     var latest = utils.getLatestTest("logs/testDates.xml");
@@ -42,11 +39,6 @@
     utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "overallResult.xsl", "test-result");
     utils.displayResult("logs/testDates.xml", "dates.xsl", "dates");
     utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "results.xsl", "tests");
-
-//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "coverage.xsl", "coverage-result");
-//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "overallResult.xsl", "test-result");
-//    logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-//    logs.displayResult("logs/" + newDate + "/" + "smoketest.xml", "results.xsl", "tests");
 
 </script>
 <script>
