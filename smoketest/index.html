@@ -45,14 +45,30 @@
 <script src="vendor/js/lightbox.min.js"></script>
 <script src="utils.js"></script>
 <script>
-    var latest = utils.getLatestTest("logs/testDates.xml");
-    var newDate = latest[0].date.split(' ').join('_');
-    var newDateXml = newDate + '.xml';
+    var sortedDates = utils.getLatestTest("logs/testDates.xml");
+    var allTests = [{dir: 'writeConfigTest', name : 'writetest' },{dir: 'smoketest', name : 'smoketest' }];
+    for (var testi in allTests) {
+        var test = allTests[testi];
+        var found = false;
+        for (var li in sortedDates) {
+            var latest = sortedDates[li];
 
-    utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "result-coloring.xsl", "smoketest");
-    utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "result-coloring.xsl", "writetest");
-    utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "last-run.xsl", "smoketest-run");
-    utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "last-run.xsl", "writetest-run");
+            var newDate = latest.date.split(' ').join('_');
+            var newDateXml = newDate + '.xml';
+            var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
+            if (data) {
+            console.log(data);
+                utils.displayResult(data, "result-coloring.xsl", test.name);
+                utils.displayResult(data, "last-run.xsl", test.name + "-run");
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+                utils.displayResult(data, "result-coloring.xsl", test.name);
+                utils.displayResult(data, "last-run.xsl", test.name + "-run");
+        }
+    }
 </script>
 </body>
 </html>

@@ -319,7 +319,8 @@ class Utils(object):
             field1.set('sortDate', cls.reformat_date(logs_dir))
 
             # for logs in logs_dir
-            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
+            # next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
+            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
             for xmlfile in next_in_logs[2]:
                 field2 = ET.SubElement(field1, "fileName")
                 field2.set("file", xmlfile.replace('_', ' '))

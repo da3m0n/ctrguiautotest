@@ -31,14 +31,44 @@
 
 <script src="utils.js"></script>
 <script>
-    var latest = utils.getLatestTest("logs/testDates.xml");
-    var newDate = latest[0].date.split(' ').join('_');
-    var newDateXml = newDate + '.xml';
+//    var sortedDates = utils.getLatestTest("logs/testDates.xml");
+//    for (var latest in sortedDates) {
+//        var newDate = latest.date.split(' ').join('_');
+//        var newDateXml = newDate + '.xml';
+//
+//
+//        utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "coverage.xsl", "coverage-result");
+//        utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "overallResult.xsl", "test-result");
+//        utils.displayResult("logs/testDates.xml", "dates.xsl", "dates");
+//        utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "results.xsl", "tests");
+//        break;
+//    }
 
-    utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "coverage.xsl", "coverage-result");
-    utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "overallResult.xsl", "test-result");
-    utils.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "results.xsl", "tests");
+    var sortedDates = utils.getLatestTest("logs/testDates.xml");
+    var allTests = [{dir: 'smoketest', name : 'smoketest' }];
+    for (var testi in allTests) {
+        var test = allTests[testi];
+        var found = false;
+        for (var li in sortedDates) {
+            var latest = sortedDates[li];
+
+            var newDate = latest.date.split(' ').join('_');
+            var newDateXml = newDate + '.xml';
+            var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
+            if (data) {
+            console.log(data);
+                utils.displayResult(data, "coverage.xsl", test.name);
+                utils.displayResult(data, "overallResult.xsl", test.name + "-run");
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+                utils.displayResult(data, "coverage.xsl", test.name);
+                utils.displayResult(data, "overallResult.xsl", test.name + "-run");
+        }
+    }
+
 </script>
 <script>
 

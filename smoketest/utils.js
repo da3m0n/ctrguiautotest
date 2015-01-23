@@ -13,30 +13,40 @@ var utils = (function () {
                 try {
                     xhttp.responseType = "msxml-document"
                 } catch (err) {
+                    console.log("Missing file");
                 } // Helping IE11
                 xhttp.send("");
 //                return xhttp.responseXML;
 
                 return {
                     response: xhttp.responseXML,
-                    responseType: xhttp.responseType
+                    responseType: xhttp.responseType,
+                    status: xhttp.status
                 };
             }
+            function getResult(filename) {
+                var xml = loadXMLDoc(filename);
 
-            function displayResult(filename, xsl, elementId) {
-                var xml = loadXMLDoc(filename),
-                        xsl = loadXMLDoc(xsl);
+                if (xml.status == 404) {
+                    return false;
+                }
+                return xml;
+
+            }
+
+            function displayResult(xml, xsl, elementId, hideIfNotPresent) {
+                var xsl = loadXMLDoc(xsl);
                 // code for IE
-                if (window.ActiveXObject || xml.responseType === "msxml-document") {
-                    document.getElementById(elementId).innerHTML = xml.response.transformNode(xsl.response);
-                }
-                // code for Chrome, Firefox, Opera, etc.
-                else if (document.implementation && document.implementation.createDocument) {
                     var xsltProcessor = new XSLTProcessor();
-                    xsltProcessor.importStylesheet(xsl.response);
-                    var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
-                    document.getElementById(elementId).appendChild(resultDocument);
-                }
+                    if (xml) {
+                        xsltProcessor.importStylesheet(xsl.response);
+                        var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
+                        document.getElementById(elementId).appendChild(resultDocument);
+                    } else {
+                        var p = document.createElement('div')
+                        document.getElementById(elementId).appendChild(p);
+                    }
+
             }
 
             function getLatestTest(file) {
@@ -61,6 +71,7 @@ var utils = (function () {
 
             return {
                 displayResult: displayResult,
-                getLatestTest: getLatestTest
+                getLatestTest: getLatestTest,
+                getResult: getResult
             };
         })();
