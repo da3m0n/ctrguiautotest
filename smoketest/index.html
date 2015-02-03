@@ -42,10 +42,10 @@
 
 <script src="vendor/js/jquery-1.11.1.min.js"></script>
 <script src="vendor/js/bootstrap.js"></script>
-<script src="vendor/js/lightbox.min.js"></script>
+<script src="vendor/js/lightbox.js"></script>
 <script src="utils.js"></script>
 <script>
-    var sortedDates = utils.getLatestTest("logs/testDates.xml");
+    var sortedDates = utils.getSortedTestDates("logs/testDates.xml");
     var allTests = [{dir: 'writeConfigTest', name : 'writetest' },{dir: 'smoketest', name : 'smoketest' }];
     for (var testi in allTests) {
         var test = allTests[testi];
@@ -57,7 +57,7 @@
             var newDateXml = newDate + '.xml';
             var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
             if (data) {
-            console.log(data);
+                console.log(data);
                 utils.displayResult(data, "result-coloring.xsl", test.name);
                 utils.displayResult(data, "last-run.xsl", test.name + "-run");
                 found = true;

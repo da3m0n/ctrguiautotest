@@ -147,9 +147,9 @@ class RunAll():
         test_helper = TestHelper(test_log, self.driver)
 
         # Uncomment this to get coverage graph
-        # test_log.add_num_screens(self.get_num_screens(self.driver))
-        # WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
-        # self.driver.find_element_by_id('menu_node_equipment').click()
+        test_log.add_num_screens(self.get_num_screens(self.driver))
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
+        self.driver.find_element_by_id('menu_node_equipment').click()
 
         smoke_test = SmokeTest(self.driver, test_log, test_helper)
         run_smoke_tests(smoke_test)
@@ -157,77 +157,11 @@ class RunAll():
         login_handler.end()
         test_log.close()
 
-    def write_config_test(self, driver):
-        test_log = TestLog(self.dir)
-        test_helper = TestHelper(test_log, driver)
-
-        self.utils.navigate_to_screen("System Configuration/System Information")
-        driver.switch_to_default_content()
-
-        # driver.switch_to_frame("frame_content")
-        time.sleep(5)
-        WebDriverWait(driver, 20).until(
-            EC.visibility_of_element_located((By.ID, "SystemInformationWidget1_TW_3_1_renderer")))
-
-        node_name = driver.find_element_by_id("SystemInformationWidget1_TW_3_1_renderer_input")
-        contact = driver.find_element_by_id("SystemInformationWidget1_TW_5_1_renderer_input")
-        location = driver.find_element_by_id("SystemInformationWidget1_TW_6_1_renderer_input")
-
-        node_name.clear()
-        contact.clear()
-        location.clear()
-
-        node_name.send_keys(self.random_letters(10))
-        contact.send_keys(self.random_letters(30))
-        location.send_keys(self.random_letters(30))
-
-        initial_node_name = node_name.get_attribute("value")
-        initial_contact = contact.get_attribute("value")
-        initial_location = location.get_attribute("value")
-
-        apply_btn = driver.find_element_by_class_name("apply")
-        apply_btn.is_enabled()
-        apply_btn.click()
-
-        # self.utils.navigate_to_screen("System Configuration/System Information")
-        print('about to press refresh')
-        ActionChains(driver).key_down(Keys.F5).perform()
-        print('refresh pressed after this point')
-
-        WebDriverWait(driver, 30).until(
-            EC.visibility_of_element_located((By.ID, "SystemInformationWidget1_TW_3_1_renderer")))
-
-        updated_node_name = driver.find_element_by_id("SystemInformationWidget1_TW_3_1_renderer_input").get_attribute(
-            "value")
-        updated_contact = driver.find_element_by_id("SystemInformationWidget1_TW_5_1_renderer_input").get_attribute(
-            "value")
-        updated_location = driver.find_element_by_id("SystemInformationWidget1_TW_6_1_renderer_input").get_attribute(
-            "value")
-
-        print(initial_node_name, updated_node_name)
-        print(initial_contact, updated_contact)
-        print(initial_location, updated_location)
-
-        v1 = self.compare_vals(initial_node_name, updated_node_name)
-        v2 = self.compare_vals(initial_contact, updated_contact)
-        v3 = self.compare_vals(initial_location, updated_location)
-
-        # test_helper.assert_true(initial_node_name != updated_node_name,
-        #                         'Expected ' + initial_node_name + ' but was ' + updated_node_name,
-        #                         'Ensure Node name is persisted')
-        test_helper.assert_true(False,
-                                'Expected this but was that',
-                                'Ensure Node name is persisted')
-        print(v1, v2, v3)
-        test_log.close()
-
-
     def compare_vals(self, initial_node_name, updated_node_name):
         return initial_node_name == updated_node_name
 
 
     import string
-
 
     def random_letters(self, size=6, chars=string.ascii_letters + string.digits):
         import random
@@ -239,36 +173,36 @@ def run_smoke_tests(smoke_test):
     # Start Status Tests
     smoke_test.create_equipment_test('Status/Equipment')
     smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], button_finder())
-    # smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
-    #                   table_column_header_finder(), True)
-    # smoke_test.create('Status/Sensors', ['Temperature Inlet 1/0', 'Voltage 1/0', 'Current 1/0'],
-    #                   td_label_finder())
-    # smoke_test.create('Status/Reports', ['Helpdesk File:'], td_label_finder())
+    smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
+                      table_column_header_finder(), True)
+    smoke_test.create('Status/Sensors', ['Temperature Inlet 1/0', 'Voltage 1/0', 'Current 1/0'],
+                      td_label_finder())
+    smoke_test.create('Status/Reports', ['Helpdesk File:'], td_label_finder())
 
     # # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
     # # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
 
     # Start System Configuration Tests
-    # smoke_test.create('System Configuration/System Information',
-    #                   ['Hardware Version', 'Firmware Version', 'Switch MAC'], table_row_header_finder())
-    # smoke_test.create('System Configuration/Date & Time',
-    #                   ['Date', 'Time', 'Timezone'], table_row_header_finder())
-    # smoke_test.create('System Configuration/Connected Devices', ['Local Port', 'Address Type'],
-    #                   table_column_header_finder())
-    #
-    # smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
-    #                   table_column_header_finder())
-    # smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
-    #                   table_column_header_finder())
-    #
-    # # Start Network Synchronization
-    # smoke_test.create('System Configuration/Network Synchronization/Network Clock',
-    #                   ['Clock Mode (Local PPL)', 'Switchover Mode'],
-    #                   table_row_header_finder())
-    # smoke_test.create('System Configuration/Network Synchronization/Network Sync Sources',
-    #                   ['Port', 'Source State', 'Operational Quality Level Tx', 'Internal Quality Level Rx'],
-    #                   table_row_header_finder())
-    #
+    smoke_test.create('System Configuration/System Information',
+                      ['Hardware Version', 'Firmware Version', 'Switch MAC'], table_row_header_finder())
+    smoke_test.create('System Configuration/Date & Time',
+                      ['Date', 'Time', 'Timezone'], table_row_header_finder())
+    smoke_test.create('System Configuration/Connected Devices', ['Local Port', 'Address Type'],
+                      table_column_header_finder())
+
+    smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
+                      table_column_header_finder())
+    smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
+                      table_column_header_finder())
+
+    # Start Network Synchronization
+    smoke_test.create('Network Sync Configuration/Network Clock',
+                      ['Clock Mode (Local PPL)', 'Switchover Mode'],
+                      table_row_header_finder())
+    smoke_test.create('Network Sync Configuration/Network Sync Sources',
+                      ['Port', 'Source State', 'Operational Quality Level Tx', 'Internal Quality Level Rx'],
+                      table_row_header_finder())
+
     # # Start Admin Tests
     # smoke_test.create('System Configuration/Admin/Configuration Management', ['Restore From:', 'Config File:'],
     #                   td_label_finder())

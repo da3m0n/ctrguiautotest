@@ -18,8 +18,7 @@
         <div class="navbar-header navbar-inverse">
             <span class="navbar-brand pull-left"><a href="\">CTR Smoketests</a></span>
         </div>
-        <div id="coverage-result" class="pull-right"><strong>Test Coverage</strong>
-        </div>
+        <div id="coverage-result" class="pull-right"><strong>Test Coverage</strong></div>
     </div>
 </div>
 <div class="container">
@@ -30,59 +29,40 @@
 </div>
 
 <script src="utils.js"></script>
-<script>
-//    var sortedDates = utils.getLatestTest("logs/testDates.xml");
-//    for (var latest in sortedDates) {
-//        var newDate = latest.date.split(' ').join('_');
-//        var newDateXml = newDate + '.xml';
-//
-//
-//        utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "coverage.xsl", "coverage-result");
-//        utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "overallResult.xsl", "test-result");
-//        utils.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-//        utils.displayResult("logs/" + newDate + "/smoketest/" + newDateXml, "results.xsl", "tests");
-//        break;
-//    }
+<script src="vendor/js/jquery-1.11.1.min.js"></script>
+<script src="vendor/js/lightbox.js"></script>
 
-    var sortedDates = utils.getLatestTest("logs/testDates.xml");
-    var allTests = [{dir: 'smoketest', name : 'smoketest' }];
+<script>
+    var sortedDates = utils.getSortedTestDates("logs/testDates.xml");
+    var allTests = [
+        {dir: 'smoketest', name: 'coverage-result', xslDoc: "coverage.xsl" },
+        {dir: 'smoketest', name: 'test-result', xslDoc: "overallResult.xsl" },
+        {dir: 'smoketest', name: 'tests', xslDoc:"results.xsl" }
+    ];
+
+    var data = utils.getResult("logs/smoketestDates.xml");
+    utils.displayResult(data, "dates2.xsl", "dates");
+
     for (var testi in allTests) {
         var test = allTests[testi];
-        var found = false;
-        for (var li in sortedDates) {
-            var latest = sortedDates[li];
+            var latest = sortedDates[0];
 
             var newDate = latest.date.split(' ').join('_');
             var newDateXml = newDate + '.xml';
             var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
             if (data) {
-            console.log(data);
-                utils.displayResult(data, "coverage.xsl", test.name);
-                utils.displayResult(data, "overallResult.xsl", test.name + "-run");
-                found = true;
-                break;
+                utils.displayResult(data, test.xslDoc, test.name);
             }
-        }
-        if (!found) {
-                utils.displayResult(data, "coverage.xsl", test.name);
-                utils.displayResult(data, "overallResult.xsl", test.name + "-run");
-        }
     }
 
 </script>
 <script>
-
     $(".datesListener").on('click', function (e) {
         var date = $(this).attr('href');
         e.preventDefault();
         $('#tests').empty();
-        loadNewResults(date);
+        utils.loadNewResults(utils.getResult(date));
     });
-
-
-    function loadNewResults(date) {
-        utils.displayResult(date, 'results.xsl', 'tests');
-    }
 </script>
 </body>
 </html>

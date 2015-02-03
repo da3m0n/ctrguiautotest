@@ -30,10 +30,18 @@ class TestLog(object):
     def start(self, name):
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
         self.num_tests_run += 1
-        test_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)
+        # test_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)
+        #
+        # el = ET.SubElement(self.doc, "testStart")
+        # el.set("testStart", test_start)
+        test_start_time = time.strftime('%H:%M:%S', self.time)
+        test_start_date = time.strftime('%d %B %Y', self.time)
 
         el = ET.SubElement(self.doc, "testStart")
-        el.set("testStart", test_start)
+        el.set("startTime", test_start_time)
+        el.set("startDate", test_start_date)
+
+
 
     def log_it2(self, count, msg=None, test_name=None):
         self.test_errors += count

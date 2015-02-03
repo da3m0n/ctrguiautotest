@@ -319,12 +319,12 @@ class Utils(object):
             field1.set('sortDate', cls.reformat_date(logs_dir))
 
             # for logs in logs_dir
-            # next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
-            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
+            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
+            # next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
             for xmlfile in next_in_logs[2]:
                 field2 = ET.SubElement(field1, "fileName")
                 field2.set("file", xmlfile.replace('_', ' '))
-                field2.set('fileurl', '/logs/' + logs_dir + '/' + xmlfile)
+                field2.set('fileurl', '/logs/' + logs_dir + '/' + test_type + '/' + xmlfile)
 
                 result = cls.extract_error_count(logs_dir + '/' + test_type + '/' + xmlfile)
 
@@ -341,7 +341,9 @@ class Utils(object):
                 total_errors.set('totalErrors', result)
 
         tree = ET.ElementTree(root)
-        tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
+        test_run_type = test_type + '\\testDates.xml'
+        tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\' + test_run_type)) # testDates.xml'))
+        # tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
 
     @classmethod
     def extract_error_count(cls, xmlfile):

@@ -30,30 +30,44 @@
 </div>
 
 <script src="utils.js"></script>
+<script src="vendor/js/jquery-1.11.1.min.js"></script>
+<script src="vendor/js/bootstrap.min.js"></script>
+<script src="vendor/js/lightbox.js"></script>
+
 <script>
-    var latest = utils.getLatestTest("logs/testDates.xml");
-    var newDate = latest[0].date.split(' ').join('_');
-    var newDateXml = newDate + '.xml';
+    var logs = (function () {
+        var sortedDates = utils.getSortedTestDates("logs/testDates.xml");
+        var allTests = [
+//        {dir: 'writeConfigTest', name: 'coverage-result', xslDoc: "coverage.xsl" },
+            {dir: 'writeConfigTest', name: 'test-result', xslDoc: "overallResult.xsl" },
+            {dir: 'writeConfigTest', name: 'tests', xslDoc: "results.xsl" }
+        ];
 
-//    logs.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "coverage.xsl", "coverage-result");
-    utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "overallResult.xsl", "test-result");
-    utils.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    utils.displayResult("logs/" + newDate + "/writeConfigTest/" + newDateXml, "results.xsl", "tests");
+        var data = utils.getResult("logs/writeConfigTestDates.xml");
+        utils.displayResult(data, "dates2.xsl", "dates");
 
+        for (var testi in allTests) {
+            var test = allTests[testi];
+            var latest = sortedDates[0];
+
+            var newDate = latest.date.split(' ').join('_');
+            var newDateXml = newDate + '.xml';
+            var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
+            if (data) {
+                utils.displayResult(data, test.xslDoc, test.name);
+            }
+        }
+
+    })();
 </script>
 <script>
-
     $(".datesListener").on('click', function (e) {
         var date = $(this).attr('href');
         e.preventDefault();
         $('#tests').empty();
-        loadNewResults(date);
+        utils.loadNewResults(utils.getResult(date));
     });
-
-
-    function loadNewResults(date) {
-        logs.displayResult(date, 'results.xsl', 'tests');
-    }
 </script>
+
 </body>
 </html>
