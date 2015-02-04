@@ -34,27 +34,14 @@
 <script src="vendor/js/lightbox.js"></script>
 
 <script>
-    var sortedDates = utils.getSortedTestDates("logs/testDates.xml");
     var allTests = [
         {dir: 'smoketest', name: 'coverage-result', xslDoc: "coverage.xsl" },
         {dir: 'smoketest', name: 'test-result', xslDoc: "overallResult.xsl" },
-        {dir: 'smoketest', name: 'tests', xslDoc:"results.xsl" }
+        {dir: 'smoketest', name: 'tests', xslDoc: "results.xsl" }
     ];
+    var testDates = "logs/smoketestDates.xml";
 
-    var data = utils.getResult("logs/smoketestDates.xml");
-    utils.displayResult(data, "dates2.xsl", "dates");
-
-    for (var testi in allTests) {
-        var test = allTests[testi];
-            var latest = sortedDates[0];
-
-            var newDate = latest.date.split(' ').join('_');
-            var newDateXml = newDate + '.xml';
-            var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
-            if (data) {
-                utils.displayResult(data, test.xslDoc, test.name);
-            }
-    }
+    utils.loadAndDisplayPage(allTests, testDates);
 
 </script>
 <script>

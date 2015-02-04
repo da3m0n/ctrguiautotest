@@ -24,17 +24,29 @@
     <div class="row centered">
         <h1>
             <div class="col-lg-2"><a href="http://localhost/smoketestindex.html">Smoketests</a></div>
-            <div class="col-lg-4"><div class="time" id="smoketest-run"></div></div>
-            <div class="col-lg-1"><div class="spacer"></div></div>
-            <div class="col-lg-2"><div id="smoketest" class="col-lg-2"></div></div>
+            <div class="col-lg-4">
+                <div class="time" id="smoketest-run"></div>
+            </div>
+            <div class="col-lg-1">
+                <div class="spacer"></div>
+            </div>
+            <div class="col-lg-2">
+                <div id="smoketest" class="col-lg-2"></div>
+            </div>
         </h1>
     </div>
     <div class="row centered">
         <h1>
             <div class="col-lg-2"><a href="http://localhost/writetestindex.html">Write Tests</a></div>
-            <div class="col-lg-4"><div class="time" id="writetest-run"></div></div>
-            <div class="col-lg-1"><div class="spacer"></div></div>
-            <div class="col-lg-2"><div id="writetest" class="col-lg-2"></div></div>
+            <div class="col-lg-4">
+                <div class="time" id="writetest-run"></div>
+            </div>
+            <div class="col-lg-1">
+                <div class="spacer"></div>
+            </div>
+            <div class="col-lg-2">
+                <div id="writetest" class="col-lg-2"></div>
+            </div>
         </h1>
 
     </div>
@@ -45,30 +57,63 @@
 <script src="vendor/js/lightbox.js"></script>
 <script src="utils.js"></script>
 <script>
-    var sortedDates = utils.getSortedTestDates("logs/testDates.xml");
-    var allTests = [{dir: 'writeConfigTest', name : 'writetest' },{dir: 'smoketest', name : 'smoketest' }];
-    for (var testi in allTests) {
-        var test = allTests[testi];
-        var found = false;
-        for (var li in sortedDates) {
-            var latest = sortedDates[li];
+    var allTests = [
+        {dir: 'writeConfigTest', name: 'writetest', date: "logs/writeConfigTestDates.xml" },
+        {dir: 'smoketest', name: 'smoketest', date: "logs/smokeTestDates.xml" }
+    ];
 
-            var newDate = latest.date.split(' ').join('_');
+    for (var testi in allTests) {
+        var r = utils.getResult(allTests[testi].date);
+        if (r) {
+            var latest = utils.getSortedTestDates(allTests[testi].date);
+            var newDate = latest[0].date.split(' ').join('_');
             var newDateXml = newDate + '.xml';
-            var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
+            var data = utils.getResult("logs/" + newDate + "/" + allTests[testi].dir + "/" + newDateXml);
+            var found = false;
             if (data) {
-                console.log(data);
-                utils.displayResult(data, "result-coloring.xsl", test.name);
-                utils.displayResult(data, "last-run.xsl", test.name + "-run");
+                utils.displayResult(data, "result-coloring.xsl", allTests[testi].name);
+                utils.displayResult(data, "last-run.xsl", allTests[testi].name + "-run");
                 found = true;
-                break;
             }
-        }
-        if (!found) {
+            if (!found) {
+                console.log("No data found here!!!");
                 utils.displayResult(data, "result-coloring.xsl", test.name);
                 utils.displayResult(data, "last-run.xsl", test.name + "-run");
+            }
+        } else {
+            console.log("No data!!!");
+//            utils.getResult()
+            utils.displayResult(utils.getResult("noTests.xml"), "noTests.xsl", allTests[testi].name + "-run");
         }
+
     }
 </script>
+
+<!--<script>-->
+<!--var sortedDates = utils.getSortedTestDates("logs/testDates.xml");-->
+<!--var allTests = [{dir: 'writeConfigTest', name : 'writetest' },{dir: 'smoketest', name : 'smoketest' }];-->
+
+<!--for (var testi in allTests) {-->
+<!--var test = allTests[testi];-->
+<!--var found = false;-->
+<!--for (var li in sortedDates) {-->
+<!--var latest = sortedDates[li];-->
+<!--var newDate = latest.date.split(' ').join('_');-->
+<!--var newDateXml = newDate + '.xml';-->
+<!--var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);-->
+
+<!--if (data) {-->
+<!--utils.displayResult(data, "result-coloring.xsl", test.name);-->
+<!--utils.displayResult(data, "last-run.xsl", test.name + "-run");-->
+<!--found = true;-->
+<!--break;-->
+<!--}-->
+<!--}-->
+<!--if (!found) {-->
+<!--utils.displayResult(data, "result-coloring.xsl", test.name);-->
+<!--utils.displayResult(data, "last-run.xsl", test.name + "-run");-->
+<!--}-->
+<!--}-->
+<!--</script>-->
 </body>
 </html>

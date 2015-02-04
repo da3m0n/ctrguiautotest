@@ -27,6 +27,7 @@
                             </a>
                         </h4>
                         <div class="test pull-right">
+                            <!--<xsl:value-of select="errors/@totalErrors"></xsl:value-of>-->
                             <xsl:choose>
                                 <xsl:when test="errors/@totalErrors &gt; 0">
                                     <span class="glyphicon glyphicon-remove test-fail"></span>

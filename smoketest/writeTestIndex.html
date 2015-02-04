@@ -35,32 +35,20 @@
 <script src="vendor/js/lightbox.js"></script>
 
 <script>
-    var logs = (function () {
-        var sortedDates = utils.getSortedTestDates("logs/testDates.xml");
-        var allTests = [
-//        {dir: 'writeConfigTest', name: 'coverage-result', xslDoc: "coverage.xsl" },
-            {dir: 'writeConfigTest', name: 'test-result', xslDoc: "overallResult.xsl" },
-            {dir: 'writeConfigTest', name: 'tests', xslDoc: "results.xsl" }
-        ];
 
-        var data = utils.getResult("logs/writeConfigTestDates.xml");
-        utils.displayResult(data, "dates2.xsl", "dates");
+    var allTests = [
+        {dir: 'writeConfigTest', name: 'test-result', xslDoc: "overallResult.xsl" },
+        {dir: 'writeConfigTest', name: 'tests', xslDoc: "results.xsl" }
+    ];
 
-        for (var testi in allTests) {
-            var test = allTests[testi];
-            var latest = sortedDates[0];
+    var testDates = "logs/writeConfigTestDates.xml";
 
-            var newDate = latest.date.split(' ').join('_');
-            var newDateXml = newDate + '.xml';
-            var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
-            if (data) {
-                utils.displayResult(data, test.xslDoc, test.name);
-            }
-        }
+    utils.loadAndDisplayPage(allTests, testDates);
 
-    })();
 </script>
 <script>
+    var dateLink = document.getElementsByClassName(".datesListener");
+    dateLink.addEventListener('click', );
     $(".datesListener").on('click', function (e) {
         var date = $(this).attr('href');
         e.preventDefault();

@@ -341,7 +341,7 @@ class Utils(object):
                 total_errors.set('totalErrors', result)
 
         tree = ET.ElementTree(root)
-        test_run_type = test_type + '\\testDates.xml'
+        test_run_type = test_type + 'Dates.xml'
         tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\' + test_run_type)) # testDates.xml'))
         # tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
 

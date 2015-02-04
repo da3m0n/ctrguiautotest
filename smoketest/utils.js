@@ -13,7 +13,6 @@ var utils = (function () {
         try {
             xhttp.open("GET", filename, false);
             xhttp.responseType = "msxml-document"
-            console.log("Found file: " + filename);
         } catch (err) {
             console.log("Missing file: " + filename);
         }
@@ -78,10 +77,37 @@ var utils = (function () {
         displayResult(date, 'results.xsl', 'tests');
     }
 
+    function loadAndDisplayPage(allTests, testDates) {
+
+        var sortedDates = getSortedTestDates("logs/testDates.xml");
+        var data = getResult(testDates);
+        displayResult(data, "dates2.xsl", "dates");
+
+        for (var testi in allTests) {
+            var test = allTests[testi];
+            var latest = sortedDates[0];
+
+            var newDate = latest.date.split(' ').join('_');
+            var newDateXml = newDate + '.xml';
+            var data = getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);
+            if (data) {
+                displayResult(data, test.xslDoc, test.name);
+            }
+        }
+    }
+
+    function click(e) {
+        var date = $(this).attr('href');
+        e.preventDefault();
+        $('#tests').empty();
+        utils.loadNewResults(utils.getResult(date));
+    }
+
     return {
         displayResult: displayResult,
         getSortedTestDates: getSortedTestDates,
         getResult: getResult,
-        loadNewResults:loadNewResults
+        loadNewResults:loadNewResults,
+        loadAndDisplayPage: loadAndDisplayPage
     };
 })();

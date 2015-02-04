@@ -182,26 +182,26 @@ def run_smoke_tests(smoke_test):
     # # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
     # # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
 
-    # Start System Configuration Tests
-    smoke_test.create('System Configuration/System Information',
-                      ['Hardware Version', 'Firmware Version', 'Switch MAC'], table_row_header_finder())
-    smoke_test.create('System Configuration/Date & Time',
-                      ['Date', 'Time', 'Timezone'], table_row_header_finder())
-    smoke_test.create('System Configuration/Connected Devices', ['Local Port', 'Address Type'],
-                      table_column_header_finder())
-
-    smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
-                      table_column_header_finder())
-    smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
-                      table_column_header_finder())
-
-    # Start Network Synchronization
-    smoke_test.create('Network Sync Configuration/Network Clock',
-                      ['Clock Mode (Local PPL)', 'Switchover Mode'],
-                      table_row_header_finder())
-    smoke_test.create('Network Sync Configuration/Network Sync Sources',
-                      ['Port', 'Source State', 'Operational Quality Level Tx', 'Internal Quality Level Rx'],
-                      table_row_header_finder())
+    # # Start System Configuration Tests
+    # smoke_test.create('System Configuration/System Information',
+    #                   ['Hardware Version', 'Firmware Version', 'Switch MAC'], table_row_header_finder())
+    # smoke_test.create('System Configuration/Date & Time',
+    #                   ['Date', 'Time', 'Timezone'], table_row_header_finder())
+    # smoke_test.create('System Configuration/Connected Devices', ['Local Port', 'Address Type'],
+    #                   table_column_header_finder())
+    #
+    # smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
+    #                   table_column_header_finder())
+    # smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
+    #                   table_column_header_finder())
+    #
+    # # Start Network Synchronization
+    # smoke_test.create('Network Sync Configuration/Network Clock',
+    #                   ['Clock Mode (Local PPL)', 'Switchover Mode'],
+    #                   table_row_header_finder())
+    # smoke_test.create('Network Sync Configuration/Network Sync Sources',
+    #                   ['Port', 'Source State', 'Operational Quality Level Tx', 'Internal Quality Level Rx'],
+    #                   table_row_header_finder())
 
     # # Start Admin Tests
     # smoke_test.create('System Configuration/Admin/Configuration Management', ['Restore From:', 'Config File:'],
