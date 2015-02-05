@@ -39,9 +39,6 @@ var utils = (function () {
         var xsl = loadXMLDoc(xsl);
         // code for IE
         var xsltProcessor = new XSLTProcessor();
-        if(xml.response === 'undefined'){
-            console.log('XML needs to be loaded...');
-        }
         if (xml) {
             xsltProcessor.importStylesheet(xsl.response);
             var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
@@ -60,8 +57,8 @@ var utils = (function () {
             dates = [];
 
         for (var i = 0; i < testDateTags.length; i++) {
-            var sortDate = testDateTags.item(i).attributes[1].nodeValue,
-                date = testDateTags.item(i).attributes[0].nodeValue;
+            var sortDate = testDateTags.item(i).attributes[1].value,
+                date = testDateTags.item(i).attributes[0].value;
 
             dates.push({'sortDate': sortDate, 'date': date});
         }
@@ -79,7 +76,7 @@ var utils = (function () {
 
     function loadAndDisplayPage(allTests, testDates) {
 
-        var sortedDates = getSortedTestDates("logs/testDates.xml");
+        var sortedDates = getSortedTestDates(testDates);
         var data = getResult(testDates);
         displayResult(data, "dates2.xsl", "dates");
 

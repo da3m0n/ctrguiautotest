@@ -63,57 +63,21 @@
     ];
 
     for (var testi in allTests) {
-        var r = utils.getResult(allTests[testi].date);
-        if (r) {
+
+        if (utils.getResult(allTests[testi].date)) {
             var latest = utils.getSortedTestDates(allTests[testi].date);
             var newDate = latest[0].date.split(' ').join('_');
             var newDateXml = newDate + '.xml';
             var data = utils.getResult("logs/" + newDate + "/" + allTests[testi].dir + "/" + newDateXml);
-            var found = false;
             if (data) {
                 utils.displayResult(data, "result-coloring.xsl", allTests[testi].name);
                 utils.displayResult(data, "last-run.xsl", allTests[testi].name + "-run");
-                found = true;
-            }
-            if (!found) {
-                console.log("No data found here!!!");
-                utils.displayResult(data, "result-coloring.xsl", test.name);
-                utils.displayResult(data, "last-run.xsl", test.name + "-run");
             }
         } else {
-            console.log("No data!!!");
-//            utils.getResult()
             utils.displayResult(utils.getResult("noTests.xml"), "noTests.xsl", allTests[testi].name + "-run");
         }
 
     }
 </script>
-
-<!--<script>-->
-<!--var sortedDates = utils.getSortedTestDates("logs/testDates.xml");-->
-<!--var allTests = [{dir: 'writeConfigTest', name : 'writetest' },{dir: 'smoketest', name : 'smoketest' }];-->
-
-<!--for (var testi in allTests) {-->
-<!--var test = allTests[testi];-->
-<!--var found = false;-->
-<!--for (var li in sortedDates) {-->
-<!--var latest = sortedDates[li];-->
-<!--var newDate = latest.date.split(' ').join('_');-->
-<!--var newDateXml = newDate + '.xml';-->
-<!--var data = utils.getResult("logs/" + newDate + "/" + test.dir + "/" + newDateXml);-->
-
-<!--if (data) {-->
-<!--utils.displayResult(data, "result-coloring.xsl", test.name);-->
-<!--utils.displayResult(data, "last-run.xsl", test.name + "-run");-->
-<!--found = true;-->
-<!--break;-->
-<!--}-->
-<!--}-->
-<!--if (!found) {-->
-<!--utils.displayResult(data, "result-coloring.xsl", test.name);-->
-<!--utils.displayResult(data, "last-run.xsl", test.name + "-run");-->
-<!--}-->
-<!--}-->
-<!--</script>-->
 </body>
 </html>

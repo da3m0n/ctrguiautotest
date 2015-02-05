@@ -335,7 +335,7 @@ class Utils(object):
                     for image_name in in_date_files[2]:
                         field3 = ET.SubElement(el, "screenshot")
                         field3.set("error", image_name)
-                        field3.set('imageurl', '/logs/' + logs_dir + '/screenshots/' + image_name)
+                        field3.set('imageurl', '/logs/' + logs_dir + '/' + test_type + '/screenshots/' + image_name)
 
                 total_errors = ET.SubElement(field1, 'errors')
                 total_errors.set('totalErrors', result)
@@ -371,8 +371,10 @@ class Utils(object):
         side_menus = self.driver.find_elements_by_class('side_menu_folder')
         print('side folders', len(side_menus))
 
-    def save_screenshot(self, test_name):
-        screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\screenshots'
+    def save_screenshot(self, test_name, test_type):
+        test_name = test_name.rstrip('.')
+
+        screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\' + test_type + '\\screenshots'
 
         if os.path.exists(screenshots_dir):
             print('directory', screenshots_dir, ' exists')

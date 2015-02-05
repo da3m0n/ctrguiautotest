@@ -30,18 +30,21 @@ def main():
     if len(args) != 2:
         parser.error("wrong number of arguments")
 
-    run_all = RunAll()
+    TEST_TYPE = "writeConfigTest"
+
+    run_all = RunAll(TEST_TYPE)
     run_all.run_all()
 
-    Utils.print_tree(Utils.log_dir(), "writeConfigTest")
+    Utils.print_tree(Utils.log_dir(), TEST_TYPE)
 
 
 class RunAll():
-    def __init__(self):
+    def __init__(self, test_type):
         self.dir = Utils.log_dir()
-        self.test_log = TestLog(self.dir, "writeConfigTest")
+        self.test_log = TestLog(self.dir, test_type)
         self.driver = Utils.create_driver(sys.argv[2])
         self.utils = Utils(self.driver, self.test_log)
+        self.test_type = test_type
         print('init')
 
     def run_all(self):
@@ -60,7 +63,7 @@ class RunAll():
 
     def write_config_test(self, driver):
         # test_log = TestLog(self.dir)
-        test_helper = TestHelper(self.test_log, driver)
+        test_helper = TestHelper(self.test_log, driver, self.test_type)
 
         self.utils.navigate_to_screen("System Configuration/System Information")
         driver.switch_to_default_content()

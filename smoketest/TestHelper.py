@@ -3,7 +3,8 @@ from smoketest.mylib.utils import Utils
 
 
 class TestHelper(object):
-    def __init__(self, log, driver):
+    def __init__(self, log, driver, test_type):
+        self.test_type = test_type
         self.log_dir = Utils.log_dir()
         self.driver = driver
         self.log = log
@@ -13,7 +14,7 @@ class TestHelper(object):
         if val:
             self.error_count += 1
             utils = Utils(self.driver, None)
-            utils.save_screenshot(test_name)
+            utils.save_screenshot(test_name, self.test_type)
             self.log.log_it2(self.error_count, msg, test_name)
         else:
             msg = '-'

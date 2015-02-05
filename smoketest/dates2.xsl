@@ -12,7 +12,6 @@
         <!--</xsl:for-each>-->
 
 
-
         <div class="panel-group" id="accordion">
             <xsl:for-each select="resultsFiles/testDate">
 
@@ -56,22 +55,23 @@
                                     </xsl:element>
 
                                 </li>
-                                <!--<xsl:for-each select="screenshots/screenshot">-->
-                                    <!--<li>-->
-                                        <!--<xsl:element name="a">-->
-                                            <!--<xsl:attribute name="href">-->
-                                                <!--<xsl:value-of select="@imageurl"/>-->
-                                            <!--</xsl:attribute>-->
-                                            <!--<xsl:attribute name="data-lightbox">-->
-                                                <!--<xsl:value-of select="@error"/>-->
-                                            <!--</xsl:attribute>-->
-                                            <!--<xsl:value-of select="@error"/>-->
-                                        <!--</xsl:element>-->
-                                        <!--&lt;!&ndash;<a href="{@date}">&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<xsl:value-of select="@error"></xsl:value-of>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                                    <!--</li>-->
-                                <!--</xsl:for-each>-->
+                                <!--<h1><xsl:value-of select="screenshots/screenshot/@error"></xsl:value-of></h1>-->
+                                <xsl:for-each select="screenshots/screenshot">
+                                    <li>
+                                        <xsl:element name="a">
+                                            <xsl:attribute name="href">
+                                                <xsl:value-of select="@imageurl"/>
+                                            </xsl:attribute>
+                                            <xsl:attribute name="data-lightbox">
+                                                <xsl:value-of select="@error"/>
+                                            </xsl:attribute>
+                                            <xsl:value-of select="@error"/>
+                                        </xsl:element>
+                                        <!--<a href="{@date}">-->
+                                        <!--<xsl:value-of select="@error"></xsl:value-of>-->
+                                        <!--</a>-->
+                                    </li>
+                                </xsl:for-each>
                             </ul>
                         </div>
                     </div>
@@ -82,11 +82,9 @@
 </xsl:stylesheet>
 
 
-
-
-<!--<xsl:stylesheet version="1.0"-->
-                <!--xmlns:xsl="http://www.w3.org/1999/XSL/Transform">-->
-    <!--<xsl:template match="resultsFiles">-->
+        <!--<xsl:stylesheet version="1.0"-->
+        <!--xmlns:xsl="http://www.w3.org/1999/XSL/Transform">-->
+        <!--<xsl:template match="resultsFiles">-->
         <!--&lt;!&ndash;<xsl:for-each select="resultsFiles/testDate">&ndash;&gt;-->
         <!--&lt;!&ndash;<div id="test">blah&ndash;&gt;-->
         <!--&lt;!&ndash;<xsl:value-of select="@sortDate"></xsl:value-of>&ndash;&gt;-->
@@ -94,68 +92,68 @@
 
         <!--&lt;!&ndash;</xsl:for-each>&ndash;&gt;-->
         <!--<div class="panel-group" id="accordion">-->
-            <!--<xsl:for-each select="testDate">-->
-                <!--&lt;!&ndash;<xsl:sort select="@sortDate" data-type="number" order="descending"/>&ndash;&gt;-->
-                <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
+        <!--<xsl:for-each select="testDate">-->
+        <!--&lt;!&ndash;<xsl:sort select="@sortDate" data-type="number" order="descending"/>&ndash;&gt;-->
+        <!--<div class="panel panel-default">-->
+        <!--<div class="panel-heading">-->
 
-                        <!--<h4 class="panel-title pull-left">-->
+        <!--<h4 class="panel-title pull-left">-->
 
-                            <!--<a data-toggle="collapse" data-parent="#accordion" href="#{generate-id(@sortDate)}">-->
-                                <!--<xsl:value-of select="@date"></xsl:value-of>-->
-                            <!--</a>-->
-                        <!--</h4>-->
-                        <!--<div class="test pull-right">-->
-                            <!--<xsl:choose>-->
-                                <!--<xsl:when test="errors/@totalErrors &gt; 0">-->
-                                    <!--<span class="glyphicon glyphicon-remove test-fail"></span>-->
-                                <!--</xsl:when>-->
-                                <!--<xsl:otherwise>-->
-                                    <!--<span class="glyphicon glyphicon-ok test-pass"></span>-->
-                                <!--</xsl:otherwise>-->
-                            <!--</xsl:choose>-->
-                            <!--&lt;!&ndash;<xsl:value-of select="errors/@totalErrors"/>&ndash;&gt;-->
-                        <!--</div>-->
-                        <!--<div class="clearfix"></div>-->
-                    <!--</div>-->
-
-                    <!--<div id="{generate-id(@sortDate)}" class="panel-collapse collapse">-->
-                        <!--<div class="panel-body artifacts">-->
-                            <!--<ul>-->
-                                <!--<li>-->
-                                    <!--<xsl:element name="a">-->
-                                        <!--<xsl:attribute name="href">-->
-                                            <!--<xsl:value-of select="fileName/@fileurl"/>-->
-
-                                        <!--</xsl:attribute>-->
-                                        <!--<xsl:attribute name="class">datesListener-->
-                                            <!--&lt;!&ndash;<xsl:value-of select="@date"/>&ndash;&gt;-->
-                                        <!--</xsl:attribute>-->
-                                        <!--<xsl:value-of select="fileName/@file"/>-->
-                                    <!--</xsl:element>-->
-
-                                <!--</li>-->
-                                <!--<xsl:for-each select="screenshots/screenshot">-->
-                                    <!--<li>-->
-                                        <!--<xsl:element name="a">-->
-                                            <!--<xsl:attribute name="href">-->
-                                                <!--<xsl:value-of select="@imageurl"/>-->
-                                            <!--</xsl:attribute>-->
-                                            <!--<xsl:attribute name="data-lightbox">-->
-                                                <!--<xsl:value-of select="@error"/>-->
-                                            <!--</xsl:attribute>-->
-                                            <!--<xsl:value-of select="@error"/>-->
-                                        <!--</xsl:element>-->
-                                        <!--&lt;!&ndash;<a href="{@date}">&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<xsl:value-of select="@error"></xsl:value-of>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                                    <!--</li>-->
-                                <!--</xsl:for-each>-->
-                            <!--</ul>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</xsl:for-each>-->
+        <!--<a data-toggle="collapse" data-parent="#accordion" href="#{generate-id(@sortDate)}">-->
+        <!--<xsl:value-of select="@date"></xsl:value-of>-->
+        <!--</a>-->
+        <!--</h4>-->
+        <!--<div class="test pull-right">-->
+        <!--<xsl:choose>-->
+        <!--<xsl:when test="errors/@totalErrors &gt; 0">-->
+        <!--<span class="glyphicon glyphicon-remove test-fail"></span>-->
+        <!--</xsl:when>-->
+        <!--<xsl:otherwise>-->
+        <!--<span class="glyphicon glyphicon-ok test-pass"></span>-->
+        <!--</xsl:otherwise>-->
+        <!--</xsl:choose>-->
+        <!--&lt;!&ndash;<xsl:value-of select="errors/@totalErrors"/>&ndash;&gt;-->
         <!--</div>-->
-    <!--</xsl:template>-->
-<!--</xsl:stylesheet-->
+        <!--<div class="clearfix"></div>-->
+        <!--</div>-->
+
+        <!--<div id="{generate-id(@sortDate)}" class="panel-collapse collapse">-->
+        <!--<div class="panel-body artifacts">-->
+        <!--<ul>-->
+        <!--<li>-->
+        <!--<xsl:element name="a">-->
+        <!--<xsl:attribute name="href">-->
+        <!--<xsl:value-of select="fileName/@fileurl"/>-->
+
+        <!--</xsl:attribute>-->
+        <!--<xsl:attribute name="class">datesListener-->
+        <!--&lt;!&ndash;<xsl:value-of select="@date"/>&ndash;&gt;-->
+        <!--</xsl:attribute>-->
+        <!--<xsl:value-of select="fileName/@file"/>-->
+        <!--</xsl:element>-->
+
+        <!--</li>-->
+        <!--<xsl:for-each select="screenshots/screenshot">-->
+        <!--<li>-->
+        <!--<xsl:element name="a">-->
+        <!--<xsl:attribute name="href">-->
+        <!--<xsl:value-of select="@imageurl"/>-->
+        <!--</xsl:attribute>-->
+        <!--<xsl:attribute name="data-lightbox">-->
+        <!--<xsl:value-of select="@error"/>-->
+        <!--</xsl:attribute>-->
+        <!--<xsl:value-of select="@error"/>-->
+        <!--</xsl:element>-->
+        <!--&lt;!&ndash;<a href="{@date}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<xsl:value-of select="@error"></xsl:value-of>&ndash;&gt;-->
+        <!--&lt;!&ndash;</a>&ndash;&gt;-->
+        <!--</li>-->
+        <!--</xsl:for-each>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</xsl:for-each>-->
+        <!--</div>-->
+        <!--</xsl:template>-->
+        <!--</xsl:stylesheet-->
