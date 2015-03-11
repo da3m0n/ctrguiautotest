@@ -37,11 +37,12 @@ class RunAll():
             smoke_test.navigate_to_screen('chat')
             smoke_test.navigate_to_screen('share')
             smoke_test.navigate_to_screen('admin')
-            
-        #     smoke_test.navigate_to_screen('admin/pages')
-        #     smoke_test.navigate_to_screen('admin/settings')
-        #     smoke_test.navigate_to_screen('admin/data')
-        #     smoke_test.navigate_to_screen('admin/stats')
+            smoke_test.navigate_to_screen('admin')
+            smoke_test.navigate_to_screen('admin_users')
+            smoke_test.navigate_to_screen('admin_pages')
+            smoke_test.navigate_to_screen('admin_settings')
+            smoke_test.navigate_to_screen('admin_data')
+            smoke_test.navigate_to_screen('admin_stats')
         except Exception as e:
             print(e)
         driver.quit()
@@ -60,11 +61,9 @@ class LoginHandler(object):
         self.driver.switch_to_default_content()
 
 if __name__ == "__main__":
-    counter = 0
-    # main()
-    while counter < 2:
+
+    while 1:
         try:
-            counter += 1
             main()
         except Exception as e:
             import signal
