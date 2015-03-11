@@ -44,17 +44,13 @@ class RunAll():
             smoke_test.navigate_to_screen('System Configuration/PoE Configuration')
             smoke_test.navigate_to_screen('System Configuration/Backup Power')
 
-            # # Start Network Synchronization
-            smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Clock')
-            smoke_test.navigate_to_screen('System Configuration/Network Synchronization/Network Sync Sources')
-
             # # Start Admin Tests
             smoke_test.navigate_to_screen('System Configuration/Admin/Configuration Management')
-            smoke_test.navigate_to_screen('System Configuration/Admin/Software Management')
+            #smoke_test.navigate_to_screen('System Configuration/Admin/Software Management')
             smoke_test.navigate_to_screen('System Configuration/Admin/License Management')
 
             # # Start Ethernet Configuration
-            smoke_test.navigate_to_screen('Ethernet Configuration/Port Manager')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Port Manager')
             # No license for LA
             # smoke_test.navigate_to_screen('Ethernet Configuration/Link Aggregation')
 
@@ -63,20 +59,24 @@ class RunAll():
             smoke_test.navigate_to_screen('Radio Configuration/Radio Link Diagnostics')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Protection')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Protection Diagnostics')
-
+	
+            # # Start Network Synchronization
+            smoke_test.navigate_to_screen('Network Sync Configuration/Network Clock')
+            smoke_test.navigate_to_screen('Network Sync Configuration/Network Sync Sources')
+			
             # # Start TDM Configuration
             smoke_test.navigate_to_screen('TDM Configuration/Pseudowire')
             smoke_test.navigate_to_screen('TDM Configuration/Tributary Diagnostics')
 
             # # Start Statistics Tests
             smoke_test.navigate_to_screen('Statistics/Interface')
-            smoke_test.navigate_to_screen('Statistics/Ethernet')
+            #smoke_test.navigate_to_screen('Statistics/Ethernet')
             smoke_test.navigate_to_screen('Statistics/Radio Link Performance')
             # Need to handle pop up
             # smoke_test.navigate_to_screen('Statistics/Radio Link History')
             smoke_test.navigate_to_screen('Statistics/Radio G826')
             smoke_test.navigate_to_screen('Statistics/ARP Cache')
-            smoke_test.navigate_to_screen('Statistics/MAC Address Table')
+            #smoke_test.navigate_to_screen('Statistics/MAC Address Table')
 
             login_handler.end()
         except Exception, e:

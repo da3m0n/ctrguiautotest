@@ -1,0 +1,1 @@
+python auroraRunAll.py 10.16.2.13 8000 chrome
