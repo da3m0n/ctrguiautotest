@@ -10,20 +10,21 @@ from smoketest.mylib.utils import Utils
 
 
 class SmokeTest():
-    def __init__(self, driver, test_log):
+    def __init__(self, driver, test_log, test_helper):
         self.test_log = test_log
         self.driver = driver
-        self.gui_lib = Utils(driver)
-        self.test_helper = TestHelper(self.test_log, self.driver)
+        self.gui_lib = Utils(driver, test_log)
+        # self.test_helper = TestHelper(self.test_log, self.driver)
+        self.test_helper = test_helper
 
-    def __navigate_to_screen(self, screen_name):
-        breadcrumbs = screen_name.split('/')
-        self.__navigate_to_location(breadcrumbs)
-        self.driver.switch_to_frame('frame_content')
-        self.test_log.start(breadcrumbs[-1])
+    # def __navigate_to_screen(self, screen_name):
+    #     breadcrumbs = screen_name.split('/')
+    #     self.__navigate_to_location(breadcrumbs)
+    #     self.driver.switch_to_frame('frame_content')
+    #     self.test_log.start(breadcrumbs[-1])
 
     def create_equipment_test(self, screen_name):
-        self.__navigate_to_screen(screen_name)
+        self.gui_lib.navigate_to_screen(screen_name)
 
         # self.driver.switch_to_frame("frame_content")
         time.sleep(5)  # added this as I got tired of trying to figure out why it wasn't waiting correctly below
@@ -38,7 +39,7 @@ class SmokeTest():
                                      'Ensure Chassis displayed')
 
     def create_alarms_test(self, screen_name, buttons, finder):
-        self.__navigate_to_screen(screen_name)
+        self.gui_lib.navigate_to_screen(screen_name)
 
         # time.sleep(5)
         # self.driver.execute_script(
@@ -61,7 +62,7 @@ class SmokeTest():
                 break
 
     def create(self, screen_name, items_to_test, finder, just_headers=False):
-        self.__navigate_to_screen(screen_name)
+        self.gui_lib.navigate_to_screen(screen_name)
 
         # time.sleep(5)
         # self.driver.execute_script("document.getElementById('tableWidget1_3_mapping').innerHTML=\"\";")
@@ -96,25 +97,6 @@ class SmokeTest():
                                              'Expected ' + td + ' to be > 0 but was ' + str(
                                                  len(td)),
                                              'Ensure ' + name + ' data visible.')
-
-    def __navigate_to_location(self, breadcrumbs):
-        self.driver.switch_to_default_content()
-        self.__navigate_to_location_rec(self.driver, breadcrumbs)
-
-    def __navigate_to_location_rec(self, root, breadcrumbs):
-        breadcrumb = breadcrumbs[0]
-        if len(breadcrumbs) == 1:
-            WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.LINK_TEXT, breadcrumbs[0])))
-            last_el = self.driver.find_element_by_link_text(breadcrumbs[0])
-            last_el.click()
-        else:
-            folder = WebDriverWait(root, 20).until(
-                my_visibility_of_elements((By.XPATH, "//div[@class='side_menu_folder']"), breadcrumb))
-            expanded = len(folder.find_elements_by_class_name('expanded')) > 0
-            if not expanded:
-                folder.click()
-            self.__navigate_to_location_rec(folder, breadcrumbs[1:])
-
 
 def toXPathStringLiteral(s):
     if "'" not in s: return "'%s'" % s
@@ -272,24 +254,3 @@ class MisMatchException(Exception):
     def __init__(self, message, errors):
         Exception.__init__(self, message)
         self.errors = errors
-
-
-class my_visibility_of_elements(object):
-    def __init__(self, locator, name):
-        self.locator = locator
-        self.name = name
-
-    def __call__(self, driver):
-        try:
-            folders = _find_elements(driver, self.locator)
-            for folder in folders:
-                # time.sleep(0.25)
-                if folder.is_displayed():
-                    if folder.text == self.name:
-                        return folder
-
-            return False
-        except StaleElementReferenceException:
-            return False
-
-

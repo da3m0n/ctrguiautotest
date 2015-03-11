@@ -39,7 +39,8 @@ class Dates(Enum):
 
 
 class Utils(object):
-    def __init__(self, driver):
+    def __init__(self, driver, test_log):
+        self.test_log = test_log
         rt = None
         self.driver = driver
         self.pwd = os.getcwd()
@@ -105,7 +106,7 @@ class Utils(object):
             self.click_element("top_menu_users")
             self.click_element("top_menu_logout")
             print("Successfully logged out")
-            login_button = Utils.find_element('login')
+            login_button = Utils.find_element("login")
             if not login_button is None:
                 driver.quit()
         except:
@@ -303,7 +304,7 @@ class Utils(object):
                 func()
 
     @classmethod
-    def print_tree(cls, results_dir):
+    def print_tree(cls, results_dir, test_type):
         import xml.etree.ElementTree as ET
         from xml.etree.ElementTree import Comment
 
@@ -318,13 +319,14 @@ class Utils(object):
             field1.set('sortDate', cls.reformat_date(logs_dir))
 
             # for logs in logs_dir
-            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
+            next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
+            # next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
             for xmlfile in next_in_logs[2]:
                 field2 = ET.SubElement(field1, "fileName")
                 field2.set("file", xmlfile.replace('_', ' '))
-                field2.set('fileurl', '/logs/' + logs_dir + '/' + xmlfile)
+                field2.set('fileurl', '/logs/' + logs_dir + '/' + test_type + '/' + xmlfile)
 
-                result = cls.extract_error_count(logs_dir + '/' + xmlfile)
+                result = cls.extract_error_count(logs_dir + '/' + test_type + '/' + xmlfile)
 
                 if len(next_in_logs[1]) > 0:
                     in_date_files = os.walk(next_in_logs[0] + '/screenshots').next()
@@ -333,13 +335,15 @@ class Utils(object):
                     for image_name in in_date_files[2]:
                         field3 = ET.SubElement(el, "screenshot")
                         field3.set("error", image_name)
-                        field3.set('imageurl', '/logs/' + logs_dir + '/screenshots/' + image_name)
+                        field3.set('imageurl', '/logs/' + logs_dir + '/' + test_type + '/screenshots/' + image_name)
 
                 total_errors = ET.SubElement(field1, 'errors')
                 total_errors.set('totalErrors', result)
 
         tree = ET.ElementTree(root)
-        tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
+        test_run_type = test_type + 'Dates.xml'
+        tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\' + test_run_type)) # testDates.xml'))
+        # tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
 
     @classmethod
     def extract_error_count(cls, xmlfile):
@@ -367,8 +371,10 @@ class Utils(object):
         side_menus = self.driver.find_elements_by_class('side_menu_folder')
         print('side folders', len(side_menus))
 
-    def save_screenshot(self, test_name):
-        screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\screenshots'
+    def save_screenshot(self, test_name, test_type):
+        test_name = test_name.rstrip('.')
+
+        screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\' + test_type + '\\screenshots'
 
         if os.path.exists(screenshots_dir):
             print('directory', screenshots_dir, ' exists')
@@ -414,7 +420,51 @@ class Utils(object):
             ret.append(val)
         return ret
 
+    def navigate_to_screen(self, screen_name):
+        breadcrumbs = screen_name.split('/')
+        self.__navigate_to_location(breadcrumbs)
+        # self.driver.switch_to_frame('frame_content')
+        self.test_log.start(breadcrumbs[-1])
 
+    def __navigate_to_location(self, breadcrumbs):
+        self.driver.switch_to_default_content()
+        self.__navigate_to_location_rec(self.driver, breadcrumbs)
+
+    def __navigate_to_location_rec(self, root, breadcrumbs):
+        breadcrumb = breadcrumbs[0]
+        if len(breadcrumbs) == 1:
+            WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.LINK_TEXT, breadcrumbs[0])))
+            last_el = self.driver.find_element_by_link_text(breadcrumbs[0])
+            last_el.click()
+        else:
+            folder = WebDriverWait(root, 20).until(
+                my_visibility_of_elements((By.XPATH, "//div[@class='side_menu_folder']"), breadcrumb))
+            expanded = len(folder.find_elements_by_class_name('expanded')) > 0
+            if not expanded:
+                folder.click()
+            self.__navigate_to_location_rec(folder, breadcrumbs[1:])
+
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support.expected_conditions import _find_elements
+
+
+class my_visibility_of_elements(object):
+    def __init__(self, locator, name):
+        self.locator = locator
+        self.name = name
+
+    def __call__(self, driver):
+        try:
+            folders = _find_elements(driver, self.locator)
+            for folder in folders:
+                # time.sleep(0.25)
+                if folder.is_displayed():
+                    if folder.text == self.name:
+                        return folder
+
+            return False
+        except StaleElementReferenceException:
+            return False
 
 from threading import Timer
 

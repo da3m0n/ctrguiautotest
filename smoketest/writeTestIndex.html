@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title>Smoke Tests</title>
+    <meta http-equiv="refresh" content="43200"/>
+    <!--<link rel="stylesheet" href="vendor/css/screen.css">-->
+    <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="smoketests.css"/>
+    <link rel="stylesheet" href="vendor/css/lightbox.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="jumbotron" id="jumbo-enhancements">
+    <div id="test-result"></div>
+</div>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header navbar-inverse">
+            <span class="navbar-brand pull-left"><a href="\">CTR Config Write Tests</a></span>
+        </div>
+        <!--<div id="coverage-result" class="pull-right"><strong>Test Coverage</strong></div>-->
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div id="dates" class="col-lg-3"></div>
+        <div id="tests" class="col-lg-9"></div>
+    </div>
+</div>
+
+<script src="utils.js"></script>
+<script src="vendor/js/jquery-1.11.1.min.js"></script>
+<script src="vendor/js/bootstrap.min.js"></script>
+<script src="vendor/js/lightbox.js"></script>
+
+<script>
+
+    var allTests = [
+        {dir: 'writeConfigTest', name: 'test-result', xslDoc: "overallResult.xsl" },
+        {dir: 'writeConfigTest', name: 'tests', xslDoc: "results.xsl" }
+    ];
+
+    var testDates = "logs/writeConfigTestDates.xml";
+
+    utils.loadAndDisplayPage(allTests, testDates);
+
+</script>
+<script>
+    var dateLink = document.getElementsByClassName(".datesListener");
+
+    $(".datesListener").on('click', function (e) {
+        var date = $(this).attr('href');
+        e.preventDefault();
+        $('#tests').empty();
+        utils.loadNewResults(utils.getResult(date));
+    });
+</script>
+
+</body>
+</html>

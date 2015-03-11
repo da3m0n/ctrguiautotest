@@ -7,76 +7,6 @@
     <link rel="stylesheet" href="smoketests.css"/>
     <link rel="stylesheet" href="vendor/css/lightbox.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
-    <script>
-        var logs = (function () {
-
-            function loadXMLDoc(filename) {
-                var xhttp;
-
-                if (window.ActiveXObject) {
-                    xhttp = new ActiveXObject("Msxml2.XMLHTTP");
-                }
-                else {
-                    xhttp = new XMLHttpRequest();
-                }
-                xhttp.open("GET", filename, false);
-                try {
-                    xhttp.responseType = "msxml-document"
-                } catch (err) {
-                } // Helping IE11
-                xhttp.send("");
-//                return xhttp.responseXML;
-
-                return {
-                    response: xhttp.responseXML,
-                    responseType: xhttp.responseType
-                };
-            }
-
-            function displayResult(filename, xsl, elementId) {
-                var xml = loadXMLDoc(filename),
-                        xsl = loadXMLDoc(xsl);
-                // code for IE
-                if (window.ActiveXObject || xml.responseType === "msxml-document") {
-                    document.getElementById(elementId).innerHTML = xml.response.transformNode(xsl.response);
-                }
-                // code for Chrome, Firefox, Opera, etc.
-                else if (document.implementation && document.implementation.createDocument) {
-                    var xsltProcessor = new XSLTProcessor();
-                    xsltProcessor.importStylesheet(xsl.response);
-                    var resultDocument = xsltProcessor.transformToFragment(xml.response, document);
-                    document.getElementById(elementId).appendChild(resultDocument);
-                }
-            }
-
-            function getLatestTest(file) {
-                var xml = loadXMLDoc(file),
-                        xmldoc = xml.response,
-                        testDateTags = xmldoc.getElementsByTagName('testDate'),
-                        dates = [];
-
-                for (var i = 0; i < testDateTags.length; i++) {
-                    var sortDate = testDateTags.item(i).attributes[1].nodeValue,
-                            date = testDateTags.item(i).attributes[0].nodeValue;
-
-                    dates.push({'sortDate': sortDate, 'date': date});
-                }
-
-                dates.sort(function (a, b) {
-                    return b.sortDate - a.sortDate;
-                });
-
-                return dates;
-            }
-
-            return {
-                displayResult: displayResult,
-                getLatestTest: getLatestTest
-            };
-        })();
-
-    </script>
 </head>
 <body>
 <div class="jumbotron" id="jumbo-enhancements">
@@ -86,45 +16,67 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header navbar-inverse">
-            <span class="navbar-brand pull-left">CTR Smoketests</span>
-        </div>
-        <div id="coverage-result" class="pull-right"><strong>Test Coverage</strong>
+            <span class="navbar-brand pull-left">CTR Auto Tests</span>
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div id="dates" class="col-lg-3"></div>
-        <div id="tests" class="col-lg-9"></div>
+<div class="container absolute-center">
+    <div class="row centered">
+        <h1>
+            <div class="col-lg-2"><a href="http://localhost/smoketestindex.html">Smoketests</a></div>
+            <div class="col-lg-4">
+                <div class="time" id="smoketest-run"></div>
+            </div>
+            <div class="col-lg-1">
+                <div class="spacer"></div>
+            </div>
+            <div class="col-lg-2">
+                <div id="smoketest" class="col-lg-2"></div>
+            </div>
+        </h1>
+    </div>
+    <div class="row centered">
+        <h1>
+            <div class="col-lg-2"><a href="http://localhost/writetestindex.html">Write Tests</a></div>
+            <div class="col-lg-4">
+                <div class="time" id="writetest-run"></div>
+            </div>
+            <div class="col-lg-1">
+                <div class="spacer"></div>
+            </div>
+            <div class="col-lg-2">
+                <div id="writetest" class="col-lg-2"></div>
+            </div>
+        </h1>
+
     </div>
 </div>
 
 <script src="vendor/js/jquery-1.11.1.min.js"></script>
 <script src="vendor/js/bootstrap.js"></script>
-<script src="vendor/js/lightbox.min.js"></script>
+<script src="vendor/js/lightbox.js"></script>
+<script src="utils.js"></script>
 <script>
-    var latest = logs.getLatestTest("logs/testDates.xml");
-    var newDate = latest[0].date.split(' ').join('_');
-    var newDateXml = newDate + '.xml';
+    var allTests = [
+        {dir: 'writeConfigTest', name: 'writetest', date: "logs/writeConfigTestDates.xml" },
+        {dir: 'smoketest', name: 'smoketest', date: "logs/smokeTestDates.xml" }
+    ];
 
-    logs.displayResult("logs/" + newDate + "/" + newDateXml, "coverage.xsl", "coverage-result");
-    logs.displayResult("logs/" + newDate + "/" + newDateXml, "quickResult.xsl", "test-result");
-    logs.displayResult("logs/testDates.xml", "dates.xsl", "dates");
-    logs.displayResult("logs/" + newDate + "/" + newDateXml, "results.xsl", "tests");
+    for (var testi in allTests) {
 
-</script>
-<script>
+        if (utils.getResult(allTests[testi].date)) {
+            var latest = utils.getSortedTestDates(allTests[testi].date);
+            var newDate = latest[0].date.split(' ').join('_');
+            var newDateXml = newDate + '.xml';
+            var data = utils.getResult("logs/" + newDate + "/" + allTests[testi].dir + "/" + newDateXml);
+            if (data) {
+                utils.displayResult(data, "result-coloring.xsl", allTests[testi].name);
+                utils.displayResult(data, "last-run.xsl", allTests[testi].name + "-run");
+            }
+        } else {
+            utils.displayResult(utils.getResult("noTests.xml"), "noTests.xsl", allTests[testi].name + "-run");
+        }
 
-    $(".datesListener").on('click', function (e) {
-        var date = $(this).attr('href');
-        e.preventDefault();
-        $('#tests').empty();
-        loadNewResults(date);
-    });
-
-
-    function loadNewResults(date) {
-        logs.displayResult(date, 'results.xsl', 'tests');
     }
 </script>
 </body>
