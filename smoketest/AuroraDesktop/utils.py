@@ -21,56 +21,16 @@ class Utils(object):
         else:
             raise Exception("Unknown driver " + driverName)
 
-    def startBrowser(self, driver):
-        self.getAddress(driver)
+    def startBrowser(self, driver, port):
+        self.getAddress(driver, port)
         driver.set_window_size(1200, 800)
 
     @classmethod
-    def login(cls, driver, username, password, counter):
-        try:
-            # find the login element and type in the username
-            inputElement = driver.find_element_by_id("username")
-            inputElement.send_keys(username)
-            # find the password element and type in the password
-            inputElement = driver.find_element_by_id("password")
-            inputElement.send_keys(password)
-            # submit the form
-            inputElement.submit()
-        except:
-            print("Login page not as expected. Exiting...")
-            driver.quit()
-        try:
-            # we have to wait for the page to refresh, the last thing that seems to be updated is the title
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "layout_device_name")))
-            print "Login Successful - #", counter
-            time.sleep(5)
-        except:
-            print("Login unsuccessful")
-
-    #logout, as too many sessions are not allowed
-    def logout(self, driver):
-        try:
-		    driver.get("http://" + sys.argv[1] + "/logout")
-		#
-            #find the logout button
-        #    self.click_element("top_menu_users")
-        #    self.click_element("top_menu_logout")
-        #    print("Successfully logged out")
-        #    login_button = Utils.find_element('login')
-        #    if not login_button is None:
-        #        driver.quit()
-        except:
-            print("Logout button not found, must be logged out...hopefully.")
-        finally:
-            driver.quit()
-
-    #get the page from the address argument, eg. 192.168.11.11
-    @classmethod
-    def getAddress(self, driver):
+    def getAddress(self, driver, port):
         if len(sys.argv) < 2:
             print("Address argument missing")
             sys.exit()
-        address = "http://" + sys.argv[1]
+        address = "http://" + sys.argv[1] + ":" + port
         #get page
         driver.get(address)
 
