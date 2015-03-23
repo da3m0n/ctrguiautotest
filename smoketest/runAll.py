@@ -9,10 +9,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.select import Select
 import time
 import os
-from smoketest.TestHelper import TestHelper
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
