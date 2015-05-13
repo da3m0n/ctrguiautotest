@@ -99,32 +99,26 @@ class Utils(object):
         except:
             print("Login unsuccessful")
 
-    #logout, as too many sessions are not allowed
+    # logout, as too many sessions are not allowed
     def logout(self, driver):
+        # find the logout button
         try:
-            #find the logout button
             self.click_element("top_menu_users")
             self.click_element("top_menu_logout")
+        except Exception:
+            print("Logout unsuccessful. This may cause errors with max number of sessions")
+        else:
             print("Successfully logged out")
-            login_button = Utils.find_element("login")
-            if not login_button is None:
-                driver.quit()
-        except:
-            try:
-                #otherwise check whether already on the login page
-                driver.find_element_by_name("Login")
-                driver.quit()
-            except:
-                print("Logout unsuccessful. This may cause errors with max number of sessions")
+        finally:
+            driver.quit()
 
-
-    #initialise the window size so that all elements are visible
+    # initialise the window size so that all elements are visible
     @classmethod
     def windowInit(self, driver):
         driver.set_window_size(1200, 800)
-        #handle = driver.window_handles
+        # handle = driver.window_handles
 
-    #get the page from the address argument, eg. 192.168.11.11
+    # get the page from the address argument, eg. 192.168.11.11
     @classmethod
     def getAddress(self, driver):
         if len(sys.argv) < 2:
@@ -134,7 +128,7 @@ class Utils(object):
         #get page
         driver.get(address)
 
-    #Get the help window
+    # Get the help window
     def getHelp(self, driver):
         help = driver.find_element(By.ID, 'top_menu_help')
         help.click()
@@ -160,7 +154,7 @@ class Utils(object):
         return popup
 
     def click_element(self, element):
-        WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.ID, element)))
+        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located((By.ID, element)))
         self.driver.find_element(By.ID, element).click()
 
     @staticmethod
@@ -319,6 +313,7 @@ class Utils(object):
             field1.set('sortDate', cls.reformat_date(logs_dir))
 
             # for logs in logs_dir
+            # print('results_dir: ' + results_dir + ' logs_dir: ' + logs_dir + ' test_type: ' + test_type)
             next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
             # next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
             for xmlfile in next_in_logs[2]:
@@ -342,7 +337,7 @@ class Utils(object):
 
         tree = ET.ElementTree(root)
         test_run_type = test_type + 'Dates.xml'
-        tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\' + test_run_type)) # testDates.xml'))
+        tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\' + test_run_type))  # testDates.xml'))
         # tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
 
     @classmethod
@@ -444,6 +439,7 @@ class Utils(object):
                 folder.click()
             self.__navigate_to_location_rec(folder, breadcrumbs[1:])
 
+
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 from selenium.webdriver.support.expected_conditions import _find_elements
 
@@ -465,6 +461,7 @@ class my_visibility_of_elements(object):
             return False
         except StaleElementReferenceException:
             return False
+
 
 from threading import Timer
 
