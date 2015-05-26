@@ -31,7 +31,10 @@ class SmokeTest():
         WebDriverWait(self.driver, 50).until(
             EC.visibility_of_element_located((By.ID, 'ChassisViewWidget1_container')))
 
+        elem = self.driver.find_element_by_xpath("//canvas")
+
         chassis = self.driver.find_element_by_id('ChassisViewWidget1_container')
+
         # driver.execute_script("document.getElementById('ChassisViewWidget1_container').innerHTML=\"\";")
         # WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, chassis)))
         print('chassis text', chassis.text)
@@ -178,7 +181,8 @@ class table_column_header_finder(object):
 
         return values_arr
 
-    def find_headers(self, label):
+    @staticmethod
+    def find_headers(label):
         # rows = label.find_elements_by_xpath('//th/div/div')
         # headers = label.find_elements_by_xpath('../th|../td')
         header = label.find_element_by_class_name('syslog_heading')
@@ -197,11 +201,13 @@ def find_header_label_index(label):
         index += 1
 
 
-class td_label_finder(object):
-    def find_label(self, label):
+class TdLabelFinder(object):
+    @staticmethod
+    def find_label(label):
         return element_locater('td', label)
 
-    def find_values(self, label):
+    @staticmethod
+    def find_values(label):
         return find_values_same_row_as_label(label)
 
 

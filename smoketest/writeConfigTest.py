@@ -16,9 +16,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from smoketest.TestLog import TestLog
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
-from smoketest.SmokeTest import SmokeTest, td_label_finder, button_finder
-from smoketest.SmokeTest import table_column_header_finder
-from smoketest.SmokeTest import table_row_header_finder
 from optparse import OptionParser
 
 

@@ -29,7 +29,7 @@ class ChassisClick():
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
         time.sleep(5)
 
-        self.driver.switch_to_frame('frame_content')
+        # self.driver.switch_to_frame('frame_content')
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, 'ChassisViewWidget1_container')))
 
         elem = self.driver.find_element_by_xpath("//canvas")
