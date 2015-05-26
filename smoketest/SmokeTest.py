@@ -118,26 +118,30 @@ def remove_unnecessary_rows(rows):
     return new_rows
 
 
-class button_finder(object):
+class ButtonFinder(object):
     def __init__(self):
         pass
 
-    def find_label(self, label):
+    @staticmethod
+    def find_label(label):
         return element_locater('button', label)
 
-    def find_buttons(self, button):
+    @staticmethod
+    def find_buttons(button):
         print(button)
         return element_locater('button', button)
 
 
-class table_row_header_finder(object):
+class TableRowHeaderFinder(object):
     def __init__(self):
         self.vals = dict()
 
-    def find_label(self, label):
+    @staticmethod
+    def find_label(label):
         return element_locater('th', label)
 
-    def find_values(self, label):
+    @staticmethod
+    def find_values(label):
         return find_values_same_row_as_label(label)
 
 
@@ -154,11 +158,12 @@ def find_values_same_row_as_label(label):
     return row_data
 
 
-class table_column_header_finder(object):
+class TableColumnHeaderFinder(object):
     def __init__(self):
         self.vals = dict()
 
-    def find_label(self, label):
+    @staticmethod
+    def find_label(label):
         return element_locater('th', label)
 
     def find_values(self, label):

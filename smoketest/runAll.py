@@ -16,9 +16,9 @@ from smoketest.TestHelper import TestHelper
 from smoketest.TestLog import TestLog
 from smoketest.mylib.LoginHandler import LoginHandler
 from smoketest.mylib.utils import Utils
-from smoketest.SmokeTest import SmokeTest, td_label_finder, button_finder
-from smoketest.SmokeTest import table_column_header_finder
-from smoketest.SmokeTest import table_row_header_finder
+from smoketest.SmokeTest import SmokeTest, ButtonFinder, TdLabelFinder
+from smoketest.SmokeTest import TableColumnHeaderFinder
+from smoketest.SmokeTest import TableRowHeaderFinder
 from optparse import OptionParser
 
 
@@ -58,6 +58,7 @@ def must_download_latest(active_swpack, latest_swpack):
     active = active_swpack.split('.')
     decoded_latest = latest_swpack.encode('ascii', 'ignore')
     latest = decoded_latest.split('.')
+    res = None
 
     for i in range(0, min(len(active), len(latest))):
         if compare(int(active[i]), int(latest[i])) == ComparisonResult.SAME or compare(int(active[i]), int(
@@ -102,14 +103,14 @@ class RunAll():
         print('init')
 
     def run_all(self):
-        # active_sw_version = Utils.get_active_sw_version()
-        # latest_swpack = Utils.get_latest_sw_pack_version()
+        active_sw_version = Utils.get_active_sw_version()
+        latest_swpack = Utils.get_latest_sw_pack_version()
 
         # dummies for tests
         active_sw_version = 'master.12.1919'
-        latest_swpack = 'master.12.1919'
+        latest_swpack = active_sw_version  # 'master.12.1919'
 
-        # swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
+        swpack = determine_latest_swpack(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
         get_latest = must_download_latest(reformat_for_compare(active_sw_version), reformat_for_compare(latest_swpack))
 
         if get_latest:
@@ -120,8 +121,8 @@ class RunAll():
             self.run_smoke_test()
             # self.write_config_test(self.driver)
 
-
-    def get_num_screens(self, driver):
+    @staticmethod
+    def get_num_screens(driver):
         num_screens = 0
         side_menu_folders = driver.find_elements_by_xpath("//div[@class='side_menu_tree']")
         for folder in side_menu_folders:
@@ -149,7 +150,7 @@ class RunAll():
         test_helper = TestHelper(test_log, self.driver, self.test_type)
 
         # Uncomment this to get coverage graph
-        test_log.add_num_screens(self.get_num_screens(self.driver))
+        test_log.add_num_screens(RunAll.get_num_screens(self.driver))
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
         self.driver.find_element_by_id('menu_node_equipment').click()
 
@@ -159,100 +160,98 @@ class RunAll():
         login_handler.end()
         test_log.close()
 
-    def compare_vals(self, initial_node_name, updated_node_name):
-        return initial_node_name == updated_node_name
-
-
-    import string
-
-    def random_letters(self, size=6, chars=string.ascii_letters + string.digits):
-        import random
-
-        return ''.join(random.choice(chars) for _ in range(size))
-
 
 def run_smoke_tests(smoke_test):
     # Start Status Tests
     smoke_test.create_equipment_test('Status/Equipment')
-    smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], button_finder())
+    smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], ButtonFinder())
     smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
-                      table_column_header_finder(), True)
+                      TableColumnHeaderFinder(), True)
     smoke_test.create('Status/Sensors', ['Temperature Inlet 1/0', 'Voltage 1/0', 'Current 1/0'],
-                      td_label_finder())
-    smoke_test.create('Status/Reports', ['Helpdesk File:'], td_label_finder())
+                      TdLabelFinder())
+    smoke_test.create('Status/Reports', ['Helpdesk File:'], TdLabelFinder())
 
     # # this NOT WORKING as keep getting staleelementException as the page is continually refreshing
-    # # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
+    # smoke_test.create('Status/Manufacture Details', ['CID Number:', 'Part Number'], td_label_finder())
 
     # Start System Configuration Tests
     smoke_test.create('System Configuration/System Information',
-                      ['Hardware Version', 'Firmware Version', 'Switch MAC'], table_row_header_finder())
-    smoke_test.create('System Configuration/Date & Time',
-                      ['Date', 'Time', 'Timezone'], table_row_header_finder())
+                      ['Hardware Version', 'Firmware Version', 'Switch MAC'], TableRowHeaderFinder())
+    smoke_test.create('System Configuration/Date & Time', ['Date', 'Time', 'Timezone'], TableRowHeaderFinder())
     smoke_test.create('System Configuration/Connected Devices', ['Local Port', 'Address Type'],
-                      table_column_header_finder())
+                      TableColumnHeaderFinder())
 
     smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
-                      table_column_header_finder())
+                      TableColumnHeaderFinder())
     smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
-                      table_column_header_finder())
+                      TableColumnHeaderFinder())
 
     # Start Network Synchronization
     smoke_test.create('Network Sync Configuration/Network Clock',
                       ['Clock Mode (Local PPL)', 'Switchover Mode'],
-                      table_row_header_finder())
+                      TableRowHeaderFinder())
     smoke_test.create('Network Sync Configuration/Network Sync Sources',
                       ['Port', 'Source State', 'Operational Quality Level Tx', 'Internal Quality Level Rx'],
-                      table_row_header_finder())
+                      TableRowHeaderFinder())
 
     # # Start Admin Tests
-    # smoke_test.create('System Configuration/Admin/Configuration Management', ['Restore From:', 'Config File:'],
-    #                   td_label_finder())
-    # smoke_test.create('System Configuration/Admin/Software Management', ['Active Version:', 'Inactive Version:'],
-    #                   td_label_finder())
-    #
-    # # Start Ethernet Configuration
-    # smoke_test.create('Ethernet Configuration/Port Manager', ['Port', 'MAC Address'], table_column_header_finder())
-    #
-    # # Start Radio Configuration Tests
-    # smoke_test.create('Radio Configuration/Radio Links',
-    #                   ['Bandwidth:', 'Modulation Mode:', 'Tx / Rx Spacing:'],
-    #                   td_label_finder())
-    # smoke_test.create('Radio Configuration/Radio Link Diagnostics', ['Radio Link', 'RFU Details'],
-    #                   table_row_header_finder())
-    # smoke_test.create('Radio Configuration/Radio Protection',
-    #                   ['Id', 'Primary Interface', 'Secondary Interface', 'Type'], table_column_header_finder())
-    # smoke_test.create('Radio Configuration/Radio Protection Diagnostics',
-    #                   ['Protected Interface', 'Locked Online Plugin', 'Locked Transmit Path'],
-    #                   table_row_header_finder())
-    #
-    # # Start TDM Configuration
-    # smoke_test.create('TDM Configuration/Tributary Diagnostics',
-    #                   ['Tributary', 'Elapsed Time', 'Severely Errored Seconds'],
-    #                   table_row_header_finder())
-    # smoke_test.create('TDM Configuration/Pseudowire',
-    #                   ['Switch MAC', 'Mode', 'Recovery Clock Freq'],
-    #                   table_row_header_finder())
-    #
-    # # Start Statistics Tests
-    # smoke_test.create('Statistics/Interface',
-    #                   ['Interface', 'MTU', 'In Octets', 'Out Octets', 'In Errors'],
-    #                   table_column_header_finder())
-    # smoke_test.create('Statistics/Ethernet',
-    #                   ['Interface', 'FCS Errors', 'Late Collisions', 'Symbol Errors'],
-    #                   table_column_header_finder())
-    # smoke_test.create('Statistics/Radio Link Performance',
-    #                   ['Active Rx Time', 'Current BER', 'Local RSL', '512QAM Rx Time', 'XPD'],
-    #                   table_row_header_finder())
-    #
-    # smoke_test.create('Statistics/Radio G826',
-    #                   ['Errored Blocks', 'Errored Seconds', 'Background Block Errors'],
-    #                   table_row_header_finder())
-    #
-    # smoke_test.create('Statistics/ARP Cache', ['MAC Address', 'Interface', 'IP Address', 'Mapping'],
-    #                   table_column_header_finder())
-    # smoke_test.create('Statistics/MAC Address Table', ['VLAN', 'MAC Address', 'Type', 'PW Index', 'Port'],
-    #                   table_column_header_finder())
+    smoke_test.create('System Configuration/Admin/Configuration Management', ['Restore From:', 'Config File:'],
+                      TdLabelFinder())
+    smoke_test.create('System Configuration/Admin/Software Management', ['Active Version:', 'Inactive Version:'],
+                      TdLabelFinder())
+
+    # Start Switching & Routing Configuration
+    smoke_test.create('Switching & Routing Configuration/Port Manager', ['Port', 'MAC Address'],
+                      TableColumnHeaderFinder())
+    smoke_test.create('Switching & Routing Configuration/Link Aggregation',
+                      ['Group Id', 'Max Capacity', 'Current Capacity'], TableColumnHeaderFinder())
+    smoke_test.create('Switching & Routing Configuration/VLAN/VLAN',
+                      ['Switch Bridge Mode', 'Transparent VLAN Mode'], TableRowHeaderFinder())
+    smoke_test.create('Switching & Routing Configuration/VLAN/VLAN by Interface',
+                      ['Interface', 'Port Mode'], TableColumnHeaderFinder())
+
+    smoke_test.create('Switching & Routing Configuration/Quality of Service/Classification',
+                      ['Ingress Priority', 'Pre-Color'], TableColumnHeaderFinder())
+    # smoke_test.create('Switching & Routing Configuration/Quality of Service/Policing',
+    #                   ['Policy Id', 'Meter Type'], table_column_header_finder())
+    # smoke_test.create('Switching & Routing Configuration/Quality of Service/Scheduling',
+    #                   ['Congestion Control'], TableColumnHeaderFinder())
+
+
+    # Start Radio Configuration Tests
+    smoke_test.create('Radio Configuration/Radio Links',
+                      ['Bandwidth', 'Modulation Mode', 'Tx / Rx Spacing'],
+                      TableRowHeaderFinder())
+    smoke_test.create('Radio Configuration/Radio Link Diagnostics', ['Radio Link', 'RFU Details'],
+                      TableRowHeaderFinder())
+    smoke_test.create('Radio Configuration/Radio Protection',
+                      ['Id', 'Primary Interface', 'Secondary Interface', 'Type'], TableColumnHeaderFinder())
+    smoke_test.create('Radio Configuration/Radio Protection Diagnostics',
+                      ['Protected Interface', 'Locked Online Plugin', 'Locked Transmit Path'],
+                      TableRowHeaderFinder())
+
+    # Start TDM Configuration
+    smoke_test.create('TDM Configuration/Pseudowire',
+                      ['Switch MAC', 'Mode', 'Recovery Clock Freq'],
+                      TableRowHeaderFinder())
+    smoke_test.create('TDM Configuration/Tributary Diagnostics',
+                      ['Tributary', 'Elapsed Time', 'Severely Errored Seconds'],
+                      TableRowHeaderFinder())
+
+    # Start Statistics Tests
+    smoke_test.create('Statistics/Interface',
+                      ['Interface', 'MTU', 'In Octets', 'Out Octets', 'In Errors'],
+                      TableColumnHeaderFinder())
+    smoke_test.create('Statistics/Radio Link Performance',
+                      ['Active Rx Time', 'Current BER', 'Local RSL', '512QAM Rx Time', 'XPD'],
+                      TableRowHeaderFinder())
+    smoke_test.create('Statistics/Radio G826',
+                      ['Errored Blocks', 'Errored Seconds', 'Background Block Errors'],
+                      TableRowHeaderFinder())
+    smoke_test.create('Statistics/ARP Cache', ['MAC Address', 'Interface', 'IP Address', 'Mapping'],
+                      TableColumnHeaderFinder())
+    smoke_test.create('Statistics/MAC Address Table', ['VLAN', 'MAC Address', 'Type', 'PW Index', 'Port'],
+                      TableColumnHeaderFinder())
 
 
 if __name__ == "__main__":
