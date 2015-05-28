@@ -188,7 +188,7 @@ def run_smoke_tests(smoke_test):
 
     # Start Network Synchronization
     smoke_test.create('Network Sync Configuration/Network Clock',
-                      ['Clock Mode (Local PPL)', 'Switchover Mode'],
+                      ['Clock Mode (Local PLL)', 'Switchover Mode'],
                       TableRowHeaderFinder())
     smoke_test.create('Network Sync Configuration/Network Sync Sources',
                       ['Port', 'Source State', 'Operational Quality Level Tx', 'Internal Quality Level Rx'],
@@ -212,8 +212,8 @@ def run_smoke_tests(smoke_test):
 
     smoke_test.create('Switching & Routing Configuration/Quality of Service/Classification',
                       ['Ingress Priority', 'Pre-Color'], TableColumnHeaderFinder())
-    # smoke_test.create('Switching & Routing Configuration/Quality of Service/Policing',
-    #                   ['Policy Id', 'Meter Type'], table_column_header_finder())
+    smoke_test.create('Switching & Routing Configuration/Quality of Service/Policing',
+                      ['Policy Id', 'Meter Type'], TableColumnHeaderFinder())
     # smoke_test.create('Switching & Routing Configuration/Quality of Service/Scheduling',
     #                   ['Congestion Control'], TableColumnHeaderFinder())
 
