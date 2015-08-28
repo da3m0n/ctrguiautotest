@@ -34,7 +34,7 @@ def main():
     run_all = RunAll(TEST_TYPE)
     run_all.run_all()
 
-    Utils.print_tree(Utils.log_dir(), TEST_TYPE)
+    # Utils.print_tree(Utils.log_dir(), TEST_TYPE)
 
 
 from enum import Enum
@@ -150,9 +150,9 @@ class RunAll():
         test_helper = TestHelper(test_log, self.driver, self.test_type)
 
         # Uncomment this to get coverage graph
-        test_log.add_num_screens(RunAll.get_num_screens(self.driver))
-        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
-        self.driver.find_element_by_id('menu_node_equipment').click()
+        # test_log.add_num_screens(RunAll.get_num_screens(self.driver))
+        # WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'menu_node_equipment')))
+        # self.driver.find_element_by_id('menu_node_equipment').click()
 
         smoke_test = SmokeTest(self.driver, test_log, test_helper)
         run_smoke_tests(smoke_test)
@@ -266,4 +266,19 @@ def run_smoke_tests(smoke_test):
 
 
 if __name__ == "__main__":
-    main()
+
+    while 1:
+
+        # time.sleep(5)
+        # main()
+        try:
+            time.sleep(5)
+            main()
+        except Exception as e:
+            import signal
+            print("Main loop exception")
+            print(e)
+            print("About to kill process: ", os.getpid())
+            os.kill(os.getpid(), signal.SIGBREAK)
+
+    # main()

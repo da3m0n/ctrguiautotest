@@ -103,6 +103,7 @@ class Utils(object):
     def logout(self, driver):
         # find the logout button
         try:
+            time.sleep(1)
             self.click_element("top_menu_users")
             self.click_element("top_menu_logout")
         except Exception:
@@ -110,6 +111,7 @@ class Utils(object):
         else:
             print("Successfully logged out")
         finally:
+            time.sleep(5)
             driver.quit()
 
     # initialise the window size so that all elements are visible
