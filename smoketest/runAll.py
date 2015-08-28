@@ -163,6 +163,7 @@ class RunAll():
 
 def run_smoke_tests(smoke_test):
     # Start Status Tests
+
     smoke_test.create_equipment_test('Status/Equipment')
     smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], ButtonFinder())
     smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
@@ -184,6 +185,8 @@ def run_smoke_tests(smoke_test):
     smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
                       TableColumnHeaderFinder())
     smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
+                      TableColumnHeaderFinder())
+    smoke_test.create('System Configuration/Remote Log', ['Address', 'Port'],
                       TableColumnHeaderFinder())
 
     # Start Network Synchronization
@@ -207,8 +210,8 @@ def run_smoke_tests(smoke_test):
                       ['Group Id', 'Max Capacity', 'Current Capacity'], TableColumnHeaderFinder())
     smoke_test.create('Switching & Routing Configuration/VLAN/VLAN',
                       ['Switch Bridge Mode', 'Transparent VLAN Mode'], TableRowHeaderFinder())
-    smoke_test.create('Switching & Routing Configuration/VLAN/VLAN by Interface',
-                      ['Interface', 'Port Mode'], TableColumnHeaderFinder())
+    # smoke_test.create('Switching & Routing Configuration/VLAN/VLAN by Interface',
+    # ['Interface', 'Port Mode'], TableColumnHeaderFinder())
 
     smoke_test.create('Switching & Routing Configuration/Quality of Service/Classification',
                       ['Ingress Priority', 'Pre-Color'], TableColumnHeaderFinder())
@@ -217,6 +220,14 @@ def run_smoke_tests(smoke_test):
     # smoke_test.create('Switching & Routing Configuration/Quality of Service/Scheduling',
     #                   ['Congestion Control'], TableColumnHeaderFinder())
 
+    smoke_test.create('Switching & Routing Configuration/Static Routing', ['Context'],
+                      TableColumnHeaderFinder())
+    smoke_test.create('Switching & Routing Configuration/OSPF/Routers', ['Router Context', 'OSPF Enable'],
+                      TableColumnHeaderFinder())
+    smoke_test.create('Switching & Routing Configuration/OSPF/Areas', ['Area', 'Area Type'],
+                      TableColumnHeaderFinder())
+    # smoke_test.create('Switching & Routing Configuration/OSPF/Interfaces', ['Router Context', 'Interface'],
+    #                   TableColumnHeaderFinder())
 
     # Start Radio Configuration Tests
     smoke_test.create('Radio Configuration/Radio Links',
