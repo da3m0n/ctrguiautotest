@@ -182,8 +182,8 @@ def run_smoke_tests(smoke_test):
     smoke_test.create('System Configuration/Connected Devices', ['Local Port', 'Address Type'],
                       TableColumnHeaderFinder())
 
-    smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
-                      TableColumnHeaderFinder())
+    # smoke_test.create('System Configuration/PoE Configuration', ['Interface', 'Power Mode', 'Status', 'Class'],
+    #                   TableColumnHeaderFinder())
     smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
                       TableColumnHeaderFinder())
     smoke_test.create('System Configuration/Remote Log', ['Address', 'Port'],
@@ -279,6 +279,6 @@ if __name__ == "__main__":
             print("Main loop exception")
             print(e)
             print("About to kill process: ", os.getpid())
-            os.kill(os.getpid(), signal.SIGBREAK)
+            # os.kill(os.getpid(), signal.SIGBREAK)
 
     # main()
