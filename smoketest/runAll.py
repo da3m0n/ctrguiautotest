@@ -186,8 +186,8 @@ def run_smoke_tests(smoke_test):
     #                   TableColumnHeaderFinder())
     smoke_test.create('System Configuration/Backup Power', ['Voltage', 'Current', 'Temperature'],
                       TableColumnHeaderFinder())
-    smoke_test.create('System Configuration/Remote Log', ['Address', 'Port'],
-                      TableColumnHeaderFinder())
+    # smoke_test.create('System Configuration/Remote Log', ['Address', 'Port'],
+    #                   TableColumnHeaderFinder())
 
     # Start Network Synchronization
     smoke_test.create('Network Sync Configuration/Network Clock',
