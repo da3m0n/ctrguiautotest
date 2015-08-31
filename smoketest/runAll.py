@@ -267,6 +267,7 @@ def run_smoke_tests(smoke_test):
 
 if __name__ == "__main__":
 
+    count = 0
     while 1:
 
         # time.sleep(5)
@@ -274,6 +275,8 @@ if __name__ == "__main__":
         try:
             time.sleep(5)
             main()
+            count += 1
+            print("Run " + str(count) +  " times.")
         except Exception as e:
             import signal
             print("Main loop exception")
