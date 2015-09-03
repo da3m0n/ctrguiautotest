@@ -94,8 +94,8 @@ class RunAll():
             smoke_test.navigate_to_screen('Statistics/Clear Statistics')
 
             login_handler.end()
-        except Exception, e:
-            print(e)
+        except Exception as ex:
+            print(ex)
             driver.get("http://" + sys.argv[1] + "/logout")
             driver.quit()
 
@@ -133,4 +133,4 @@ if __name__ == "__main__":
             print("Main loop exception")
             print(e)
             print("About to kill process: ", os.getpid())
-            os.kill(os.getpid(), signal.SIGBREAK)
+            # os.kill(os.getpid(), signal.SIGBREAK)
