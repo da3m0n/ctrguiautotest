@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # from smoketest.aurorasmoketest.mylib.LoginHandler import LoginHandler
-from aurorasmoketest.utils import Utils
+from AuroraSmokeTest import Utils
 from AuroraSmokeTest import AuroraSmokeTest
 from optparse import OptionParser
 
@@ -39,44 +39,59 @@ class RunAll():
             smoke_test.navigate_to_screen('Status/Manufacture Details')
 
             smoke_test.navigate_to_screen('System Configuration/System Information')
+            smoke_test.navigate_to_screen('System Configuration/Management IP Address')
             smoke_test.navigate_to_screen('System Configuration/Date & Time')
             smoke_test.navigate_to_screen('System Configuration/Connected Devices')
+            smoke_test.navigate_to_screen('System Configuration/Remote Log')
             smoke_test.navigate_to_screen('System Configuration/PoE Configuration')
             smoke_test.navigate_to_screen('System Configuration/Backup Power')
 
             # # Start Admin Tests
             smoke_test.navigate_to_screen('System Configuration/Admin/Configuration Management')
-            #smoke_test.navigate_to_screen('System Configuration/Admin/Software Management')
+            smoke_test.navigate_to_screen('System Configuration/Admin/Software Management')
             smoke_test.navigate_to_screen('System Configuration/Admin/License Management')
+            smoke_test.navigate_to_screen('System Configuration/Admin/Script Loading')
 
-            # # Start Ethernet Configuration
+            # # Start Switching & Routing Configuration
             smoke_test.navigate_to_screen('Switching & Routing Configuration/Port Manager')
-            # No license for LA
-            # smoke_test.navigate_to_screen('Ethernet Configuration/Link Aggregation')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Interfaces')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Link Aggregation')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Static Routing')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/VLAN/VLAN')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/VLAN/VLAN by Interface')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Quality of Service/Classification')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Quality of Service/Policing')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Quality of Service/Congestion Control')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/Quality of Service/Scheduling')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/OSPF/Routers')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/OSPF/Areas')
+            smoke_test.navigate_to_screen('Switching & Routing Configuration/OSPF/Interfaces')
 
             # # Start Radio Configuration Tests
             smoke_test.navigate_to_screen('Radio Configuration/Radio Links')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Link Diagnostics')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Protection')
             smoke_test.navigate_to_screen('Radio Configuration/Radio Protection Diagnostics')
-	
+
             # # Start Network Synchronization
             smoke_test.navigate_to_screen('Network Sync Configuration/Network Clock')
             smoke_test.navigate_to_screen('Network Sync Configuration/Network Sync Sources')
-			
+            smoke_test.navigate_to_screen('Network Sync Configuration/Interface Synchronization')
+
             # # Start TDM Configuration
             smoke_test.navigate_to_screen('TDM Configuration/Pseudowire')
             smoke_test.navigate_to_screen('TDM Configuration/Tributary Diagnostics')
 
             # # Start Statistics Tests
             smoke_test.navigate_to_screen('Statistics/Interface')
-            #smoke_test.navigate_to_screen('Statistics/Ethernet')
+            smoke_test.navigate_to_screen('Statistics/Quality of Service')
             smoke_test.navigate_to_screen('Statistics/Radio Link Performance')
             # Need to handle pop up
             # smoke_test.navigate_to_screen('Statistics/Radio Link History')
             smoke_test.navigate_to_screen('Statistics/Radio G826')
             smoke_test.navigate_to_screen('Statistics/ARP Cache')
-            #smoke_test.navigate_to_screen('Statistics/MAC Address Table')
+            smoke_test.navigate_to_screen('Statistics/MAC Address Table')
+            smoke_test.navigate_to_screen('Statistics/Clear Statistics')
 
             login_handler.end()
         except Exception, e:
@@ -114,6 +129,7 @@ if __name__ == "__main__":
             main(counter)
         except Exception, e:
             import signal
+
             print("Main loop exception")
             print(e)
             print("About to kill process: ", os.getpid())
