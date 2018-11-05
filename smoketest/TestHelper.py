@@ -3,18 +3,19 @@ from smoketest.mylib.utils import Utils
 
 
 class TestHelper(object):
-    def __init__(self, log, driver, test_type):
+    def __init__(self, log, driver, test_type, utils):
         self.test_type = test_type
         self.log_dir = Utils.log_dir()
         self.driver = driver
         self.log = log
         self.error_count = 0
+        self.utils = utils
 
     def assert_true(self, val, msg=None, test_name=None):
         if val:
             self.error_count += 1
-            utils = Utils(self.driver, None)
-            utils.save_screenshot(test_name, self.test_type)
+            # utils = Utils(self.driver, None)
+            self.utils.save_screenshot(test_name, self.test_type)
             self.log.log_it2(self.error_count, msg, test_name)
         else:
             msg = '-'
@@ -24,6 +25,6 @@ class TestHelper(object):
 
     def assert_not_equal(self, val1, val2, msg=None):
         if val1 != val2:
-            self.errorCount += 1
+            self.error_count += 1
             res = {'expected': val2, 'detected': val1}
             self.log.log_it(res)

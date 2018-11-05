@@ -5,7 +5,7 @@
     <xsl:template match="/">
         <div class="progress">
             <xsl:variable name="totalScreenCount">
-                <xsl:value-of select="tests/totalScreens/@totalScreens"></xsl:value-of>
+                <xsl:value-of select="tests/totalScreens/@totalScreenCount"></xsl:value-of>
             </xsl:variable>
             <xsl:variable name="totalTestsCount">
                 <xsl:value-of select="tests/totalTestCount/@totalTestCount"></xsl:value-of>

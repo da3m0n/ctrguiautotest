@@ -71,7 +71,7 @@ def run_smoke_tests(smoke_test):
     # Start Status Tests
 
     smoke_test.create_equipment_test('Status/Equipment')
-    smoke_test.create_alarms_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], ButtonFinder())
+    smoke_test.create_button_test('Status/Alarms', ['Clear', 'Expand All', 'Collapse All'], ButtonFinder())
     smoke_test.create('Status/Event Log', ['Type', 'Entity', 'Location', 'Date / Time', 'Message'],
                       TableColumnHeaderFinder(), True)
     smoke_test.create('Status/Sensors', ['Temperature Inlet 1/0', 'Voltage 1/0', 'Current 1/0'],

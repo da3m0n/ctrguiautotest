@@ -2,6 +2,9 @@ import time
 from smoketest.mylib.utils import Utils
 import xml.etree.ElementTree as ET
 import os
+import sys
+from smoketest.mylib.utils import GlobalFuncs
+
 from xml.etree.ElementTree import Comment
 
 
@@ -18,7 +21,7 @@ class TestLog(object):
         self.log = None
         self.doc = None
         self.root = ET.Element("tests")
-        self.root.append(Comment('Don\'t bother changing. Auto Generated in TestLog.py'))
+        self.root.append(Comment('Auto Generated in TestLog.py'))
 
         self.time = time.localtime()
         self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S', self.time)
@@ -26,6 +29,8 @@ class TestLog(object):
         self.dir = dir
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
+        self.ipAddress = sys.argv[1]
+        self.screenshots = []
 
     def start(self, name):
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
@@ -34,27 +39,29 @@ class TestLog(object):
         #
         # el = ET.SubElement(self.doc, "testStart")
         # el.set("testStart", test_start)
-        test_start_time = time.strftime('%H:%M:%S', self.time)
-        test_start_date = time.strftime('%d %B %Y', self.time)
-
-        el = ET.SubElement(self.doc, "testStart")
-        el.set("startTime", test_start_time)
-        el.set("startDate", test_start_date)
-
-
+        # test_start_time = time.strftime('%H:%M:%S', self.time)
+        # test_start_date = time.strftime('%d %B %Y', self.time)
+        #
+        # el = ET.SubElement(self.doc, "testStart")
+        # el.set("startTime", test_start_time)
+        # el.set("startDate", test_start_date)
 
     def log_it2(self, count, msg=None, test_name=None):
         self.test_errors += count
         if self.doc == None:
-            # self.doc = ET.SubElement(self.root, "blahblah", testScreen=test_name)
             self.start(test_name)
         el = ET.SubElement(self.doc, 'error')
         el.set('msg', msg)
-        el.set('testName', test_name)
 
     def log_info(self, msg=None):
         el = ET.SubElement(self.doc, 'info')
         el.set('msg', msg)
+
+    def store_screenshot_info(self, screenshot_info, dir):
+        self.screenshots.append(screenshot_info)
+        el = ET.SubElement(self.doc, 'screenshot')
+        el.set('imageurl', os.path.join(dir, screenshot_info + '.png'))
+        # print 'storing info', self.screenshots
 
     def close(self):
         local_time = time.localtime()
@@ -73,21 +80,15 @@ class TestLog(object):
             coverage.set('coveragePercentage', ('%.f' % coverage_percentage) + '%')
 
         tree = ET.ElementTree(self.root)
-        log_dir = self.dir + '\\logs\\' + date
-        if not os.path.exists(log_dir):
-            os.mkdir(log_dir)
-        os.chdir(log_dir)
 
-        tests = log_dir + '\\' + self.test_type
+        tests = os.path.join(GlobalFuncs.path(), self.ipAddress)
+
         if not os.path.exists(tests):
             os.mkdir(tests)
-        os.chdir(tests)
 
+        path = os.path.join(tests, date + '.xml')
+        # path = os.path.join(os.path.abspath(tests + '\\' + date + '.xml'))
 
-
-        # path = os.path.abspath(log_dir + '\\' + date + '\\' + self.test_type + '.xml')
-        # path = os.path.abspath(log_dir + '\\' + self.test_type + '.xml')
-        path = os.path.abspath(tests + '\\' + date + '.xml')
         tree.write(path)
 
     def add_num_screens(self, num_screens):

@@ -9,7 +9,7 @@ from smoketest.TestHelper import TestHelper
 from smoketest.mylib.utils import Utils
 
 
-class SmokeTest():
+class SmokeTest:
     def __init__(self, driver, test_log, test_helper):
         self.test_log = test_log
         self.driver = driver
@@ -37,11 +37,11 @@ class SmokeTest():
 
         # driver.execute_script("document.getElementById('ChassisViewWidget1_container').innerHTML=\"\";")
         # WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, chassis)))
-        print('chassis text', chassis.text)
+
         self.test_helper.assert_true(len(chassis.text) == 0, 'Expected chassis to be displayed but was not',
                                      'Ensure Chassis displayed')
 
-    def create_alarms_test(self, screen_name, buttons, finder):
+    def create_button_test(self, screen_name, buttons, finder):
         self.gui_lib.navigate_to_screen(screen_name)
 
         # time.sleep(5)
@@ -64,7 +64,7 @@ class SmokeTest():
                                              'Ensure ' + button + ' is displayed.')
                 break
 
-    def create(self, screen_name, items_to_test, finder, just_headers=False):
+    def create2(self, screen_name, items_to_test, finder, just_headers=False):
         self.gui_lib.navigate_to_screen(screen_name)
 
         # time.sleep(5)
@@ -100,6 +100,50 @@ class SmokeTest():
                                              'Expected ' + td + ' to be > 0 but was ' + str(
                                                  len(td)),
                                              'Ensure ' + name + ' data visible.')
+
+    def fix_screen_name(self, name):
+        name.split('/')
+
+    def create(self, screen_name):
+
+        try:
+            self.gui_lib.navigate_to_screen(screen_name)
+            self.gui_lib.is_alert_present(self.driver)
+
+            time.sleep(3)
+            # self.driver.execute_script("document.getElementById('tableWidget1_3_mapping').innerHTML=\"\";")
+
+            # WebDriverWait(self.driver, 30).until(EC.invisibility_of_element_located((By.ID, "page_loader_container")))
+            WebDriverWait(self.driver, 45).until(EC.invisibility_of_element_located((By.CLASS_NAME, "loading_tag")))
+
+            warning_elements = self.driver.find_elements_by_class_name('warning')
+
+            # attr = warning_elements.get_attribute('class')
+            # print('warning_elements classname', screen_name, attr, warning_elements[0].text)
+
+            # if attr == 'warning':
+            #     display_prop = warning_elements.value_of_css_property('display')
+            #     print('display_prop', screen_name, display_prop)
+
+            for el in warning_elements:
+                display_prop = el.value_of_css_property('display')
+
+                page_name = screen_name.split('/').pop().replace(' ', '_')
+
+                if display_prop == u'block':
+                    self.test_helper.assert_true(True,
+                                                 page_name + ' page not loaded OK',
+                                                 page_name)
+                else:
+                    self.test_helper.assert_true(False,
+                                                 'Ensure page is displayed.',
+                                                 page_name + ' page loaded OK')
+
+        except StaleElementReferenceException as e:
+            print('StaleElementException', e)
+
+        return True
+
 
 def toXPathStringLiteral(s):
     if "'" not in s: return "'%s'" % s
@@ -210,6 +254,26 @@ class TdLabelFinder(object):
     @staticmethod
     def find_label(label):
         return element_locater('td', label)
+
+    @staticmethod
+    def find_values(label):
+        return find_values_same_row_as_label(label)
+
+
+class DivTextFinder(object):
+    @staticmethod
+    def find_label(label):
+        return element_locater('div', label)
+
+    @staticmethod
+    def find_values(label):
+        return find_values_same_row_as_label(label)
+
+
+class SpanTextFinder(object):
+    @staticmethod
+    def find_label(label):
+        return element_locater('span', label)
 
     @staticmethod
     def find_values(label):

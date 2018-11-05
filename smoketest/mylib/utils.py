@@ -3,7 +3,7 @@ import datetime
 from enum import Enum
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, NoAlertPresentException
 from selenium.webdriver.support.ui import WebDriverWait  # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
 from selenium import webdriver
@@ -11,16 +11,55 @@ import urllib2
 from BeautifulSoup import BeautifulSoup
 # from bs4 import BeautifulSoup
 # import BeautifulSoup
+
 from smoketest.telnet.Telnet import TelnetClient
+import xml.etree.ElementTree as ET
+from xml.etree.ElementTree import Comment
+import requests
+
 import threading
 
 from xml.etree import ElementTree
 from xml.dom import minidom
 
 
-def main():
-    utils = Utils
-    utils.print_tree(Utils.log_dir())
+class GlobalFuncs(object):
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def path():
+        global path_to_dir
+        return path_to_dir
+
+    @staticmethod
+    def set_path(p):
+        global path_to_dir
+        path_to_dir = p
+
+    @staticmethod
+    def ensure_path_exists(path):
+        import errno
+        try:
+            print("path to create", path)
+            os.makedirs(path)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+
+
+#
+#
+# sub_path = requests.get('http://localhost:3000/next').content
+path_to_dir = ''
+
+# GlobalFuncs.ensure_path_exists(path_to_dir)
+
+
+# def main():
+#     utils = Utils
+#     utils.print_tree(Utils.log_dir())
 
 
 class Dates(Enum):
@@ -46,6 +85,24 @@ class Utils(object):
         self.pwd = os.getcwd()
         self.local_time = time.localtime()
         self.date = time.strftime('%d_%B_%Y', self.local_time)
+        self.ipAddress = sys.argv[1]
+
+    # @staticmethod
+    # def ensure_path_exists(path):
+    #     import errno
+    #     try:
+    #         print("path to create", path)
+    #         os.makedirs(path)
+    #     except OSError as exception:
+    #         if exception.errno != errno.EEXIST:
+    #             raise
+    #
+    # def make_dir(self):
+    #     self.get_current_date = 'http://localhost:3000/next'
+    #     self.req = requests.get(self.get_current_date)
+    #     self.date_run_info = self.req.content
+    #     self.path = os.path.join(os.getcwd(), 'logs', *self.date_run_info.split('/'))
+    #     self.ensure_path_exists(self.path)
 
     @staticmethod
     def create_driver(driverName):
@@ -53,6 +110,8 @@ class Utils(object):
             return webdriver.Chrome("C:\ChromeDriver\chromedriver.exe")
         elif driverName == "firefox":
             return webdriver.Firefox()
+        elif driverName == "edge":
+            return webdriver.Edge()
         elif driverName == "ie":
             return webdriver.Ie()
         else:
@@ -89,8 +148,18 @@ class Utils(object):
             # submit the form
             inputElement.submit()
         except:
+            from smoketest.TestLog import TestLog
+            from smoketest.TestHelper import TestHelper
+            print('login failed')
+            dir = Utils.log_dir()
+            test_log = TestLog(dir)
+            test_helper = TestHelper(test_log, driver, 'smoketest')
+            test_helper.assert_true(True,
+                                    'Page not loaded OK',
+                                    'Page not loaded OK')
+
             print("Login page not as expected. Exiting...")
-            driver.quit()
+            driver.close()
         try:
             # we have to wait for the page to refresh, the last thing that seems to be updated is the title
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "layout_device_name")))
@@ -105,13 +174,20 @@ class Utils(object):
         try:
             time.sleep(1)
             self.click_element("top_menu_users")
-            self.click_element("top_menu_logout")
-        except Exception:
-            print("Logout unsuccessful. This may cause errors with max number of sessions")
+            # logoutTag = driver.find_element_link_text('Logout')
+
+            time.sleep(3)
+            logoutTag = self.driver.find_element_by_link_text('Logout')
+            logoutTag.click()
+
+            # self.click_element(logoutTag)
+            # self.click_element("top_menu_logout")
+        except Exception as e:
+            print("Logout unsuccessful. This may cause errors with max number of sessions", e)
         else:
             print("Successfully logged out")
         finally:
-            time.sleep(5)
+            time.sleep(2)
             driver.quit()
 
     # initialise the window size so that all elements are visible
@@ -127,7 +203,12 @@ class Utils(object):
             print("Address argument missing")
             sys.exit()
         address = "http://" + sys.argv[1]
-        #get page
+        try:
+            response = urllib2.urlopen(address)
+            response.close()
+        except:
+            address = "https://" + sys.argv[1]
+        # get page
         driver.get(address)
 
     # Get the help window
@@ -136,7 +217,7 @@ class Utils(object):
         help.click()
 
         time.sleep(2)
-        #check that two windows exist
+        # check that two windows exist
         handle = driver.window_handles
         if len(handle) != 2:
             print("Incorrect number of windows found")
@@ -237,7 +318,6 @@ class Utils(object):
                 active_version = item.strip('Active Version:')
                 return active_version.lstrip('\'').rstrip('\'')
 
-
     @classmethod
     def upload_latest(cls, func):
         telnet = TelnetClient('root', 'admin123', '10.16.15.113', debug=False)
@@ -300,17 +380,16 @@ class Utils(object):
                 func()
 
     @classmethod
-    def print_tree(cls, results_dir, test_type):
-        import xml.etree.ElementTree as ET
-        from xml.etree.ElementTree import Comment
+    def print_tree1(cls, results_dir, test_type):
 
         # Utils.delete_existing_dir()
 
         root = ET.Element("resultsFiles")
         # doc = ET.SubElement(root, 'logs')
-        root.append(Comment('Do Not Change. Auto Generated by print_tree() in mylib/utils.py'))
+        root.append(Comment('Auto Generated by print_tree() in mylib/utils.py'))
 
         dir_contents = os.walk(results_dir + '/logs/').next()
+        print('dir_contents', dir_contents)
         for logs_dir in dir_contents[1]:
             field1 = ET.SubElement(root, "testDate")
             field1.set("date", logs_dir.replace('_', ' '))
@@ -319,6 +398,7 @@ class Utils(object):
             # for logs in logs_dir
             # print('results_dir: ' + results_dir + ' logs_dir: ' + logs_dir + ' test_type: ' + test_type)
             next_in_logs = os.walk(results_dir + '/logs/' + logs_dir + '/' + test_type).next()
+            print('next_on_logs', next_in_logs)
             # next_in_logs = os.walk(results_dir + '/logs/' + logs_dir).next()
             for xmlfile in next_in_logs[2]:
                 field2 = ET.SubElement(field1, "fileName")
@@ -329,8 +409,8 @@ class Utils(object):
 
                 if len(next_in_logs[1]) > 0:
                     in_date_files = os.walk(next_in_logs[0] + '/screenshots').next()
+                    print('in_dat_files', in_date_files)
                     el = ET.SubElement(field1, 'screenshots')
-
                     for image_name in in_date_files[2]:
                         field3 = ET.SubElement(el, "screenshot")
                         field3.set("error", image_name)
@@ -345,7 +425,7 @@ class Utils(object):
         # tree.write(os.path.join(os.path.relpath(Utils.log_dir()), 'logs\\testDates.xml'))
 
     @classmethod
-    def extract_error_count(cls, xmlfile):
+    def extract_error_count1(cls, xmlfile):
         url = 'http://localhost/logs/' + xmlfile
         soup = BeautifulSoup(urllib2.urlopen(url).read())
 
@@ -356,10 +436,97 @@ class Utils(object):
             break
         return result
 
+    @staticmethod
+    def get_dirs(file_path):
+        logs_in_dir = []
+        for log_file in os.listdir(file_path):
+            if os.path.isdir(os.path.join(file_path, log_file)):
+                logs_in_dir.append(log_file)
+
+        return logs_in_dir
+
+    @classmethod
+    def print_tree(cls, results_dir):
+        # Utils.delete_existing_dir()
+
+        root = ET.Element("results")
+        # doc = ET.SubElement(root, 'logs')
+        root.append(Comment('Auto Generated by print_tree() in mylib/utils.py'))
+        # ipAddress = sys.argv[1]
+
+        logs_directory = os.path.join(Utils.log_dir(), 'logs')
+
+        total_errors_count = 0
+        path_dir = Utils.get_dirs(results_dir)
+        run_number = os.path.basename(results_dir)
+
+        test_run_tag = ET.SubElement(root, 'testRun')
+        test_run_tag.set('testRun', run_number)
+        test_run_tag.set('outputDir', results_dir)
+
+        for ip_address in Utils.get_dirs(results_dir):
+            print 'ip address', ip_address, Utils.get_dirs(results_dir)
+
+            # num_times_run = os.listdir(os.path.join('logs', ip_address))
+            # print('run times', num_times_run)
+            # print('log_date', log_date, addresses_in_dir, test_dir, os.getcwd())
+
+            ip_addresses_root_tag = ET.Element('ipAddresses')
+            output_file = ET.ElementTree(root)
+
+            print 'ss dir', os.listdir((os.path.join(results_dir, ip_address)))
+
+            screenshot_dir = Utils.get_dirs((os.path.join(results_dir, ip_address)))
+
+            if screenshot_dir:
+                screen_shots_tag = ET.SubElement(root, 'screenShots')
+                screenshot_path = os.path.join(results_dir, ip_address, 'screenshots')
+
+                for ss in os.listdir(screenshot_path):
+                    screen_shot_tag = ET.SubElement(screen_shots_tag, 'screenShot')
+                    screen_shot_tag.set('imageurl', os.path.join(screenshot_path, ss))
+                    # screem_shot_tag.set('screenshotDir', os.path.join())
+
+            else:
+                print 'no screenshots', ip_address
+
+            output_file.write(os.path.join(results_dir, ip_address, 'results.xml'))
+
+
+
+    @classmethod
+    def extract_error_count(cls, xmlfile):
+
+        xmlfile = os.path.join('logs', xmlfile)
+        try:
+            file = open(xmlfile, 'r')
+
+            tree = ET.parse(file)
+            for child in tree.findall('.//errorCount'):
+                return int(child.attrib['errorCount'])
+        except:
+            print('Error opening the file ', xmlfile)
+
+        return 0
+
     @classmethod
     def reformat_date(cls, date):
         return datetime.datetime.strptime(date, "%d_%B_%Y").strftime("%Y%m%d")
 
+    @staticmethod
+    def is_alert_present(driver):
+        present_flag = False
+
+        try:
+            from selenium.webdriver.common.alert import Alert
+            alert = driver.switch_to.alert
+            present_flag = True
+            alert.accept()
+
+        except NoAlertPresentException:
+            pass
+
+        return present_flag
 
     @classmethod
     def __insert_underscores(cls, str):
@@ -373,23 +540,16 @@ class Utils(object):
     def save_screenshot(self, test_name, test_type):
         test_name = test_name.rstrip('.')
 
-        screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\' + test_type + '\\screenshots'
+        # screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\' + test_type + '\\screenshots'
+        screenshots_dir = os.path.join(GlobalFuncs.path(), self.ipAddress, 'screenshots')
 
-        if os.path.exists(screenshots_dir):
-            print('directory', screenshots_dir, ' exists')
-            os.chdir(screenshots_dir)
-            self.driver.save_screenshot(test_name + '.png')
-        else:
-            print('directory', screenshots_dir, ' does not exist')
-            self.__make_sure_path_exists(screenshots_dir)
-            os.chdir(screenshots_dir)
-            self.driver.save_screenshot(test_name + '.png')
-        os.chdir(self.pwd)
+        GlobalFuncs.ensure_path_exists(screenshots_dir)
+        self.test_log.store_screenshot_info(test_name, screenshots_dir)
+        self.driver.save_screenshot(os.path.join(screenshots_dir, test_name + '.png'))
 
     @classmethod
     def __make_sure_path_exists(cls, path):
         import errno
-
         try:
             os.makedirs(path)
         except OSError as exception:
@@ -398,10 +558,12 @@ class Utils(object):
 
     @staticmethod
     def delete_existing_dir():
+        import sys
+        ipAddress = sys.argv[1]
 
         date = time.strftime('%d_%B_%Y', time.localtime())
 
-        screenshots_dir = os.getcwd() + '\\logs\\' + date + '\\smoketest\\screenshots'
+        screenshots_dir = os.getcwd() + '\\logs\\' + date + '\\smoketest\\' + ipAddress + '\\screenshots'
         if os.path.exists(screenshots_dir):
             shutil.rmtree(screenshots_dir)
         else:
@@ -426,6 +588,7 @@ class Utils(object):
         return ret
 
     def navigate_to_screen(self, screen_name):
+        time.sleep(1)
         breadcrumbs = screen_name.split('/')
         self.__navigate_to_location(breadcrumbs)
         # self.driver.switch_to_frame('frame_content')
@@ -502,5 +665,5 @@ class RepeatedTimer(object):
         self.is_running = False
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+    # main()

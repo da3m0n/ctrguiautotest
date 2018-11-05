@@ -6,6 +6,17 @@ class LoginHandler(object):
     def __init__(self, driver):
         self.utils = Utils(driver, None)
         self.driver = driver
+        self.login_info = {}
+        try:
+            with open("login.config") as f:
+                content = f.readlines()
+                for line in content:
+                    parts = line.strip().split(',', 2)
+                    print("parts", parts)
+                    self.login_info[parts[0]] = (parts[1], parts[2])
+        except:
+            pass
+
 
     def login(self):
         print('doing nothing, already logged from start()')
@@ -14,8 +25,14 @@ class LoginHandler(object):
         print('normal logout')
 
     def start(self):
+
         self.utils.startBrowser(self.driver)
-        self.utils.login(self.driver, 'root', 'admin123')
+        override = self.login_info.get(sys.argv[1])
+        print("get override", override, sys.argv[1])
+        if override is None:
+            self.utils.login(self.driver, 'root', 'admin123')
+        else:
+            self.utils.login(self.driver, override[0], override[1])
 
     def end(self):
         # self.driver.switch_to_default_content()

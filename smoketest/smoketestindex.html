@@ -3,10 +3,14 @@
     <title>Smoke Tests</title>
     <meta http-equiv="refresh" content="200"/>
     <!--<link rel="stylesheet" href="vendor/css/screen.css">-->
-    <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="vendor/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="smoketests.css"/>
     <link rel="stylesheet" href="vendor/css/lightbox.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
 <div class="jumbotron" id="jumbo-enhancements">
@@ -22,31 +26,51 @@
     </div>
 </div>
 <div class="container">
-    <div class="row">
-        <div id="dates" class="col-lg-3"></div>
-        <div id="tests" class="col-lg-9"></div>
+    <div id="dates"></div>
+    <div id="testHeading"><h1>Daily Tests</h1></div>
+
+    <div id="tests">
+        <div class="panel-group" id="accordion">
+
+        </div>
+
     </div>
+
 </div>
 
 <script src="utils.js"></script>
-<script src="vendor/js/jquery-1.11.1.min.js"></script>
+<!--<script src="vendor/js/jquery-3.3.1.min.js"></script>-->
 <script src="vendor/js/bootstrap.min.js"></script>
 <script src="vendor/js/lightbox.js"></script>
 
 <script>
-    var allTests = [
-        {dir: 'smoketest', name: 'coverage-result', xslDoc: "coverage.xsl" },
-        {dir: 'smoketest', name: 'test-result', xslDoc: "overallResult.xsl" },
-        {dir: 'smoketest', name: 'tests', xslDoc: "results.xsl" }
-    ];
-    var testDates = "logs/smoketestDates.xml";
+    <!--let ipAddresses = utils.getIpAddresses('ipAddresses.xml');-->
+    <!--let testDates = "logs/smoketestDates.xml";-->
+    <!--let overallResult = utils.getOverallResult();-->
 
-    utils.loadAndDisplayPage(allTests, testDates);
+    let rawTestRunInfo = utils.loadDoc("logs/runInfo.txt", "text");
+    let testRunInfo = utils.getTestRunInfo(rawTestRunInfo);
+
+    let overallResult = utils.getOverallResult(testRunInfo);
+
+    let allTests = [
+        {dir: 'smoketest', name: 'coverage-result', xslDoc: "coverage.xsl" },
+        {dir: 'smoketest', name: 'test-result', xslDoc: "overallResult.xsl" }
+    ];
+
+    <!--$('#tests')[0].innerHTML = overallResult;-->
+
+    // ,        {dir: 'smoketest', name: 'tests', xslDoc: "results.xsl" }
+    // let testDates = "dates.xsl";
+
+
+    <!--utils.loadAndDisplayPage(allTests, testDates, ipAddresses);-->
+    utils.loadAndDisplayPage(allTests, testRunInfo);
 
 </script>
 <script>
     $(".datesListener").on('click', function (e) {
-        var date = $(this).attr('href');
+        let date = $(this).attr('href');
         e.preventDefault();
         $('#tests').empty();
         utils.loadNewResults(utils.getResult(date));

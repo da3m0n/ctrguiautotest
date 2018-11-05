@@ -118,3 +118,7 @@ body {
 .time {
     color: #999;
 }
+
+#testHeading {
+    margin: auto auto;
+}

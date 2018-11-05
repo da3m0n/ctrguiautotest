@@ -23,7 +23,7 @@
 <div class="container absolute-center">
     <div class="row centered">
         <h1>
-            <div class="col-lg-2"><a href="http://localhost/smoketestindex.html">Smoketests</a></div>
+            <div class="col-lg-2"><a href="http://localhost:8000/smoketest/smoketestindex.html">Smoketests</a></div>
             <div class="col-lg-4">
                 <div class="time" id="smoketest-run"></div>
             </div>
@@ -35,21 +35,21 @@
             </div>
         </h1>
     </div>
-    <div class="row centered">
-        <h1>
-            <div class="col-lg-2"><a href="http://localhost/writetestindex.html">Write Tests</a></div>
-            <div class="col-lg-4">
-                <div class="time" id="writetest-run"></div>
-            </div>
-            <div class="col-lg-1">
-                <div class="spacer"></div>
-            </div>
-            <div class="col-lg-2">
-                <div id="writetest" class="col-lg-2"></div>
-            </div>
-        </h1>
+    <!--<div class="row centered">-->
+        <!--<h1>-->
+            <!--<div class="col-lg-2"><a href="http://localhost/writetestindex.html">Write Tests</a></div>-->
+            <!--<div class="col-lg-4">-->
+                <!--<div class="time" id="writetest-run"></div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-1">-->
+                <!--<div class="spacer"></div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-2">-->
+                <!--<div id="writetest" class="col-lg-2"></div>-->
+            <!--</div>-->
+        <!--</h1>-->
 
-    </div>
+    <!--</div>-->
 </div>
 
 <script src="vendor/js/jquery-1.11.1.min.js"></script>
@@ -58,7 +58,7 @@
 <script src="utils.js"></script>
 <script>
     var allTests = [
-        {dir: 'writeConfigTest', name: 'writetest', date: "logs/writeConfigTestDates.xml" },
+        // {dir: 'writeConfigTest', name: 'writetest', date: "logs/writeConfigTestDates.xml" },
         {dir: 'smoketest', name: 'smoketest', date: "logs/smokeTestDates.xml" }
     ];
 
