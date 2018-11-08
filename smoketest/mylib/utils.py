@@ -474,8 +474,6 @@ class Utils(object):
             ip_addresses_root_tag = ET.Element('ipAddresses')
             output_file = ET.ElementTree(root)
 
-            print 'ss dir', os.listdir((os.path.join(results_dir, ip_address)))
-
             screenshot_dir = Utils.get_dirs((os.path.join(results_dir, ip_address)))
 
             if screenshot_dir:
@@ -490,7 +488,7 @@ class Utils(object):
             else:
                 print 'no screenshots', ip_address
 
-            output_file.write(os.path.join(results_dir, ip_address, 'results.xml'))
+            # output_file.write(os.path.join(results_dir, ip_address, 'results.xml'))
 
 
 

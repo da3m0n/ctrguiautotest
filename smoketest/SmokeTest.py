@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
 from smoketest.TestHelper import TestHelper
-from smoketest.mylib.utils import Utils
+from smoketest.mylib.utils import Utils, GlobalFuncs
 
 
 class SmokeTest:

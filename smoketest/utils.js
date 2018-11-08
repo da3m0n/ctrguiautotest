@@ -1,5 +1,3 @@
-//goog.require();
-
 let utils = (function () {
 
     function loadXMLDoc(filename) {
@@ -71,6 +69,19 @@ let utils = (function () {
         return ipAddresses;
     }
 
+    let getXMLTagValue = (file, tag) => {
+        let xml = loadXMLDoc(file),
+            xmlDoc = xml.response,
+            addressTags = xmlDoc.getElementsByTagName(tag),
+            ipAddresses = [];
+
+        for (let i = 0; i < addressTags.length; i++) {
+            ipAddresses.push(addressTags[i].innerHTML);
+        }
+
+        return ipAddresses;
+    }
+
     let removeEmptyItemsFromArr = (arr) => {
         var newArr = [];
 
@@ -80,7 +91,8 @@ let utils = (function () {
             }
         }
         return newArr;
-    }
+    };
+
     var monthMap = {
         'January' : 0,
         'February' : 1,
@@ -120,22 +132,71 @@ let utils = (function () {
                 runs.push (runNumber);
             }
         }
+
         runInfo.forEach(function (info) {
             info.runs.sort(function (x, y) {
                 return parseInt(y) - parseInt(x);
             });
 
-        })
+        });
 
         runInfo.sort(function (x, y) {
             return parseDate(y.date) - parseDate(x.date);
         });
         return runInfo;
-    }
+    };
+
 
     function loadNewResults(date) {
         displayXMLResult("logs/smoketestDatesOrig.xml", 'results.xsl', 'tests');
 //        display
+    }
+
+
+    function makeListElem(ulEle, run, date) {
+        let ipAddresses = getIpAddresses('/smoketest/logs/' + date + '/' + run + '/' + 'ip-addresses.xml');
+
+        let totalTestCount = 0;
+        let totalErrorCount = 0;
+        let individualRes = {};
+
+        ipAddresses.forEach(function (ip) {
+            let testResult = loadXMLDoc('/smoketest/logs/' + date + '/' + run + '/' + ip + '/' + 'testresult.xml');
+            let testResultXml = testResult.response;
+
+            let errorCountEle = testResultXml.getElementsByTagName('errorCount');
+            let totalErrorCountEle = testResultXml.getElementsByTagName('totalTestCount');
+
+            totalTestCount += parseInt(totalErrorCountEle[0].getAttribute('totalTestCount'));
+            totalErrorCount += parseInt(errorCountEle[0].getAttribute('errorCount'));
+
+            individualRes = {totalErrorCount, totalTestCount};
+        });
+
+        let individualResDiv = document.createElement('div');
+        individualResDiv.setAttribute('class', 'individualResDiv');
+
+        let runNumDiv = document.createElement('div');
+        runNumDiv.setAttribute('class', 'runNumDiv');
+
+        let testResultDiv = document.createElement('div');
+        testResultDiv.setAttribute('class', 'testResultDiv');
+        testResultDiv.setAttribute('class', totalErrorCount > 0 ? 'test-fail' : 'test-pass');
+
+        let runNumEle = document.createElement('a');
+        let result = document.createElement('p');
+
+        runNumEle.innerHTML = run;
+        result.innerHTML = individualRes.totalTestCount - individualRes.totalErrorCount + '/' + individualRes.totalTestCount;
+
+        runNumDiv.appendChild(runNumEle);
+        testResultDiv.appendChild(result);
+
+        individualResDiv.appendChild(runNumDiv);
+        individualResDiv.appendChild(testResultDiv);
+
+        return individualResDiv;
+
     }
 
     function loadAndDisplayPage(allTests, testRunInfo) {
@@ -143,19 +204,31 @@ let utils = (function () {
         let dates = [];
 
         let rootEle = document.getElementById('accordion');
-        console.log('rootEle', rootEle);
-
-        var count = 0;
 
         testRunInfo.forEach(function(obj){
+            let summaryInfo = loadXMLDoc('logs/' + obj.date + '/testsummary.xml');
+            let xmlDoc = summaryInfo.response;
+
+            let summaryEle = xmlDoc.getElementsByTagName('summary');
+            let totalTestCount = summaryEle[0].getAttribute('totalTestCount');
+            let totalErrorCount = summaryEle[0].getAttribute('totalErrorCount');
+
             let defaultPanelEle = document.createElement("div");
             defaultPanelEle.setAttribute('class', 'panel panel-default');
 
             let panelHeadingEle = document.createElement("div");
             panelHeadingEle.setAttribute('class', 'panel-heading');
 
+            let summaryContainer = document.createElement('div');
+            summaryContainer.setAttribute('class', 'summary-container');
+
+            let dateContainer = document.createElement('div');
+            dateContainer.setAttribute('class', 'date-container');
+
             let panelTitleEle = document.createElement("h4");
             panelTitleEle.setAttribute('class', 'panel-title');
+
+            let count = 0;
 
             let anchorEle = document.createElement("a");
             anchorEle.setAttribute('data-toggle', 'collapse');
@@ -166,13 +239,19 @@ let utils = (function () {
             bodyPanelContainer.setAttribute('id', 'collapse' + count);
             bodyPanelContainer.setAttribute('class', 'panel-collapse');
             bodyPanelContainer.setAttribute('class', 'collapse');
-            bodyPanelContainer.setAttribute('class', 'in');
+            bodyPanelContainer.setAttribute('class', 'in');  // uncomment to expand
 
-            let tempEle = document.createElement('p');
-            tempEle.innerHTML = 'HTML stands for HyperText Markup Language. HTML is the standard markup language for describing the structure of web pages.';
+            let overallResultContainer = document.createElement('div');
+            overallResultContainer.setAttribute('class', 'overall-result-container');
+            overallResultContainer.setAttribute('class', totalErrorCount > 0 ? 'test-fail' : 'test-pass');
 
+            overallResultContainer.innerHTML = totalTestCount - totalErrorCount + '/' + totalTestCount;
+
+            summaryContainer.appendChild(dateContainer);
+            summaryContainer.appendChild(overallResultContainer);
+            dateContainer.appendChild(panelTitleEle);
+            panelHeadingEle.appendChild(summaryContainer);
             defaultPanelEle.appendChild(panelHeadingEle);
-            panelHeadingEle.appendChild(panelTitleEle);
 
             anchorEle.innerHTML = obj.date;
             panelTitleEle.appendChild(anchorEle);
@@ -180,32 +259,37 @@ let utils = (function () {
             let panelBodyEle = document.createElement('div');
             panelBodyEle.setAttribute('class', 'panel-body');
 
-            panelBodyEle.appendChild(tempEle);
+            let panelheaderContainer = document.createElement('div');
+
+            let runNumHeader = document.createElement('div');
+            runNumHeader.innerHTML = "Run #";
+
+            let resultHeader = document.createElement('div');
+            resultHeader.setAttribute('class', 'resultHeaderDiv');
+            resultHeader.innerHTML = "Result (Success / Total)";
+
+            panelheaderContainer.appendChild(runNumHeader);
+            panelheaderContainer.appendChild(resultHeader);
+
+            panelheaderContainer.setAttribute('class', 'panelBodyHeader');
+
+
+            panelBodyEle.appendChild(panelheaderContainer);
+
+            let individualTestContainer = document.createElement('div');
+            individualTestContainer.setAttribute('class', 'individual-test');
+
+            let ulEle = document.createElement('div');
+
+            obj.runs.forEach(function(run) {
+                // makeListElem(ulEle, run, obj.date);
+                panelBodyEle.appendChild(makeListElem(ulEle, run, obj.date));
+            });
+
+            // panelBodyEle.appendChild(ulEle);
 
             defaultPanelEle.appendChild(bodyPanelContainer);
             bodyPanelContainer.appendChild(panelBodyEle);
-
-
-
-
-//            let ulEle = document.createElement('ul');
-//            obj.runs.forEach(function(run) {
-//                console.log('run', run);
-//                let liEle = document.createElement('li');
-//                liEle.innerHTML = run;
-//
-//                let numRunPanel = document.createElement('div');
-//                numRunPanel.setAttribute('id', 'collapse' + count);
-//                numRunPanel.setAttribute('data-parent', '#accordion');
-//                numRunPanel.setAttribute('class', 'panel-collapse collapse in');
-//
-////                defaultPanelEle.appendChild(numRunPanel);
-////                let runEle = document.createElement('div');
-////                runEle.setAttribute('class', 'runNumber');
-//
-////                panelBodyEle.innerHTML = run;
-////                defaultPanelEle.appendChild(panelBodyEle);
-//            })
 
             dates.push(obj.date);
 

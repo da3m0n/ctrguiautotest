@@ -27,14 +27,21 @@ class TestLog(object):
         self.all_tests_start = time.strftime('%d %B %Y %H:%M:%S', self.time)
         self.url_friendly_start = time.strftime('%d_%B_%Y', self.time)
         self.dir = dir
+        self.ipAddress = sys.argv[1]
+
+        path = os.path.join(GlobalFuncs.path())
+
         el = ET.SubElement(self.root, 'allTestsStart')
         el.set('allTestsStart', self.all_tests_start)
-        self.ipAddress = sys.argv[1]
+        el.set("runNumber", path.split(os.sep)[-1])
+        el.set('ipAddress', self.ipAddress)
+
         self.screenshots = []
 
     def start(self, name):
         self.doc = ET.SubElement(self.root, "testScreen", testScreen=name)
         self.num_tests_run += 1
+
         # test_start = time.strftime('%d %B %Y %H:%M:%S ', self.time)
         #
         # el = ET.SubElement(self.doc, "testStart")
@@ -86,7 +93,9 @@ class TestLog(object):
         if not os.path.exists(tests):
             os.mkdir(tests)
 
-        path = os.path.join(tests, date + '.xml')
+        # path = os.path.join(tests, date + '.xml')
+        path = os.path.join(tests, 'testresult.xml')
+
         # path = os.path.join(os.path.abspath(tests + '\\' + date + '.xml'))
 
         tree.write(path)

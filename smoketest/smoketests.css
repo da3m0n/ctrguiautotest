@@ -122,3 +122,41 @@ body {
 #testHeading {
     margin: auto auto;
 }
+
+.summary-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.test-pass {
+    color: #008000;
+}
+
+.test-fail {
+    color: #FF0000;
+}
+
+.individualResDiv {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+}
+
+.testResultDiv {
+    width: 50px;
+}
+
+.runNumDiv {
+    width: 200px;
+}
+
+.panelBodyHeader {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.resultHeaderDiv {
+    margin-left: 40px;
+}

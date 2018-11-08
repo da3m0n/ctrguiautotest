@@ -2,7 +2,7 @@ import subprocess
 import sys
 import signal
 import sys
-import os
+import os, shutil
 import xml.etree.ElementTree as ET
 
 import time
@@ -23,6 +23,7 @@ def ensure_path_exists(path):
             raise
 
 
+logs_dir = os.path.join(Utils.log_dir(), 'logs')
 sub_path = requests.get('http://localhost:3000/next').content
 path_to_dir = os.path.join(os.getcwd(), 'logs', *sub_path.split('/'))
 ensure_path_exists(path_to_dir)
@@ -41,6 +42,9 @@ root = ET.Element("ipAddresses")
 root.append(Comment('Auto Generated in multi-run.py'))
 
 
+run_dates_path = os.path.join(Utils.log_dir(), 'logs', "runInfo.txt")
+
+
 def run_some(start, end):
     for i in range(start, end):
         time.sleep(2)
@@ -50,16 +54,12 @@ def run_some(start, end):
     [p.wait() for p in opens]
 
 
-logs_dir = os.path.join(Utils.log_dir(), 'logs')
-
-run_dates_path = os.path.join(Utils.log_dir(), 'logs', "runInfo.txt")
-
 if not os.path.exists(run_dates_path):
 
     run_dates_file = open(run_dates_path, "a+")
 
     for date in Utils.get_dirs(logs_dir):
-        for run in os.listdir(os.path.join(Utils.log_dir(), 'logs', date)):
+        for run in Utils.get_dirs(os.path.join(Utils.log_dir(), 'logs', date)):
             print 'date', date, 'list', os.listdir(os.path.join(Utils.log_dir(), 'logs', date))
             run_dates_file.write(date + '/' + run + '\n')
 
@@ -79,8 +79,49 @@ step = 3
 for i in range(1, len(sys.argv), step):
     run_some(i, min(i + step, len(sys.argv)))
 
-# print('path_to_dir', path_to_dir)
-# Utils.print_tree(path_to_dir, 'smoketest')
 Utils.print_tree(path_to_dir)
 
-# print('****', os.path.join(os.path.relpath(GlobalFuncs2.path())))
+res = {}
+
+
+def get_test_run_info(date):
+
+    total_error_count = 0
+    total_test_count = 0
+
+    for run in Utils.get_dirs(os.path.join(logs_dir, date)):
+        for ip_in_runs in Utils.get_dirs(os.path.join(logs_dir, date, run)):
+            for xml in os.listdir(os.path.join(logs_dir, date, run, ip_in_runs)):
+
+                if xml.startswith('testresult'):
+                    fname = os.path.join(logs_dir, date, run, ip_in_runs, xml)
+                    tree = ET.parse(fname)
+
+                    test_count = tree.find('totalTestCount').get('totalTestCount')
+                    error_count = tree.find('errorCount').get('errorCount')
+
+                    total_test_count += int(test_count)
+                    total_error_count += int(error_count)
+
+    return {'date': date, 'total_test_count': total_test_count, 'total_error_count': total_error_count}
+
+
+def make_test_summary_xml(date):
+
+    summary_data = get_test_run_info(date)
+
+    root_ele = ET.Element('results')
+
+    summary_ele = ET.SubElement(root_ele, 'summary')
+    summary_ele.set('date', summary_data['date'])
+    summary_ele.set('totalTestCount', str(summary_data['total_test_count']))
+    summary_ele.set('totalErrorCount', str(summary_data['total_error_count']))
+
+    tree = ET.ElementTree(root_ele)
+
+    path = os.path.join(logs_dir, date, 'testsummary.xml')
+    tree.write(path)
+
+
+for log_date in Utils.get_dirs(logs_dir):
+    make_test_summary_xml(log_date)

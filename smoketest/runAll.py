@@ -197,7 +197,7 @@ class RunAll:
 
         # tests = RunAll.get_screens(self.driver)
 
-        smoke_test.create("Status/Alarms")
+        # smoke_test.create("Status/Alarms")
         smoke_test.create("System Configuration/Admin/Users")
         smoke_test.create("Status/Manufacture Details")
         # smoke_test.create("Status/Event Log")
