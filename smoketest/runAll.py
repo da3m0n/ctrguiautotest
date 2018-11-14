@@ -185,7 +185,6 @@ class RunAll:
         login_handler = LoginHandler(self.driver, test_helper, self.test_log)
         login_handler.start()
 
-        print('log', self.test_log, self.utils.log_dir())
         # test_log = TestLog(self.dir)
 
         # Uncomment this to get coverage graph
@@ -203,23 +202,22 @@ class RunAll:
             self.test_log.close()
             raise e
 
-
-        tests = RunAll.get_screens(self.driver)
-
-        smoke_test.create("Status/Alarms")
-        smoke_test.create("System Configuration/Admin/Users")
-        smoke_test.create("Status/Manufacture Details")
+        # smoke_test.create("Status/Alarms")
+        # smoke_test.create("System Configuration/Admin/Users")
+        # smoke_test.create("Status/Manufacture Details")
         # smoke_test.create("Status/Event Log")
         # smoke_test.create("Switching & Routing Configuration/Port Manager")
         # smoke_test.create("Switching & Routing Configuration/Interfaces")
 
-        # for test in tests:
-        #     try:
-        #         if not smoke_test.create(test):
-        #             return False
-        #     except Exception as ex:
-        #         # error_file.write("Failed running: " + test + ex + '\r\n')
-        #         print("Failed running ", test, ex)
+        tests = RunAll.get_screens(self.driver)
+
+        for test in tests:
+            try:
+                if not smoke_test.create(test):
+                    return False
+            except Exception as ex:
+                # error_file.write("Failed running: " + test + ex + '\r\n')
+                print("Failed running ", test, ex)
 
         # return True
 

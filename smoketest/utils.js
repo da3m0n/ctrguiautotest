@@ -158,7 +158,6 @@ let utils = (function () {
         let ipAddresses = getIpAddresses('/smoketest/logs/' + date + '/' + run + '/' + 'ip-addresses.xml');
 
         let individualRes = {};
-        let screenshots = [];
         let perIpResults = [];
 
         let runNumberContainer = document.createElement('div');
@@ -178,10 +177,8 @@ let utils = (function () {
             if (!testResultXml.getElementsByTagName) {
                 return;
             }
-
             let errorCountEle = testResultXml.getElementsByTagName('errorCount');
             let totalErrorCountEle = testResultXml.getElementsByTagName('totalTestCount');
-            screenshots.push(testResultXml.getElementsByTagName('screenshot'));
 
             let testCount = parseInt(totalErrorCountEle[0].getAttribute('totalTestCount'));
             let errorCount = parseInt(errorCountEle[0].getAttribute('errorCount'));
@@ -197,20 +194,6 @@ let utils = (function () {
         if (Object.keys(individualRes).length === 0) {
             return null;
         }
-
-        // function getDailyResultSummary() {
-        //     let res = {};
-        //
-        //     ipAddresses.forEach(function (ip) {
-        //         let testResult = loadXMLDoc('/smoketest/logs/' + date + '/' + run + '/' + ip + '/' + 'testresult.xml');
-        //         let testResultXml = testResult.response;
-        //         if (!testResultXml.getElementsByTagName) {
-        //             return;
-        //         }
-        //     });
-        // }
-
-        // let dailyResultSummary = getDailyResultSummary();
 
         let testResultDiv = document.createElement('div');
         testResultDiv.setAttribute('class', 'testResultDiv');
@@ -235,6 +218,15 @@ let utils = (function () {
 
 
         ipAddresses.forEach(function (ip, cnt) {
+            let testResultXML = loadXMLDoc('/smoketest/logs/' + date + '/' + run + '/' + ip + '/' + 'testresult.xml');
+            let testResultXmlResp = testResultXML.response;
+            if (!testResultXmlResp.getElementsByTagName) {
+                return;
+            }
+
+            console.log('screenshots', testResultXmlResp.getElementsByTagName('screenshot'));
+            let screenshots = [];
+            screenshots.push(testResultXmlResp.getElementsByTagName('screenshot'));
             let testResult = perIpResults[cnt];
             let ipAndResDiv = document.createElement('div');
             let ipAddressText = document.createElement('p');

@@ -174,7 +174,7 @@ class Utils(object):
             print('Login Successful')
             time.sleep(5)
         except Exception as e:
-            print("Login unsuccessful")
+            print("Page not loaded correctly")
             test_helper.assert_false(True, "unexpected login page", "login")
 
             test_helper.close()
@@ -478,8 +478,6 @@ class Utils(object):
         test_run_tag.set('outputDir', results_dir)
 
         for ip_address in Utils.get_dirs(results_dir):
-            print 'ip address', ip_address, Utils.get_dirs(results_dir)
-
             # num_times_run = os.listdir(os.path.join('logs', ip_address))
             # print('run times', num_times_run)
             # print('log_date', log_date, addresses_in_dir, test_dir, os.getcwd())
@@ -558,6 +556,7 @@ class Utils(object):
         GlobalFuncs.ensure_path_exists(screenshots_dir)
         self.test_log.store_screenshot_info(test_name, screenshots_dir)
         self.driver.save_screenshot(os.path.join(screenshots_dir, test_name + '.png'))
+        print('image saving complete')
 
     @classmethod
     def __make_sure_path_exists(cls, path):

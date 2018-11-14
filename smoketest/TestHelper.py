@@ -27,7 +27,6 @@ class TestHelper(object):
     def assert_false(self, val, msg, test_name):
         if val:
             self.error_count += 1
-            print "about to take screenshot", self.error_count
             # utils = Utils(self.driver, None)
             self.utils.save_screenshot(test_name, self.test_type)
             self.log.log_it2(self.error_count, msg, test_name)
