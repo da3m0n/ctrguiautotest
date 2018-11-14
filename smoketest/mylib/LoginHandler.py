@@ -3,10 +3,13 @@ from smoketest.mylib.utils import Utils
 
 
 class LoginHandler(object):
-    def __init__(self, driver):
+    def __init__(self, driver, test_helper, test_log):
         self.utils = Utils(driver, None)
         self.driver = driver
         self.login_info = {}
+        self.test_helper = test_helper
+        self.test_log = test_log
+
         try:
             with open("login.config") as f:
                 content = f.readlines()
@@ -30,9 +33,9 @@ class LoginHandler(object):
         override = self.login_info.get(sys.argv[1])
         print("get override", override, sys.argv[1])
         if override is None:
-            self.utils.login(self.driver, 'root', 'admin123')
+            self.utils.login(self.driver, 'root', 'admin123', self.test_helper, self.test_log)
         else:
-            self.utils.login(self.driver, override[0], override[1])
+            self.utils.login(self.driver, override[0], override[1], self.test_helper, self.test_log)
 
     def end(self):
         # self.driver.switch_to_default_content()

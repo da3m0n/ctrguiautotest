@@ -12,8 +12,22 @@ class TestHelper(object):
         self.utils = utils
 
     def assert_true(self, val, msg=None, test_name=None):
+        # todo change logic so it makes sense
         if val:
             self.error_count += 1
+            # utils = Utils(self.driver, None)
+            self.utils.save_screenshot(test_name, self.test_type)
+            self.log.log_it2(self.error_count, msg, test_name)
+        else:
+            msg = '-'
+            # self.driver.save_screenshot('testypass.png')
+            self.log.log_it2(self.error_count, msg, test_name)
+        self.error_count = 0
+
+    def assert_false(self, val, msg, test_name):
+        if val:
+            self.error_count += 1
+            print "about to take screenshot", self.error_count
             # utils = Utils(self.driver, None)
             self.utils.save_screenshot(test_name, self.test_type)
             self.log.log_it2(self.error_count, msg, test_name)

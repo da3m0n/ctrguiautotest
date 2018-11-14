@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 import os
 import sys
 from smoketest.mylib.utils import GlobalFuncs
+import urllib
 
 from xml.etree.ElementTree import Comment
 
@@ -65,9 +66,13 @@ class TestLog(object):
         el.set('msg', msg)
 
     def store_screenshot_info(self, screenshot_info, dir):
+        rel_path = os.path.relpath(dir, self.dir)
+        url_path = '/smoketest/' + urllib.pathname2url(rel_path)
+
         self.screenshots.append(screenshot_info)
         el = ET.SubElement(self.doc, 'screenshot')
-        el.set('imageurl', os.path.join(dir, screenshot_info + '.png'))
+        el.set('path', url_path + '/' + screenshot_info + '.png')
+
         # print 'storing info', self.screenshots
 
     def close(self):

@@ -92,7 +92,6 @@ def get_test_run_info(date):
     for run in Utils.get_dirs(os.path.join(logs_dir, date)):
         for ip_in_runs in Utils.get_dirs(os.path.join(logs_dir, date, run)):
             for xml in os.listdir(os.path.join(logs_dir, date, run, ip_in_runs)):
-
                 if xml.startswith('testresult'):
                     fname = os.path.join(logs_dir, date, run, ip_in_runs, xml)
                     tree = ET.parse(fname)

@@ -72,6 +72,9 @@ body {
     /*display: none*/
 }
 
+.container {
+    max-width: 950px;
+}
 .test-pass {
     color: #008000;
 }
@@ -129,18 +132,11 @@ body {
     justify-content: space-between;
 }
 
-.test-pass {
-    color: #008000;
-}
-
-.test-fail {
-    color: #FF0000;
-}
-
 .individualResDiv {
     width: 100px;
     display: flex;
     flex-direction: row;
+    flex-flow: column;
 }
 
 .testResultDiv {
@@ -148,7 +144,7 @@ body {
 }
 
 .runNumDiv {
-    width: 200px;
+    width: 130px;
 }
 
 .panelBodyHeader {
@@ -157,6 +153,54 @@ body {
     flex-direction: row;
 }
 
+.runNumberContainer {
+    margin-bottom: 10px;
+    padding: 10px;
+    /*border-bottom: 1px solid red;*/
+}
+
+.smokeTestFail{
+    background: #ff00001f;
+    border-bottom: 2px solid red;
+}
+
+.smokeTestPass{
+    background: #1bff001f;
+    border-bottom: 2px solid green;
+}
+
+.test-pass {
+    color: #008000;
+}
+
+.test-fail {
+    color: #FF0000;
+}
+
 .resultHeaderDiv {
     margin-left: 40px;
+}
+
+.resContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.screenshotDiv {
+    padding-left: 125px;
+}
+
+.ipAddressDiv {
+    width: 120px;
+}
+
+.ipAndResDiv {
+    display: flex;
+    flex-direction: row;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.perIpResultDiv {
+    padding-left: 50px;
 }

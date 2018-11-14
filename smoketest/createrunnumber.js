@@ -11,10 +11,17 @@ let getDateRunInfo = (dateFolder) => {
 
     res[dateFolder] = {maxNumber: 0};
 
+        console.log("getting run info exists", path.join(logs, dateFolder));
     if (fs.existsSync(path.join(logs, dateFolder))) {
         let lastRunNumbers = fs.readdirSync(path.join(logs,dateFolder));
-        let max =  lastRunNumbers.reduce(function (c, x) {return Math.max(c, x);}, 0);
-        dateRunInfo[dateFolder] = {maxNumber: max};
+        let max =  lastRunNumbers.reduce(function (c, x) {
+
+            if (/^\d+$/.test(x)) {
+                return Math.max(c, parseInt(x));
+            }
+            return c
+        }, 0);
+        res[dateFolder] = {maxNumber: max};
     }
 
     console.log('res', res);

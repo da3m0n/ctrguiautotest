@@ -1,7 +1,7 @@
 let utils = (function () {
 
     function loadXMLDoc(filename) {
-        return loadDoc(filename,"msxml-document")
+        return loadDoc(filename,"document")
     }
 
     function loadDoc(filename, type) {
@@ -20,7 +20,7 @@ let utils = (function () {
                 xhttp.responseType = type;
              }
         } catch (err) {
-            console.log("Missing file: " + filename);
+
         }
         xhttp.send("");
 
@@ -61,6 +61,7 @@ let utils = (function () {
             xmlDoc = xml.response,
             addressTags = xmlDoc.getElementsByTagName('ipAddress'),
             ipAddresses = [];
+        if(addressTags)
 
         for (let i = 0; i < addressTags.length; i++) {
             ipAddresses.push(addressTags[i].innerHTML);
@@ -110,7 +111,7 @@ let utils = (function () {
     let parseDate = (dStr) => {
         let parts = dStr.split('_');
         return new Date(parseInt(parts[2]), monthMap[parts[1]], parseInt(parts[0])).getTime();
-    }
+    };
 
     let getTestRunInfo = (data) => {
         let runInfo = [];
@@ -156,47 +157,138 @@ let utils = (function () {
     function makeListElem(ulEle, run, date) {
         let ipAddresses = getIpAddresses('/smoketest/logs/' + date + '/' + run + '/' + 'ip-addresses.xml');
 
-        let totalTestCount = 0;
-        let totalErrorCount = 0;
         let individualRes = {};
+        let screenshots = [];
+        let perIpResults = [];
 
-        ipAddresses.forEach(function (ip) {
-            let testResult = loadXMLDoc('/smoketest/logs/' + date + '/' + run + '/' + ip + '/' + 'testresult.xml');
-            let testResultXml = testResult.response;
-
-            let errorCountEle = testResultXml.getElementsByTagName('errorCount');
-            let totalErrorCountEle = testResultXml.getElementsByTagName('totalTestCount');
-
-            totalTestCount += parseInt(totalErrorCountEle[0].getAttribute('totalTestCount'));
-            totalErrorCount += parseInt(errorCountEle[0].getAttribute('errorCount'));
-
-            individualRes = {totalErrorCount, totalTestCount};
-        });
-
-        let individualResDiv = document.createElement('div');
-        individualResDiv.setAttribute('class', 'individualResDiv');
+        let runNumberContainer = document.createElement('div');
+        runNumberContainer.setAttribute('class', 'runNumberContainer');
 
         let runNumDiv = document.createElement('div');
         runNumDiv.setAttribute('class', 'runNumDiv');
 
+        let totalErrors = 0;
+        let totalTests = 0;
+        let summary = {};
+
+        ipAddresses.forEach(function (ip) {
+
+            let testResult = loadXMLDoc('/smoketest/logs/' + date + '/' + run + '/' + ip + '/' + 'testresult.xml');
+            let testResultXml = testResult.response;
+            if (!testResultXml.getElementsByTagName) {
+                return;
+            }
+
+            let errorCountEle = testResultXml.getElementsByTagName('errorCount');
+            let totalErrorCountEle = testResultXml.getElementsByTagName('totalTestCount');
+            screenshots.push(testResultXml.getElementsByTagName('screenshot'));
+
+            let testCount = parseInt(totalErrorCountEle[0].getAttribute('totalTestCount'));
+            let errorCount = parseInt(errorCountEle[0].getAttribute('errorCount'));
+
+            individualRes = {totalErrorCount: errorCount, totalTestCount: testCount};
+            perIpResults.push({ip, totalErrorCount: errorCount, totalTestCount: testCount});
+
+            totalErrors += errorCount;
+            totalTests += testCount;
+            summary = {errors: totalErrors, runs: totalTests};
+        });
+
+        if (Object.keys(individualRes).length === 0) {
+            return null;
+        }
+
+        // function getDailyResultSummary() {
+        //     let res = {};
+        //
+        //     ipAddresses.forEach(function (ip) {
+        //         let testResult = loadXMLDoc('/smoketest/logs/' + date + '/' + run + '/' + ip + '/' + 'testresult.xml');
+        //         let testResultXml = testResult.response;
+        //         if (!testResultXml.getElementsByTagName) {
+        //             return;
+        //         }
+        //     });
+        // }
+
+        // let dailyResultSummary = getDailyResultSummary();
+
         let testResultDiv = document.createElement('div');
         testResultDiv.setAttribute('class', 'testResultDiv');
-        testResultDiv.setAttribute('class', totalErrorCount > 0 ? 'test-fail' : 'test-pass');
+        testResultDiv.innerHTML = summary.runs - summary.errors + ' / ' + summary.runs;
+        testResultDiv.setAttribute('class', summary.errors > 0 ? 'test-fail' : 'test-pass');
 
-        let runNumEle = document.createElement('a');
+        let runNumEle = document.createElement('p');
         let result = document.createElement('p');
 
         runNumEle.innerHTML = run;
-        result.innerHTML = individualRes.totalTestCount - individualRes.totalErrorCount + '/' + individualRes.totalTestCount;
+        // result.innerHTML = individualRes.totalTestCount - individualRes.totalErrorCount + '/' + individualRes.totalTestCount;
+
+        let resContainer = document.createElement('div');
+        resContainer.setAttribute('class', 'resContainer');
 
         runNumDiv.appendChild(runNumEle);
         testResultDiv.appendChild(result);
 
-        individualResDiv.appendChild(runNumDiv);
-        individualResDiv.appendChild(testResultDiv);
+        resContainer.appendChild(runNumDiv);
+        resContainer.appendChild(testResultDiv);
+        runNumberContainer.appendChild(resContainer);
 
-        return individualResDiv;
 
+        ipAddresses.forEach(function (ip, cnt) {
+            let testResult = perIpResults[cnt];
+            let ipAndResDiv = document.createElement('div');
+            let ipAddressText = document.createElement('p');
+            ipAddressText.innerHTML = ip;
+
+            let ipAddressDiv = document.createElement('div');
+            ipAddressDiv.setAttribute('class', 'ipAddressDiv');
+            ipAddressDiv.appendChild(ipAddressText);
+
+            let perIpResultDiv = document.createElement('div');
+            perIpResultDiv.setAttribute('class', 'perIpResultDiv');
+            perIpResultDiv.setAttribute('class',  testResult.totalErrorCount > 0 ? 'test-fail' : 'test-pass');
+            perIpResultDiv.innerHTML = testResult.totalTestCount - testResult.totalErrorCount + ' / ' +testResult.totalTestCount
+
+            ipAndResDiv.setAttribute('class', 'ipAndResDiv');
+            ipAndResDiv.appendChild(ipAddressDiv);
+            ipAndResDiv.appendChild(perIpResultDiv);
+            runNumberContainer.appendChild(ipAndResDiv);
+
+            if(testResult.totalErrorCount > 0) {
+                if (screenshots.length > 0) {
+                    let cnt = 0;
+                    screenshots.forEach(function (ipScreenShots) {
+                        for (let ss = 0; ss < ipScreenShots.length; ss++) {
+                            let screenshotPath = ipScreenShots[ss].getAttribute('path');
+
+                            let screenshotDiv = document.createElement('div');
+                            let screenshotLink = document.createElement('a');
+                            screenshotLink.setAttribute('data-lightbox', screenshotPath.split('/').pop());
+
+                            screenshotLink.setAttribute('href', screenshotPath);
+                            screenshotLink.innerHTML = screenshotPath;
+
+                            screenshotDiv.setAttribute('class', 'screenshotDiv');
+                            screenshotDiv.appendChild(screenshotLink);
+                            runNumberContainer.appendChild(screenshotDiv);
+                            cnt++;
+
+                        }
+                    });
+                }
+
+            }
+
+        });
+            if(totalErrors > 0) {
+                runNumberContainer.classList.add('smokeTestFail');
+                runNumberContainer.classList.remove('smokeTestPass');
+            } else {
+                runNumberContainer.classList.add('smokeTestPass');
+                runNumberContainer.classList.remove('smokeTestFail');
+            }
+
+        return runNumberContainer;
     }
 
     function loadAndDisplayPage(allTests, testRunInfo) {
@@ -204,6 +296,7 @@ let utils = (function () {
         let dates = [];
 
         let rootEle = document.getElementById('accordion');
+        let count = 0;
 
         testRunInfo.forEach(function(obj){
             let summaryInfo = loadXMLDoc('logs/' + obj.date + '/testsummary.xml');
@@ -228,8 +321,6 @@ let utils = (function () {
             let panelTitleEle = document.createElement("h4");
             panelTitleEle.setAttribute('class', 'panel-title');
 
-            let count = 0;
-
             let anchorEle = document.createElement("a");
             anchorEle.setAttribute('data-toggle', 'collapse');
             anchorEle.setAttribute('data-parent', '#accordion');
@@ -237,15 +328,16 @@ let utils = (function () {
 
             let bodyPanelContainer = document.createElement('div');
             bodyPanelContainer.setAttribute('id', 'collapse' + count);
-            bodyPanelContainer.setAttribute('class', 'panel-collapse');
-            bodyPanelContainer.setAttribute('class', 'collapse');
-            bodyPanelContainer.setAttribute('class', 'in');  // uncomment to expand
+            bodyPanelContainer.setAttribute('class', 'panel-collapse collapse');
+            // bodyPanelContainer.setAttribute('class', 'collapse');
+            // bodyPanelContainer.setAttribute('class', 'in');  // uncomment to expand
+            count++;
 
             let overallResultContainer = document.createElement('div');
             overallResultContainer.setAttribute('class', 'overall-result-container');
             overallResultContainer.setAttribute('class', totalErrorCount > 0 ? 'test-fail' : 'test-pass');
 
-            overallResultContainer.innerHTML = totalTestCount - totalErrorCount + '/' + totalTestCount;
+            overallResultContainer.innerHTML = totalTestCount - totalErrorCount + ' / ' + totalTestCount;
 
             summaryContainer.appendChild(dateContainer);
             summaryContainer.appendChild(overallResultContainer);
@@ -283,7 +375,10 @@ let utils = (function () {
 
             obj.runs.forEach(function(run) {
                 // makeListElem(ulEle, run, obj.date);
-                panelBodyEle.appendChild(makeListElem(ulEle, run, obj.date));
+                var res = makeListElem(ulEle, run, obj.date);
+                if (res) {
+                    panelBodyEle.appendChild(res);
+                }
             });
 
             // panelBodyEle.appendChild(ulEle);
@@ -294,7 +389,7 @@ let utils = (function () {
             dates.push(obj.date);
 
             rootEle.appendChild(defaultPanelEle);
-            count++;
+
         });
 
 //        let doc = loadDoc("logs/smoketestDates2.xml");
@@ -319,94 +414,8 @@ let utils = (function () {
                     msgs.push(msg)
                 }
             }
-            console.log();
         }
         return {total: 1, errors: msgs.length > 0 ? 1 : 0, msg:msgs};
-    }
-
-    function getOverallResult(runInfo) {
-        let result = [];
-        let htmlResult = '<div>';
-
-        runInfo.forEach(function (obj) {
-//            console.log('q', obj);
-
-
-        });
-        htmlResult += "<h1> This is a test" + "</h1>";
-        htmlResult += "</div>";
-
-        return htmlResult;
-
-    }
-
-    function getOverallResult2(runInfo) {
-//        let sortedDates = getSortedTestDates("logs/runDates.txt");
-
-//        let sortedDates = readTextFile("logs/runDates.txt");
-
-
-        let result = [];
-        let htmlResult = '<div>';
-
-        // date -> test -> ip -> {total, errors}
-        let res = {};
-        sortedDates.forEach(function (date) {
-            res[date.date] = res[date.date] || {};
-            let dateMap = res[date.date];
-            let newDate = date.date.split(' ').join('_');
-            let newDateXml = date.date.split(' ').join('_') + '.xml';
-            let ipAddresses = getIpAddresses('ipAddresses.xml');
-            ipAddresses.forEach(function (ipAddress) {
-                let xmlFile = date.outputDir + "/" + ipAddress + "/" + newDateXml;
-                let data = getResult(xmlFile);
-                console.log("xml", data);
-                if (data) {
-                    let node = findNode(data.response.children[0], 'errorCount');
-                    let tests =  data.response.children[0];
-
-                    for (let i = 0; i< tests.children.length; i++) {
-                        let test = tests.children[i];
-                        if (test.localName === 'testScreen') {
-                            let testName = test.getAttribute('testScreen');
-                            let screenMap = dateMap[testName] = dateMap[testName] || {};
-                            screenMap[ipAddress] = doCountResults(test);
-                        }
-                    }
-                    let pass = node.getAttribute('errorCount') === "1";
-                    result.push(pass);
-                }
-            });
-        });
-        console.log("res", res);
-
-        for (let dt in res) {
-            let dayErrors = 0;
-            let dayTotal = 0;
-            let htmlTest = '';
-            for (let test in res[dt]) {
-                // htmlTest += '<h2>' + test+ '</h2>';
-
-                for (let ip in res[dt][test]) {
-                    console.log("dt", res[dt][test][ip])
-                    let result = res[dt][test][ip];
-                    dayErrors += result.errors;
-                    dayTotal += result.total;
-
-                    if (result.errors) {
-                        htmlTest += '<h5>' + ip;
-                        htmlTest += " " + test + " Error"
-                        htmlTest +=  '</h5>'
-                    }
-                }
-            }
-            htmlResult += '<h1>' + dt + ' ' + dayErrors + '/' + dayTotal + '</h1>';
-            htmlResult += htmlTest;
-
-        }
-        htmlResult += '</div>';
-
-        return htmlResult;
     }
 
     function click(e) {
@@ -417,13 +426,10 @@ let utils = (function () {
     }
 
     return {
-//        displayXMLResult: displayXMLResult,
-//        getSortedTestDates: getSortedTestDates,
         getResult: getResult,
         loadNewResults:loadNewResults,
         loadAndDisplayPage: loadAndDisplayPage,
         getIpAddresses: getIpAddresses,
-        getOverallResult: getOverallResult,
         getTestRunInfo: getTestRunInfo,
         loadDoc: loadDoc
     };

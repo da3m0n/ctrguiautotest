@@ -7,7 +7,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException,
 from selenium.webdriver.support.ui import WebDriverWait  # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
 from selenium import webdriver
-import urllib2
+import urllib, urllib2
+
 from BeautifulSoup import BeautifulSoup
 # from bs4 import BeautifulSoup
 # import BeautifulSoup
@@ -32,6 +33,16 @@ class GlobalFuncs(object):
     def path():
         global path_to_dir
         return path_to_dir
+
+    @staticmethod
+    def rel_path():
+        global path_to_dir
+        sep = path_to_dir.split(os.sep)
+        print('rel_path', sep)
+        url_path = urllib.pathname2url(path_to_dir)
+        url_path = url_path.partition('ctrguiautotest')
+
+        return url_path[2]
 
     @staticmethod
     def set_path(p):
@@ -137,7 +148,8 @@ class Utils(object):
             print('Already logged in')
 
     @classmethod
-    def login(self, driver, username, password):
+    def login(self, driver, username, password, test_helper, test_log):
+
         try:
             # find the login element and type in the username
             inputElement = driver.find_element_by_id("username")
@@ -147,26 +159,27 @@ class Utils(object):
             inputElement.send_keys(password)
             # submit the form
             inputElement.submit()
-        except:
-            from smoketest.TestLog import TestLog
-            from smoketest.TestHelper import TestHelper
+        except Exception as e:
             print('login failed')
-            dir = Utils.log_dir()
-            test_log = TestLog(dir)
-            test_helper = TestHelper(test_log, driver, 'smoketest')
-            test_helper.assert_true(True,
-                                    'Page not loaded OK',
-                                    'Page not loaded OK')
-
             print("Login page not as expected. Exiting...")
+
+            test_helper.assert_false(True, "unexpected login page", "login")
+            test_log.close()
             driver.close()
+            raise e
+
         try:
             # we have to wait for the page to refresh, the last thing that seems to be updated is the title
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "layout_device_name")))
             print('Login Successful')
             time.sleep(5)
-        except:
+        except Exception as e:
             print("Login unsuccessful")
+            test_helper.assert_false(True, "unexpected login page", "login")
+
+            test_helper.close()
+            driver.close()
+            raise e
 
     # logout, as too many sessions are not allowed
     def logout(self, driver):
@@ -539,8 +552,9 @@ class Utils(object):
         test_name = test_name.rstrip('.')
 
         # screenshots_dir = self.pwd + '\\logs\\' + self.date + '\\' + test_type + '\\screenshots'
+        # screenshots_dir = os.path.join(GlobalFuncs.path(), self.ipAddress, 'screenshots')
         screenshots_dir = os.path.join(GlobalFuncs.path(), self.ipAddress, 'screenshots')
-
+        print "screenshot " + screenshots_dir
         GlobalFuncs.ensure_path_exists(screenshots_dir)
         self.test_log.store_screenshot_info(test_name, screenshots_dir)
         self.driver.save_screenshot(os.path.join(screenshots_dir, test_name + '.png'))

@@ -44,27 +44,14 @@
 <script src="vendor/js/lightbox.js"></script>
 
 <script>
-    <!--let ipAddresses = utils.getIpAddresses('ipAddresses.xml');-->
-    <!--let testDates = "logs/smoketestDates.xml";-->
-    <!--let overallResult = utils.getOverallResult();-->
-
     let rawTestRunInfo = utils.loadDoc("logs/runInfo.txt", "text");
     let testRunInfo = utils.getTestRunInfo(rawTestRunInfo);
-
-    let overallResult = utils.getOverallResult(testRunInfo);
 
     let allTests = [
         {dir: 'smoketest', name: 'coverage-result', xslDoc: "coverage.xsl" },
         {dir: 'smoketest', name: 'test-result', xslDoc: "overallResult.xsl" }
     ];
 
-    <!--$('#tests')[0].innerHTML = overallResult;-->
-
-    // ,        {dir: 'smoketest', name: 'tests', xslDoc: "results.xsl" }
-    // let testDates = "dates.xsl";
-
-
-    <!--utils.loadAndDisplayPage(allTests, testDates, ipAddresses);-->
     utils.loadAndDisplayPage(allTests, testRunInfo);
 
 </script>

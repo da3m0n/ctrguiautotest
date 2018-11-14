@@ -180,10 +180,13 @@ class RunAll:
         # utils = Utils(driver, self.test_log)
         self.utils.delete_existing_dir()
 
-        login_handler = LoginHandler(self.driver)
-        login_handler.start()
-        # test_log = TestLog(self.dir)
+        self.test_log.start('login')
         test_helper = TestHelper(self.test_log, self.driver, self.test_type, self.utils)
+        login_handler = LoginHandler(self.driver, test_helper, self.test_log)
+        login_handler.start()
+
+        print('log', self.test_log, self.utils.log_dir())
+        # test_log = TestLog(self.dir)
 
         # Uncomment this to get coverage graph
         # test_log.add_num_screens(RunAll.get_num_screens(self.driver))
@@ -191,16 +194,24 @@ class RunAll:
         # self.driver.find_element_by_id('menu_node_equipment').click()
 
         smoke_test = SmokeTest(self.driver, self.test_log, test_helper)
+        try:
+            side_menu = WebDriverWait(self.driver, 35).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "side_menu_folder")))
+        except e:
+            test_helper.assert_false(True, "unable to find side menu", "side_menu")
+            login_handler.end()
+            self.test_log.close()
+            raise e
 
-        side_menu = WebDriverWait(self.driver, 35).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "side_menu_folder")))
 
-        # tests = RunAll.get_screens(self.driver)
+        tests = RunAll.get_screens(self.driver)
 
-        # smoke_test.create("Status/Alarms")
+        smoke_test.create("Status/Alarms")
         smoke_test.create("System Configuration/Admin/Users")
         smoke_test.create("Status/Manufacture Details")
         # smoke_test.create("Status/Event Log")
+        # smoke_test.create("Switching & Routing Configuration/Port Manager")
+        # smoke_test.create("Switching & Routing Configuration/Interfaces")
 
         # for test in tests:
         #     try:
@@ -209,6 +220,7 @@ class RunAll:
         #     except Exception as ex:
         #         # error_file.write("Failed running: " + test + ex + '\r\n')
         #         print("Failed running ", test, ex)
+
         # return True
 
         login_handler.end()
